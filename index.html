@@ -55,7 +55,7 @@
 			
 				<li><a href="/">主页</a></li>
 	        
-				<li><a href="/tags/%E9%9A%8F%E7%AC%94/">随笔</a></li>
+				<li><a href="/tags/%E7%A0%81%E4%BA%91/">码云</a></li>
 	        
 			</ul>
 		</nav>
@@ -121,7 +121,7 @@
 				
 					<li style="width: 50%"><a href="/">主页</a></li>
 		        
-					<li style="width: 50%"><a href="/tags/%E9%9A%8F%E7%AC%94/">随笔</a></li>
+					<li style="width: 50%"><a href="/tags/%E7%A0%81%E4%BA%91/">码云</a></li>
 		        
 				</ul>
 			</nav>
@@ -137,6 +137,383 @@
           </div>
           <div id="js-content" class="content-ll">
             
+  
+    <article id="post-倒水问题" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/03/05/%E5%80%92%E6%B0%B4%E9%97%AE%E9%A2%98/">倒水问题</a>
+    </h1>
+  
+
+        
+        <a href="/2020/03/05/%E5%80%92%E6%B0%B4%E9%97%AE%E9%A2%98/" class="archive-article-date">
+  	<time datetime="2020-03-05T12:55:19.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-05</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="倒水问题"><a href="#倒水问题" class="headerlink" title="倒水问题"></a><strong>倒水问题</strong></h1><h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a><strong>问题描述</strong></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">“fill A” 表示倒满A杯，“empty A” 表示倒空A杯，“pour A B” 表示把A的水倒到B杯并且把B杯倒满或A倒空。</span><br></pre></td></tr></table></figure>
+
+<h2 id="input"><a href="#input" class="headerlink" title="input"></a><strong>input</strong></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">输入包含多组数据。每组数据输入 A, B, C 数据范围 0 &lt; A ≤ B 、C ≤ B ≤ 1000 、A和B互质。</span><br></pre></td></tr></table></figure>
+
+<h2 id="Output"><a href="#Output" class="headerlink" title="Output"></a><strong>Output</strong></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">你的程序的输出将由一系列的指令组成。这些输出行将导致任何一个罐子正好包含C单位的水。每组数据的最后一行输出应该是“success”。输出行从第1列开始，不应该有空行或任何尾随空格。</span><br></pre></td></tr></table></figure>
+
+<h2 id="Sample"><a href="#Sample" class="headerlink" title="Sample"></a><strong>Sample</strong></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">input: </span><br><span class="line">2 7 5</span><br><span class="line">2 7 4</span><br><span class="line"></span><br><span class="line">output: </span><br><span class="line">fill B</span><br><span class="line">pour B A</span><br><span class="line">success </span><br><span class="line">fill A</span><br><span class="line">pour A B</span><br><span class="line">fill A</span><br><span class="line">pour A B</span><br><span class="line">success</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a><strong>解题思路</strong></h2><p>两水杯(a容量与b容量)中加水/倒水/相互倒水，目标为c容量，由于题目不会给出错误数据，所以直接暴力执行循环即可。</p>
+<p>首先装满A，判断是否满足C，满足则success，否则不断地往B中倒水，不停的判断当前A、B的情况是否满足C，若满足则<code>break</code>，否则继续循环。循环过程中若有一方满了，则判断是否满足C，不满足清空满的杯子，继续循环。</p>
+<h2 id="源代码"><a href="#源代码" class="headerlink" title="源代码"></a><strong>源代码</strong></h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> a, b, c;</span><br><span class="line">	<span class="keyword">int</span> x, y;<span class="comment">// a, b当前水量</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">while</span> (!(<span class="built_in">cin</span> &gt;&gt; a &gt;&gt; b &gt;&gt; c).eof()) &#123;</span><br><span class="line">		x = y = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">while</span> (<span class="number">1</span>) &#123;</span><br><span class="line">			<span class="built_in">cout</span> &lt;&lt; <span class="string">"fill A"</span> &lt;&lt; <span class="built_in">endl</span>;<span class="comment">//先装满a</span></span><br><span class="line">			x = a;<span class="comment">//a当前容量为a 赋值给x</span></span><br><span class="line">			<span class="keyword">if</span> (x == c) &#123;<span class="comment">//若a达到目的</span></span><br><span class="line">				<span class="built_in">cout</span> &lt;&lt; <span class="string">"success"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">while</span> (x &gt; <span class="number">0</span>) &#123;<span class="comment">//a非空时执行循环</span></span><br><span class="line">				<span class="keyword">if</span> ((b - y) &gt;= x) &#123;<span class="comment">// 若b当前可容下当前的a</span></span><br><span class="line">					<span class="built_in">cout</span> &lt;&lt; <span class="string">"pour A B"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">					y = y + x;<span class="comment">//更新当前b</span></span><br><span class="line">					x = <span class="number">0</span>;<span class="comment">//当前a为0</span></span><br><span class="line">				&#125;</span><br><span class="line">				<span class="keyword">else</span> &#123;<span class="comment">//若容不下</span></span><br><span class="line">					<span class="built_in">cout</span> &lt;&lt; <span class="string">"pour A B"</span> &lt;&lt; <span class="built_in">endl</span>;<span class="comment">//还是a倒给b</span></span><br><span class="line">					x = x - (b - y);<span class="comment">// a中也有剩余</span></span><br><span class="line">					y = b;<span class="comment">// b就满了</span></span><br><span class="line">				&#125;</span><br><span class="line">				<span class="keyword">if</span> (x == c) &#123;<span class="comment">//判断 若达到目的</span></span><br><span class="line">					<span class="built_in">cout</span> &lt;&lt; <span class="string">"success"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">					<span class="keyword">break</span>;</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="keyword">if</span> (y == c)<span class="comment">//当前b达到目的</span></span><br><span class="line">					<span class="keyword">break</span>;</span><br><span class="line">				<span class="keyword">if</span> (y == b) &#123;<span class="comment">//若b满</span></span><br><span class="line">					<span class="built_in">cout</span> &lt;&lt; <span class="string">"empty B"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">					y = <span class="number">0</span>;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">if</span> (x == c)<span class="comment">//重复 不输出</span></span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			<span class="keyword">if</span> (y == c) &#123;<span class="comment">//若b打到目的</span></span><br><span class="line">				<span class="built_in">cout</span> &lt;&lt; <span class="string">"success"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="尝试过的错误代码"><a href="#尝试过的错误代码" class="headerlink" title="尝试过的错误代码"></a><strong>尝试过的错误代码</strong></h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> a, b, c;</span><br><span class="line">	<span class="keyword">while</span> (!(<span class="built_in">cin</span> &gt;&gt; a &gt;&gt; b &gt;&gt; c).eof()) &#123;</span><br><span class="line">		<span class="keyword">if</span> (a == c) &#123;<span class="comment">//若目标水量为 a</span></span><br><span class="line">			<span class="built_in">cout</span> &lt;&lt; <span class="string">"fill A"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">			<span class="built_in">cout</span> &lt;&lt; <span class="string">"success"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> (c % a == <span class="number">0</span> &amp;&amp; a != c) &#123;<span class="comment">//若目标水量为a的倍数</span></span><br><span class="line">			<span class="keyword">int</span> countA = c / a;<span class="comment">//这样子a往b中倒c/a次就行了</span></span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; countA; i++) &#123;</span><br><span class="line">				<span class="built_in">cout</span> &lt;&lt; <span class="string">"fill A"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">				<span class="built_in">cout</span> &lt;&lt; <span class="string">"pour A B"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="built_in">cout</span> &lt;&lt; <span class="string">"success"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> (b == c) &#123;<span class="comment">//若目标水量为b</span></span><br><span class="line">			<span class="built_in">cout</span> &lt;&lt; <span class="string">"fill B"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">			<span class="built_in">cout</span> &lt;&lt; <span class="string">"success"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">		&#125;</span><br><span class="line">        <span class="comment">//从b满开始算 若目标水量是从b中扣除整数个a的量</span></span><br><span class="line">		<span class="keyword">if</span> ((b - c) % a == <span class="number">0</span> &amp;&amp; b != c) &#123;</span><br><span class="line">			<span class="keyword">int</span> countB = (b - c) / a;<span class="comment">//扣除次数</span></span><br><span class="line">			<span class="built_in">cout</span> &lt;&lt; <span class="string">"fill B"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">			<span class="keyword">if</span> (countB == <span class="number">1</span>)<span class="comment">//若只需1次</span></span><br><span class="line">				<span class="built_in">cout</span> &lt;&lt; <span class="string">"pour B A"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">			<span class="keyword">else</span> &#123;<span class="comment">//否则 要清空a</span></span><br><span class="line">				<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; countB - <span class="number">1</span>; i++) &#123;</span><br><span class="line">					<span class="built_in">cout</span> &lt;&lt; <span class="string">"pour B A"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">					<span class="built_in">cout</span> &lt;&lt; <span class="string">"empty A"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="built_in">cout</span> &lt;&lt; <span class="string">"pour B A"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="built_in">cout</span> &lt;&lt; <span class="string">"success"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上述代码忽略了用A把B装满，要装满的最后一次A中还剩水量恰好为C的情况，比如<code>A = 3, B = 13, C = 2</code>。后来换了其他思路想，未提交新情况的代码测试，所以未知是否能通过。</p>
+<h2 id="Google后其他人的思路"><a href="#Google后其他人的思路" class="headerlink" title="Google后其他人的思路"></a><strong>Google后其他人的思路</strong></h2><p>只有6种状态：<code>fill A</code>、<code>fill B</code>、<code>empty A</code>、<code>empty B</code>、<code>pour A B</code>、<code>pour B A</code>，每次做出一次选择。这是一个隐式迷宫问题，每次在一个状态做出6种选择，判断是否到达“出口”，因此可采用BFS解题。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">倒水问题</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/03/05/%E5%80%92%E6%B0%B4%E9%97%AE%E9%A2%98/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-迷宫问题-广度优先搜索" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/03/05/%E8%BF%B7%E5%AE%AB%E9%97%AE%E9%A2%98-%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2/">迷宫问题 广度优先搜索</a>
+    </h1>
+  
+
+        
+        <a href="/2020/03/05/%E8%BF%B7%E5%AE%AB%E9%97%AE%E9%A2%98-%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2/" class="archive-article-date">
+  	<time datetime="2020-03-05T12:54:52.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-05</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="迷宫问题-广度优先搜索"><a href="#迷宫问题-广度优先搜索" class="headerlink" title="迷宫问题: 广度优先搜索"></a><strong>迷宫问题: 广度优先搜索</strong></h1><h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a><strong>问题描述</strong></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">东东有一张地图，想通过地图找到妹纸。地图显示，0表示可以走，1表示不可以走，左上角是入口，右下角是妹纸，这两个位置保证为0。既然已经知道了地图，那么东东找到妹纸就不难了，请你编一个程序，写出东东找到妹纸的最短路线。</span><br></pre></td></tr></table></figure>
+
+<h2 id="Input"><a href="#Input" class="headerlink" title="Input"></a><strong>Input</strong></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">输入是一个5 × 5的二维数组，仅由0、1两数字组成，表示法阵地图。</span><br></pre></td></tr></table></figure>
+
+<h2 id="Output"><a href="#Output" class="headerlink" title="Output"></a><strong>Output</strong></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">输出若干行，表示从左上角到右下角的最短路径依次经过的坐标，格式如样例所示。数据保证有唯一解。</span><br></pre></td></tr></table></figure>
+
+<h2 id="Sample"><a href="#Sample" class="headerlink" title="Sample"></a><strong>Sample</strong></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">input: </span><br><span class="line">0 1 0 0 0</span><br><span class="line">0 1 0 1 0</span><br><span class="line">0 1 0 1 0</span><br><span class="line">0 0 0 1 0</span><br><span class="line">0 1 0 1 0</span><br><span class="line"></span><br><span class="line">output: </span><br><span class="line">(0, 0)</span><br><span class="line">(1, 0)</span><br><span class="line">(2, 0)</span><br><span class="line">(3, 0)</span><br><span class="line">(3, 1)</span><br><span class="line">(3, 2)</span><br><span class="line">(2, 2)</span><br><span class="line">(1, 2)</span><br><span class="line">(0, 2)</span><br><span class="line">(0, 3)</span><br><span class="line">(0, 4)</span><br><span class="line">(1, 4)</span><br><span class="line">(2, 4)</span><br><span class="line">(3, 4)</span><br><span class="line">(4, 4)</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a><strong>解题思路</strong></h2><p>广度优先搜索(BFS)：<br>从起始点开始遍历，先从相邻的点找起，如果可行，则加入生成的路径，同时已经加入的点不会再次访问。比如题中样例，BFS生成的路径用2表示，则：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">0 1 0 0 0				2 1 2 2 2</span><br><span class="line">0 1 0 1 0				2 1 2 1 2</span><br><span class="line">0 1 0 1 0		→		2 1 2 1 2</span><br><span class="line">0 0 0 1 0				2 2 2 1 2</span><br><span class="line">0 1 0 1 0				0 1 2 1 2</span><br></pre></td></tr></table></figure>
+
+<p>再比如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">0 1 0 0 0				2 1 2 2 2</span><br><span class="line">0 1 0 1 0				2 1 2 1 2</span><br><span class="line">0 0 0 1 0		→		2 2 2 1 2</span><br><span class="line">0 1 0 1 1				0 1 2 1 1</span><br><span class="line">0 1 0 0 0				0 1 2 2 2</span><br></pre></td></tr></table></figure>
+
+<p>同时这也产生了一个问题：没必要走的点加入了路径中！广搜产生的分支好比一棵树的枝干的枝杈，主枝一直往前延申直到终点，但分支也随之产生去探寻分支的终点，直到某个枝杈到达了目标终点，才能分辨出谁是主枝，剩下的才是分支。</p>
+<p>所以通过终点，往回退，避开产生的分支，最后走回起点，这样就生成了最终路径。</p>
+<p>详见代码。</p>
+<h2 id="源代码"><a href="#源代码" class="headerlink" title="源代码"></a><strong>源代码</strong></h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;queue&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*点的结构体  表示(x, y)坐标*/</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">point</span> &#123;</span></span><br><span class="line">	<span class="keyword">int</span> x, y;</span><br><span class="line">	<span class="keyword">int</span> dis;<span class="comment">//用于记录原点到当前点路径上的距离</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*用于上下左右移动*/</span></span><br><span class="line"><span class="keyword">int</span> dx[] = &#123; <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">-1</span> &#125;;</span><br><span class="line"><span class="keyword">int</span> dy[] = &#123; <span class="number">1</span>, <span class="number">-1</span>, <span class="number">0</span>, <span class="number">0</span> &#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> reach[<span class="number">5</span>][<span class="number">5</span>];<span class="comment">//标记到达的数组</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="built_in">point</span>&gt; path;<span class="comment">//生成路径</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">neighbour</span><span class="params">(<span class="built_in">point</span> a, <span class="built_in">point</span> b)</span> </span>&#123;<span class="comment">//判断两点是否相邻(上、下、左、右)</span></span><br><span class="line">	<span class="keyword">return</span> (<span class="built_in">abs</span>(a.x - b.x) == <span class="number">1</span> &amp;&amp; a.y == b.y) || (<span class="built_in">abs</span>(a.y - b.y) == <span class="number">1</span> &amp;&amp; a.x == b.x);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">bfs</span><span class="params">(<span class="keyword">int</span> maze[<span class="number">5</span>][<span class="number">5</span>])</span> </span>&#123;</span><br><span class="line">    <span class="comment">//初始化点坐标</span></span><br><span class="line">	<span class="built_in">point</span> dot;</span><br><span class="line">	dot.x = <span class="number">0</span>;</span><br><span class="line">	dot.y = <span class="number">0</span>;</span><br><span class="line">	dot.dis = <span class="number">0</span>;</span><br><span class="line">	<span class="built_in">queue</span>&lt;<span class="built_in">point</span>&gt; q;<span class="comment">//队列 用于记录走过的点与下一可行点 保证先进先出</span></span><br><span class="line">	q.push(dot);<span class="comment">//起点(0, 0)开始，入队</span></span><br><span class="line">	reach[<span class="number">0</span>][<span class="number">0</span>] = <span class="number">1</span>;<span class="comment">//(0, 0)已走过</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">while</span> (!q.empty()) &#123;</span><br><span class="line">		<span class="built_in">point</span> curr = q.front();<span class="comment">//从队首取点，保证先进先出</span></span><br><span class="line">		path.push_back(curr);<span class="comment">//点可行 记入生成路径</span></span><br><span class="line">		q.pop();<span class="comment">//取走后就要出队</span></span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">4</span>; i++) &#123;<span class="comment">//从取走的点开始上下左右判断可不可以走</span></span><br><span class="line">			<span class="keyword">int</span> x = curr.x + dx[i];</span><br><span class="line">			<span class="keyword">int</span> y = curr.y + dy[i];</span><br><span class="line">			<span class="comment">/*若在图边界内 且 非墙 且 还没走*/</span></span><br><span class="line">			<span class="keyword">if</span> (x &gt;= <span class="number">0</span> &amp;&amp; x &lt; <span class="number">5</span> &amp;&amp; y &gt;= <span class="number">0</span> &amp;&amp; y &lt; <span class="number">5</span></span><br><span class="line">				&amp;&amp; maze[x][y] != <span class="number">1</span> &amp;&amp; reach[x][y] != <span class="number">1</span>) &#123;</span><br><span class="line">				reach[x][y] = <span class="number">1</span>;<span class="comment">//reached</span></span><br><span class="line">				curr.x = x, curr.y = y;</span><br><span class="line">				curr.dis++;</span><br><span class="line">				q.push(curr);<span class="comment">//可行 入队</span></span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> maze[<span class="number">5</span>][<span class="number">5</span>];</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++)</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; <span class="number">5</span>; j++)</span><br><span class="line">			<span class="built_in">cin</span> &gt;&gt; maze[i][j];<span class="comment">//录入迷宫</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++)</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; <span class="number">5</span>; j++)</span><br><span class="line">			reach[i][j] = <span class="number">0</span>;<span class="comment">//初始化所有点未到达</span></span><br><span class="line"></span><br><span class="line">	bfs(maze);<span class="comment">//生成路径</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">int</span> <span class="built_in">end</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i != path.<span class="built_in">size</span>(); ++i)<span class="comment">//从生成路径中寻找终点的位置</span></span><br><span class="line">		<span class="keyword">if</span> (path.at(i).x == <span class="number">4</span> &amp;&amp; path.at(i).y == <span class="number">4</span>)</span><br><span class="line">			<span class="built_in">end</span> = i;<span class="comment">//是终点</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (<span class="built_in">end</span> != path.<span class="built_in">size</span>() - <span class="number">1</span>)<span class="comment">//如果终点不是生成路径的最后一个点的话</span></span><br><span class="line">		path.erase(path.<span class="built_in">begin</span>() + <span class="built_in">end</span> + <span class="number">1</span>, path.<span class="built_in">end</span>());<span class="comment">//后面的分支就可以移除了</span></span><br><span class="line">	</span><br><span class="line">    <span class="comment">/*从终点开始往前找路径*/</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = path.<span class="built_in">size</span>() - <span class="number">1</span>; i &gt; <span class="number">0</span>; i--) &#123;</span><br><span class="line">		<span class="keyword">if</span> (!neighbour(path.at(i), path.at(i - <span class="number">1</span>)) ||</span><br><span class="line">			(path.at(i).dis - path.at(i - <span class="number">1</span>).dis != <span class="number">1</span>))</span><br><span class="line">         <span class="comment">/* 若前后的点非相邻点 或相邻两点距原点的路径距离差非1 */</span></span><br><span class="line">			path.erase(path.<span class="built_in">begin</span>() + i - <span class="number">1</span>);<span class="comment">//这个点可删除</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i != path.<span class="built_in">size</span>(); ++i)<span class="comment">//输出</span></span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"("</span> &lt;&lt; path.at(i).x &lt;&lt; <span class="string">", "</span> &lt;&lt; path.at(i).y &lt;&lt; <span class="string">")"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">BFS</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/03/05/%E8%BF%B7%E5%AE%AB%E9%97%AE%E9%A2%98-%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-扑克牌手牌排序" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/03/05/%E6%89%91%E5%85%8B%E7%89%8C%E6%89%8B%E7%89%8C%E6%8E%92%E5%BA%8F/">扑克牌手牌排序</a>
+    </h1>
+  
+
+        
+        <a href="/2020/03/05/%E6%89%91%E5%85%8B%E7%89%8C%E6%89%8B%E7%89%8C%E6%8E%92%E5%BA%8F/" class="archive-article-date">
+  	<time datetime="2020-03-05T12:54:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-05</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="扑克牌手牌排序"><a href="#扑克牌手牌排序" class="headerlink" title="扑克牌手牌排序"></a><strong>扑克牌手牌排序</strong></h1><h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a><strong>问题描述</strong></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">瑞神HRZ因为疫情在家闲得无聊，同时他又非常厉害，所有的课对他来说都是水一水就能拿A+，所以他无聊，找来了另外三个人：咕咕东，腾神以及zjm来打牌(天下苦瑞神久矣)。</span><br><span class="line">显然，牌局由四个人构成，围成一圈。我们称四个方向为北 东 南 西。对应的英文是North，East，South，West。游戏一共由一副扑克，也就是52张构成。开始，我们指定一位发牌员(东南西北中的一个，用英文首字母标识)开始发牌，发牌顺序为顺时针，发牌员第一个不发自己，而是发他的下一个人(顺时针的下一个人)。这样，每个人都会拿到13张牌。</span><br><span class="line">现在我们定义牌的顺序，首先，花色是 梅花 &lt; 方片 &lt; 黑桃 &lt; 红桃，(输入时，我们用C, D, S, H分别表示梅花，方片，黑桃，红桃，即其单词首字母)。对于牌面的值，我们规定 2 &lt; 3 &lt; 4 &lt; 5 &lt; 6 &lt; 7 &lt; 8 &lt; 9 &lt; T &lt; J &lt; Q &lt; K &lt; A。</span><br><span class="line">现在你作为上帝，你要从小到大排序每个人手中的牌，并按照给定格式输出。(具体格式见输出描述和样例输出)。</span><br></pre></td></tr></table></figure>
+
+<h2 id="Input"><a href="#Input" class="headerlink" title="Input"></a><strong>Input</strong></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入包含多组数据</span><br><span class="line">每组数据的第一行包含一个大写字符，表示发牌员是谁。如果该字符为‘#’则表示输入结束。</span><br><span class="line">接下来有两行，每行有52个字符，表示了26张牌，两行加起来一共52张牌。每张牌都由两个字符组成，第一个字符表示花色，第二个字符表示数值。</span><br></pre></td></tr></table></figure>
+
+<h2 id="Output"><a href="#Output" class="headerlink" title="Output"></a><strong>Output</strong></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输出多组数据发牌的结果，每组数据之后需要额外多输出一个空行！！！！！</span><br><span class="line">每组数据应该由24行的组成，输出按照顺时针方向，始终先输出South Player的结果，每位玩家先输出一行即玩家名称(东南西北)，接下来五行，第一行和第五行输出固定格式(见样例)，第二行和第四行按顺序和格式输出数值(见样例)，第三行按顺序和格式输出花色(见样例)。</span><br></pre></td></tr></table></figure>
+
+<h2 id="Sample"><a href="#Sample" class="headerlink" title="Sample"></a><strong>Sample</strong></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">Input:</span><br><span class="line">N</span><br><span class="line">CTCAH8CJD4C6D9SQC7S5HAD2HJH9CKD3H6D6D7H3HQH4C5DKHKS9</span><br><span class="line">SJDTS3S7S4C4CQHTSAH2D8DJSTSKS2H5D5DQDAH7C9S8C8S6C2C3</span><br><span class="line">#</span><br><span class="line"></span><br><span class="line">Output:</span><br><span class="line">South player:</span><br><span class="line">+---+---+---+---+---+---+---+---+---+---+---+---+---+</span><br><span class="line">|6 6|A A|6 6|J J|5 5|6 6|7 7|9 9|4 4|5 5|7 7|9 9|T T|</span><br><span class="line">| C | C | D | D | S | S | S | S | H | H | H | H | H |</span><br><span class="line">|6 6|A A|6 6|J J|5 5|6 6|7 7|9 9|4 4|5 5|7 7|9 9|T T|</span><br><span class="line">+---+---+---+---+---+---+---+---+---+---+---+---+---+</span><br><span class="line">West player:</span><br><span class="line">+---+---+---+---+---+---+---+---+---+---+---+---+---+</span><br><span class="line">|2 2|5 5|9 9|K K|5 5|7 7|9 9|4 4|T T|J J|A A|8 8|A A|</span><br><span class="line">| C | C | C | C | D | D | D | S | S | S | S | H | H |</span><br><span class="line">|2 2|5 5|9 9|K K|5 5|7 7|9 9|4 4|T T|J J|A A|8 8|A A|</span><br><span class="line">+---+---+---+---+---+---+---+---+---+---+---+---+---+</span><br><span class="line">North player:</span><br><span class="line">+---+---+---+---+---+---+---+---+---+---+---+---+---+</span><br><span class="line">|3 3|4 4|J J|2 2|3 3|T T|Q Q|K K|8 8|Q Q|K K|2 2|3 3|</span><br><span class="line">| C | C | C | D | D | D | D | D | S | S | S | H | H |</span><br><span class="line">|3 3|4 4|J J|2 2|3 3|T T|Q Q|K K|8 8|Q Q|K K|2 2|3 3|</span><br><span class="line">+---+---+---+---+---+---+---+---+---+---+---+---+---+</span><br><span class="line">East player:</span><br><span class="line">+---+---+---+---+---+---+---+---+---+---+---+---+---+</span><br><span class="line">|7 7|8 8|T T|Q Q|4 4|8 8|A A|2 2|3 3|6 6|J J|Q Q|K K|</span><br><span class="line">| C | C | C | C | D | D | D | S | S | H | H | H | H |</span><br><span class="line">|7 7|8 8|T T|Q Q|4 4|8 8|A A|2 2|3 3|6 6|J J|Q Q|K K|</span><br><span class="line">+---+---+---+---+---+---+---+---+---+---+---+---+---+</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a><strong>解题思路</strong></h2><p>注意一下格式就行。虽然说题目<del>又臭又长</del>(其实不长)，输入输出一大串，本题不算难。考察的还是排序。<br>输出顺时针按<code>SWNE</code>，输入首个算然不是固定但也是顺时针，所以录入4维数组时可以根据输入的首个处理录入位。详见如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">input order			N-E-S-W		E-S-W-N		S-W-N-E		W-N-E-S</span><br><span class="line">position adjustment	 (+2)%4		 (+3)%4		    0		 (+1)%4</span><br></pre></td></tr></table></figure>
+
+<p>然后根据上述位差按序录入数组。录入之后就是排序问题。先按花色排序，可以通过<code>map</code>将<code>梅花到红桃</code>分别对应为<code>0到3</code>，点数<code>2到A</code>分别对应<code>0到12</code>，再比较大小即可。<br>解题过程详见代码。</p>
+<h2 id="源代码"><a href="#源代码" class="headerlink" title="源代码"></a><strong>源代码</strong></h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;map&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*扑克牌结构体 花色+点数*/</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">poker</span> &#123;</span></span><br><span class="line">	<span class="keyword">char</span> colour;<span class="comment">//花色</span></span><br><span class="line">	<span class="keyword">char</span> points;<span class="comment">//点数</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*根据发牌员判断发牌顺序，用于矫正录入顺序*/</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">playerNum</span><span class="params">(<span class="keyword">char</span> dealer)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (dealer == <span class="string">'N'</span>)</span><br><span class="line">		<span class="keyword">return</span> <span class="number">3</span>;</span><br><span class="line">	<span class="keyword">if</span> (dealer == <span class="string">'E'</span>)</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">if</span> (dealer == <span class="string">'S'</span>)</span><br><span class="line">		<span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">if</span> (dealer == <span class="string">'W'</span>)</span><br><span class="line">		<span class="keyword">return</span> <span class="number">2</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*顺序用于输出 固定为 S - W - N - E */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">playerWho</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (n == <span class="number">0</span>)</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"South player:"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	<span class="keyword">if</span> (n == <span class="number">1</span>)</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"West player:"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	<span class="keyword">if</span> (n == <span class="number">2</span>)</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"North player:"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	<span class="keyword">if</span> (n == <span class="number">3</span>)</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"East player:"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">char</span> dealer;<span class="comment">// ... -&gt; N -&gt; E -&gt; S -&gt; W -&gt; N -&gt; ...//发牌员</span></span><br><span class="line"></span><br><span class="line">	<span class="built_in">map</span>&lt;<span class="keyword">char</span>, <span class="keyword">int</span>&gt; colour;<span class="comment">//编号花色 用于排序</span></span><br><span class="line">	colour[<span class="string">'C'</span>] = <span class="number">0</span>;</span><br><span class="line">	colour[<span class="string">'D'</span>] = <span class="number">1</span>;</span><br><span class="line">	colour[<span class="string">'S'</span>] = <span class="number">2</span>;</span><br><span class="line">	colour[<span class="string">'H'</span>] = <span class="number">3</span>;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">map</span>&lt;<span class="keyword">char</span>, <span class="keyword">int</span>&gt; points;<span class="comment">//编号点数 用于排序</span></span><br><span class="line">	points[<span class="string">'2'</span>] = <span class="number">0</span>;</span><br><span class="line">	points[<span class="string">'3'</span>] = <span class="number">1</span>;</span><br><span class="line">	points[<span class="string">'4'</span>] = <span class="number">2</span>;</span><br><span class="line">	points[<span class="string">'5'</span>] = <span class="number">3</span>;</span><br><span class="line">	points[<span class="string">'6'</span>] = <span class="number">4</span>;</span><br><span class="line">	points[<span class="string">'7'</span>] = <span class="number">5</span>;</span><br><span class="line">	points[<span class="string">'8'</span>] = <span class="number">6</span>;</span><br><span class="line">	points[<span class="string">'9'</span>] = <span class="number">7</span>;</span><br><span class="line">	points[<span class="string">'T'</span>] = <span class="number">8</span>;</span><br><span class="line">	points[<span class="string">'J'</span>] = <span class="number">9</span>;</span><br><span class="line">	points[<span class="string">'Q'</span>] = <span class="number">10</span>;</span><br><span class="line">	points[<span class="string">'K'</span>] = <span class="number">11</span>;</span><br><span class="line">	points[<span class="string">'A'</span>] = <span class="number">12</span>;</span><br><span class="line">	<span class="comment">/*这样写的太长了</span></span><br><span class="line"><span class="comment">	其实可以用一个数组跟一个for循环进行赋值</span></span><br><span class="line"><span class="comment">	但是已经写了 所以就懒得改了*/</span></span><br><span class="line">    </span><br><span class="line">	<span class="keyword">while</span> (<span class="built_in">cin</span> &gt;&gt; dealer) &#123;</span><br><span class="line">		<span class="keyword">if</span> (dealer == <span class="string">'#'</span>)<span class="comment">//判断终止读入</span></span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">		poker player[<span class="number">4</span>][<span class="number">13</span>];<span class="comment">//玩家的手牌 存到一个二维数组内</span></span><br><span class="line">        <span class="comment">//数组的行数编号与 S - W - N - E 一一对应 所以要处理录入的赋值顺序</span></span><br><span class="line"></span><br><span class="line">		<span class="keyword">int</span> posAdj = playerNum(dealer);<span class="comment">//adjust input order</span></span><br><span class="line"></span><br><span class="line">		<span class="comment">//input</span></span><br><span class="line">        <span class="comment">//按照顺时针方向录入  每圈给4人发4张  扣去大小王 这样的圈共13个</span></span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">13</span>; i++) &#123;</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; <span class="number">4</span>; j++) &#123;<span class="comment">//每次4个玩家</span></span><br><span class="line">				poker x;<span class="comment">//1张牌</span></span><br><span class="line">				<span class="built_in">cin</span> &gt;&gt; x.colour &gt;&gt; x.points;<span class="comment">//花色、点数</span></span><br><span class="line">				player[(j + posAdj) % <span class="number">4</span>][i] = x;<span class="comment">//位置矫正后录入数组</span></span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">//order</span></span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">4</span>; i++) &#123;<span class="comment">//对每个玩家</span></span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; <span class="number">13</span>; j++) &#123;</span><br><span class="line">				<span class="keyword">for</span> (<span class="keyword">int</span> k = <span class="number">0</span>; k &lt; <span class="number">12</span> - j; k++) &#123;<span class="comment">//对牌冒泡排序</span></span><br><span class="line">					<span class="keyword">if</span> (colour[player[i][k].colour] &gt; colour[player[i][k + <span class="number">1</span>].colour])<span class="comment">//先按照花色</span></span><br><span class="line">						swap(player[i][k], player[i][k + <span class="number">1</span>]);</span><br><span class="line">					<span class="keyword">if</span> (colour[player[i][k].colour] == colour[player[i][k + <span class="number">1</span>].colour]) &#123;<span class="comment">//花色相同时</span></span><br><span class="line">						<span class="keyword">if</span> (points[player[i][k].points] &gt; points[player[i][k + <span class="number">1</span>].points])<span class="comment">//按照点数</span></span><br><span class="line">							swap(player[i][k], player[i][k + <span class="number">1</span>]);</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">//output</span></span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">4</span>; i++) &#123;<span class="comment">//一个一个玩家依次输出</span></span><br><span class="line">			playerWho(i);<span class="comment">//输出东西南北哪个玩家</span></span><br><span class="line">			<span class="built_in">cout</span> &lt;&lt; <span class="string">"+---+---+---+---+---+---+---+---+---+---+---+---+---+"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; <span class="number">13</span>; j++)</span><br><span class="line">				<span class="built_in">cout</span> &lt;&lt; <span class="string">"|"</span> &lt;&lt; player[i][j].points &lt;&lt; <span class="string">" "</span> &lt;&lt; player[i][j].points;</span><br><span class="line">			<span class="built_in">cout</span> &lt;&lt; <span class="string">"|"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; <span class="number">13</span>; j++)</span><br><span class="line">				<span class="built_in">cout</span> &lt;&lt; <span class="string">"| "</span> &lt;&lt; player[i][j].colour &lt;&lt; <span class="string">" "</span>;</span><br><span class="line">			<span class="built_in">cout</span> &lt;&lt; <span class="string">"|"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; <span class="number">13</span>; j++)</span><br><span class="line">				<span class="built_in">cout</span> &lt;&lt; <span class="string">"|"</span> &lt;&lt; player[i][j].points &lt;&lt; <span class="string">" "</span> &lt;&lt; player[i][j].points;</span><br><span class="line">			<span class="built_in">cout</span> &lt;&lt; <span class="string">"|"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">			<span class="built_in">cout</span> &lt;&lt; <span class="string">"+---+---+---+---+---+---+---+---+---+---+---+---+---+"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">排序问题</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/03/05/%E6%89%91%E5%85%8B%E7%89%8C%E6%89%8B%E7%89%8C%E6%8E%92%E5%BA%8F/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-实时排名" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/03/05/%E5%AE%9E%E6%97%B6%E6%8E%92%E5%90%8D/">实时排名</a>
+    </h1>
+  
+
+        
+        <a href="/2020/03/05/%E5%AE%9E%E6%97%B6%E6%8E%92%E5%90%8D/" class="archive-article-date">
+  	<time datetime="2020-03-05T12:54:13.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-05</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="实时排名"><a href="#实时排名" class="headerlink" title="实时排名"></a><strong>实时排名</strong></h1><h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a><strong>问题描述</strong></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">程序设计思维作业和实验使用的实时评测系统，具有及时获得成绩排名的特点，那它的功能是怎么实现的呢？</span><br><span class="line">我们千辛万苦怼完了不忍直视的程序并提交以后，评测系统要么返回AC，要么是返回各种其他的错误，不论是怎样的错法，它总会给你记上一笔，表明你曾经在这儿被坑过，而当你历经千辛终将它AC之后，它便会和你算笔总账,表明这题共错误提交了几次。</span><br><span class="line">在岁月的长河中，你通过的题数虽然越来越多，但通过每题时你所共花去的时间(从最开始算起，直至通过题目时的这段时间)都会被记录下来，作为你曾经奋斗的痕迹。特别的，对于你通过的题目，你曾经的关于这题的每次错误提交都会被算上一定的单位时间罚时，这样一来，你在做出的题数上，可能领先别人很多，但是在做出同样题数的人中，你可能会因为罚时过高而处于排名上的劣势。</span><br><span class="line">例如某次考试一共八道题(A, B, C, D, E, F, G, H)，每个人做的题都在对应的题号下有个数量标记，负数表示该学生在该题上有过的错误提交次数但到现在还没有AC，正数表示AC所耗的时间，如果正数a跟上了一对括号，里面有个正数b,则表示该学生AC了这道题，耗去了时间a，同时曾经错误提交了b次。例子可见下方的样例输入与输出部分。</span><br></pre></td></tr></table></figure>
+
+<h2 id="Input"><a href="#Input" class="headerlink" title="Input"></a><strong>Input</strong></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入数据包含多行，第一行是共有的题数 n (1 ≤ n ≤ 12)以及单位罚时 m (10 ≤ m ≤ 20)，之后的每行数据描述一个学生的信息，首先是学生的用户名(不多于10个字符的字串)其次是所有 n 道题的得分现状，其描述采用问题描述中的数量标记的格式。</span><br><span class="line">负数表示尝试但没通过的次数，正数表示得分，正数+括号表示得分+尝试没通过的次数。</span><br></pre></td></tr></table></figure>
+
+<h2 id="Output"><a href="#Output" class="headerlink" title="Output"></a><strong>Output</strong></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">根据这些学生的得分现状，输出一个实时排名。实时排名显然先按AC题数的多少排，多的在前，再按时间分的多少排，少的在前，如果凑巧前两者都相等，则按名字的字典序排，小的在前。每个学生占一行，输出名字(10个字符宽)，做出的题数(2个字符宽，右对齐)和时间分(4个字符宽，右对齐)。名字、题数和时间分相互之间有一个空格。数据保证可按要求的输出格式进行输出。</span><br></pre></td></tr></table></figure>
+
+<h2 id="Sample"><a href="#Sample" class="headerlink" title="Sample"></a><strong>Sample</strong></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">input:</span><br><span class="line">8 20</span><br><span class="line">GuGuDong  96     -3    40(3) 0    0    1      -8    0</span><br><span class="line">hrz       107    67    -3    0    0    82     0     0</span><br><span class="line">TT        120(3) 30    10(1) -3   0    47     21(2) -2</span><br><span class="line">OMRailgun 0      -99   -8    0    -666 -10086 0     -9999996</span><br><span class="line">yjq       -2     37(2) 13    -1   0    113(2) 79(1) -1</span><br><span class="line">Zjm       0      0     57(5) 0    0    99(3)  -7    0</span><br><span class="line"></span><br><span class="line">output:</span><br><span class="line">TT          5  348</span><br><span class="line">yjq         4  342</span><br><span class="line">GuGuDong    3  197</span><br><span class="line">hrz         3  256</span><br><span class="line">Zjm         2  316</span><br><span class="line">OMRailgun   0    0</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a><strong>解题思路</strong></h2><p>要实现不难，但是，格式很烦，没注意就会<code>WA</code>。</p>
+<p>由于不知道要录入几个人，所以要<code>while()</code>一直录入，判断<code>eof()</code>。<br>对于第二行起的每一行输入，首先读入名字，然后对<code>n</code>道题依次读入，判断读入第<code>0</code>位：<code>&#39;-&#39;</code>或<code>&#39;0&#39;</code>不操作，否则丢入<code>realScore()</code>函数获取真实分数，并且通过题数<code>pass+1</code>，再将这些分数累加得到最终的得分<code>point</code>(详见代码)。</p>
+<p>输出按照输出格式输出：<br>10个字符宽: <code>setw(10)</code><br>左对齐: <code>left</code><br>右对齐: <code>right</code><br><code>名字、题数和时间分相互之间有一个空格</code>，由于已经进行了对其操作，我写的时候还真漏了，看着不管改了好几次都是<code>WA</code>或者<code>CE</code>真的好烦……<br>排序：冒泡排序</p>
+<h2 id="有些坑……"><a href="#有些坑……" class="headerlink" title="有些坑……"></a><strong>有些坑……</strong></h2><ol>
+<li><p><code>cin</code>之后如果使用<code>getline(cin, string)</code>会把<code>cin</code>之后的换行符读入，所以<code>getline</code>第一次读入的是换行符。<br>解决：<code>cin.ignore(0x7fffffff, &#39;\n&#39;);</code>把换行符消除。</p>
+</li>
+<li><p>VJ上面<code>G++</code>编译一直<code>WA</code>，<code>C++</code>编译一直<code>Complication Error</code>，而且提示居然是<code>&quot;What do you want to do?&quot;</code>？？？(本地测试没问题啊)<br>Google的时候发现：<br><strong>在C++中读取一行的getline函数是不读入换行符的，而gcc / g++ 中getline函数是读入换行符的</strong><br>但是我本地没法弄个<code>g++</code>来测试，索性就不用<code>getline()</code>了(本来是每次读入一行，然后通过<code>sstream</code>对读入的这一行以空格分解为多个<code>string</code>进行操作)。</p>
+</li>
+<li><p>按名字字典排序<br>虽然说名字字长10以内，但是再对名字逐字符对比<code>ASCII</code>码排序，有点麻烦啊……就想想能不能简单的通过<code>&lt;</code>和<code>&gt;</code>对整个<code>string</code>进行对比，Google了一下，发现了<code>compare()</code>：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">string::compare</span> <span class="params">(<span class="keyword">const</span> <span class="built_in">string</span>&amp; str)</span> <span class="keyword">const</span></span></span><br><span class="line"><span class="function">Returns:</span></span><br><span class="line">0 : if both strings are equal.</span><br><span class="line">A value &lt; <span class="number">0</span> : <span class="keyword">if</span> *<span class="keyword">this</span> is shorter than str <span class="keyword">or</span>,</span><br><span class="line">first character that does <span class="keyword">not</span> match is smaller than str.</span><br><span class="line">A value &gt; <span class="number">0</span> : <span class="keyword">if</span> *<span class="keyword">this</span> is longer than str <span class="keyword">or</span>,</span><br><span class="line">first character that does <span class="keyword">not</span> match is greater</span><br></pre></td></tr></table></figure>
+
+<p>也就是说<code>string s1</code>如果字典序在<code>string s2</code>的前面，则<code>s1.compare(s2) &lt; 0</code>。</p>
+</li>
+<li><p>每位学生分数信息用一个结构体<code>struct score</code>储存，每个<code>score</code>我丢到<code>vector</code>里面储存，因为使用比较方便，不需要注意数组的大小，每次只需要<code>push_back()</code>就行。但是……VJ上一直过不了啊!!!(编译器是多老啊😓)<br>所以后来改成用数组储存，容量开大一点，因为也不知道会录入多少。</p>
+</li>
+</ol>
+<h2 id="源代码"><a href="#源代码" class="headerlink" title="源代码"></a><strong>源代码</strong></h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sstream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iomanip&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> maxnum = <span class="number">10001</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 学生成绩结构体 */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">score</span> &#123;</span></span><br><span class="line">	<span class="built_in">string</span> name;<span class="comment">//名字</span></span><br><span class="line">	<span class="keyword">int</span> n;<span class="comment">//本次成绩个数，不过用不到</span></span><br><span class="line">	<span class="keyword">int</span> p;<span class="comment">//pass//多少个通过</span></span><br><span class="line">	<span class="keyword">int</span> sc;<span class="comment">//scores//总得分</span></span><br><span class="line">	score() &#123; n = <span class="number">0</span>; p = <span class="number">0</span>; sc = <span class="number">0</span>; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 求单项真实分数(原正得分+罚时分)，结果返回int分数 */</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">realScore</span><span class="params">(<span class="built_in">string</span> s, <span class="keyword">int</span> m)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">bool</span> tried = <span class="literal">false</span>;<span class="comment">//bool 尝试过 = false，即都对，没被罚时</span></span><br><span class="line">    <span class="comment">//扫描左右括号</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i != s.<span class="built_in">size</span>(); i++) &#123;</span><br><span class="line">		<span class="keyword">if</span> (s.at(i) == <span class="string">'('</span>) &#123;</span><br><span class="line">			s.at(i) = <span class="string">' '</span>;<span class="comment">//左括号变成空格，方便下一步处理</span></span><br><span class="line">			tried = <span class="literal">true</span>;<span class="comment">//扫到的话，有被罚时</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> (s.at(i) == <span class="string">')'</span>) &#123;</span><br><span class="line">			s.at(i) = <span class="string">' '</span>;<span class="comment">//右括号变成空格，方便下一步处理</span></span><br><span class="line">			tried = <span class="literal">true</span>;<span class="comment">//再写一次 以防万一</span></span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i != s.<span class="built_in">size</span>(); i++) &#123;<span class="comment">//以防万一string里面不是0~9</span></span><br><span class="line">		<span class="keyword">if</span> (!(s.at(i) &gt;= <span class="number">48</span> &amp;&amp; s.at(i) &lt;= <span class="number">57</span>))</span><br><span class="line">			s.at(i) = <span class="string">' '</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> (tried) &#123;<span class="comment">//如果有罚时</span></span><br><span class="line">		<span class="function"><span class="built_in">istringstream</span> <span class="title">iss</span><span class="params">(s)</span></span>;<span class="comment">//处理string  使得可以转成int</span></span><br><span class="line">		<span class="keyword">int</span> a, b;</span><br><span class="line">		iss &gt;&gt; a &gt;&gt; b;<span class="comment">//用于处理string 空格分隔 存进两个int里面</span></span><br><span class="line">		<span class="keyword">return</span> (a + b * m);<span class="comment">//a = 原得分  b = 尝试次数   m = 单位罚时</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> &#123;<span class="comment">//没有罚时</span></span><br><span class="line">		<span class="built_in">istringstream</span> iss(s);</span><br><span class="line">		<span class="keyword">int</span> a;</span><br><span class="line">		iss &gt;&gt; a;<span class="comment">//string转成int</span></span><br><span class="line">		<span class="keyword">return</span> a;<span class="comment">//直接返回得分</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 用于对比名字 Alphabetically */</span></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">com</span><span class="params">(<span class="built_in">string</span> a, <span class="built_in">string</span> b)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> a.compare(b) &gt; <span class="number">0</span>;<span class="comment">//如果名字a字母表顺序在名字b后 则返回true</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> n, m;</span><br><span class="line">	<span class="built_in">cin</span> &gt;&gt; n &gt;&gt; m;</span><br><span class="line"></span><br><span class="line">	score arrayList[maxnum];<span class="comment">// list of names &amp; scores</span></span><br><span class="line">	<span class="built_in">cin</span>.ignore(<span class="number">0x7fffffff</span>, <span class="string">'\n'</span>);<span class="comment">//忽略cin后的换行符 防止下次读入时出错</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">int</span> countNum = <span class="number">0</span>;<span class="comment">//计数  录入多少个学生的信息</span></span><br><span class="line">	<span class="built_in">string</span> name;<span class="comment">//姓名</span></span><br><span class="line">	<span class="keyword">while</span> (!(<span class="built_in">cin</span> &gt;&gt; name).eof()) &#123;<span class="comment">//没读到EOF就一直执行</span></span><br><span class="line">		countNum++;<span class="comment">//已录入  计数+1</span></span><br><span class="line"></span><br><span class="line">		<span class="built_in">string</span> temp;<span class="comment">//临时string  储存得分</span></span><br><span class="line">		<span class="keyword">int</span> pass = <span class="number">0</span>;<span class="comment">//多少题通过 初始为0</span></span><br><span class="line">		<span class="keyword">int</span> <span class="built_in">point</span> = <span class="number">0</span>;<span class="comment">//得分从0开始算</span></span><br><span class="line">		<span class="comment">//int tried = 0;//pass but failed how many times</span></span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;<span class="comment">//题意 n道题</span></span><br><span class="line">			<span class="built_in">cin</span> &gt;&gt; temp;</span><br><span class="line">			<span class="keyword">if</span> (temp.at(<span class="number">0</span>) != <span class="string">'-'</span> &amp;&amp; temp.at(<span class="number">0</span>) != <span class="string">'0'</span>) &#123;<span class="comment">//判断</span></span><br><span class="line">                <span class="comment">//若非负分或0分  就可以记分</span></span><br><span class="line">				pass++;<span class="comment">//通过题数+1</span></span><br><span class="line">				<span class="built_in">point</span> += realScore(temp, m);<span class="comment">//丢到函数里计算真实得分 并累加到point</span></span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		score s;</span><br><span class="line">		s.name = name;</span><br><span class="line">		s.n = n;</span><br><span class="line">		s.p = pass;</span><br><span class="line">		s.sc = <span class="built_in">point</span>;</span><br><span class="line"></span><br><span class="line">		arrayList[countNum - <span class="number">1</span>] = s;<span class="comment">//每个学生的信息存到数组arrayList里</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//after input, order list</span></span><br><span class="line">    <span class="comment">//bubble sort</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; countNum - <span class="number">1</span>; i++) &#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; countNum - i - <span class="number">1</span>; j++) &#123;</span><br><span class="line">			<span class="keyword">if</span> (arrayList[j].p &lt; arrayList[j + <span class="number">1</span>].p)<span class="comment">//若通过题数较小</span></span><br><span class="line">				swap(arrayList[j], arrayList[j + <span class="number">1</span>]);<span class="comment">//换位</span></span><br><span class="line">			<span class="keyword">if</span> (arrayList[j].p == arrayList[j + <span class="number">1</span>].p) &#123;<span class="comment">//若通过题数相等 继续判断</span></span><br><span class="line">				<span class="keyword">if</span> (arrayList[j].sc &gt; arrayList[j + <span class="number">1</span>].sc)<span class="comment">//若总分较大</span></span><br><span class="line">					swap(arrayList[j], arrayList[j + <span class="number">1</span>]);<span class="comment">//换位</span></span><br><span class="line">				<span class="keyword">if</span> (arrayList[j].sc == arrayList[j + <span class="number">1</span>].sc)<span class="comment">//若总分相等</span></span><br><span class="line">					<span class="keyword">if</span> (com(arrayList[j].name, arrayList[j + <span class="number">1</span>].name))<span class="comment">//若名字靠后</span></span><br><span class="line">						swap(arrayList[j], arrayList[j + <span class="number">1</span>]);<span class="comment">//换位</span></span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i != countNum; i++) &#123;<span class="comment">//按格式输出</span></span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; left &lt;&lt; setw(<span class="number">10</span>) &lt;&lt; arrayList[i].name &lt;&lt; <span class="string">" "</span> &lt;&lt;</span><br><span class="line">			right &lt;&lt; setw(<span class="number">2</span>) &lt;&lt; arrayList[i].p &lt;&lt; <span class="string">" "</span> &lt;&lt;</span><br><span class="line">			right &lt;&lt; setw(<span class="number">4</span>) &lt;&lt; arrayList[i].sc &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">排序问题</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/03/05/%E5%AE%9E%E6%97%B6%E6%8E%92%E5%90%8D/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
   
     <article id="post-烷烃基的类别" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
@@ -170,19 +547,19 @@
 </thead>
 <tbody><tr>
 <td>n-hexane</td>
-<td><img src="C:%5CUsers%5CColiv%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200304154746551.png" alt="image-20200304154746551"></td>
+<td><img src="C:\Cblog\blog\source\_posts\tane\01.png" alt="01" style="zoom:67%;" /></td>
 <td>2-methylpentane</td>
-<td><img src="C:%5CUsers%5CColiv%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200304154806765.png" alt="image-20200304154806765"></td>
+<td><img src="C:\Cblog\blog\source\_posts\tane\02.png" alt="02" style="zoom:67%;" /></td>
 </tr>
 <tr>
 <td>3-methylpentane</td>
-<td><img src="C:%5CUsers%5CColiv%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200304154817906.png" alt="image-20200304154817906"></td>
+<td><img src="C:\Cblog\blog\source\_posts\tane\03.png" alt="03" style="zoom:67%;" /></td>
 <td>2,3-dimethylbutane</td>
-<td><img src="C:%5CUsers%5CColiv%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200304154831798.png" alt="image-20200304154831798"></td>
+<td><img src="C:\Cblog\blog\source\_posts\tane\04.png" alt="04" style="zoom:67%;" /></td>
 </tr>
 <tr>
 <td>2,2-dimethylbutane</td>
-<td><img src="C:%5CUsers%5CColiv%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200304154843566.png" alt="image-20200304154843566"></td>
+<td><img src="C:\Cblog\blog\source\_posts\tane\05.png" alt="05" style="zoom:67%;" /></td>
 <td>-</td>
 <td>-</td>
 </tr>
@@ -209,38 +586,90 @@
 </thead>
 <tbody><tr>
 <td>n-hexane</td>
-<td><img src="C:%5CUsers%5CColiv%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200304163325023.png" alt="image-20200304163325023"></td>
+<td><img src="C:\Cblog\blog\source\_posts\tane\06.png" alt="06" style="zoom:67%;" /></td>
 <td><code>[1]→2</code><br /><code>[2]→1→3</code><br /><code>[3]→2→4</code><br /><code>[4]→3→5</code><br /><code>[5]→4→6</code><br /><code>[6]→5</code></td>
 </tr>
 <tr>
 <td>2-methylpentane</td>
-<td><img src="C:%5CUsers%5CColiv%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200304163342709.png" alt="image-20200304163342709"></td>
+<td><img src="C:\Cblog\blog\source\_posts\tane\07.png" alt="07" style="zoom:67%;" /></td>
 <td><code>[1]→2</code><br /><code>[2]→1→3→4</code><br /><code>[3]→2</code><br /><code>[4]→2→5</code><br /><code>[5]→4→6</code><br /><code>[6]→5</code></td>
 </tr>
 <tr>
 <td>3-methylpentane</td>
-<td><img src="C:%5CUsers%5CColiv%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200304163356646.png" alt="image-20200304163356646"></td>
+<td><img src="C:\Cblog\blog\source\_posts\tane\08.png" alt="08" style="zoom:67%;" /></td>
 <td><code>[1]→2</code><br /><code>[2]→1→3</code><br /><code>[3]→2→4→5</code><br /><code>[4]→3</code><br /><code>[5]→3→6</code><br /><code>[6]→5</code></td>
 </tr>
 <tr>
 <td>2,3-dimethylbutane</td>
-<td><img src="C:%5CUsers%5CColiv%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200304163408881.png" alt="image-20200304163408881"></td>
+<td><img src="C:\Cblog\blog\source\_posts\tane\09.png" alt="09" style="zoom:67%;" /></td>
 <td><code>[1]→2</code><br /><code>[2]→1→3→4</code><br /><code>[3]→2</code><br /><code>[4]→2→5→6</code><br /><code>[5]→4</code><br /><code>[6]→4</code></td>
 </tr>
 <tr>
 <td>2,2-dimethylbutane</td>
-<td><img src="C:%5CUsers%5CColiv%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200304163417994.png" alt="image-20200304163417994"></td>
+<td><img src="C:\Cblog\blog\source\_posts\tane\10.png" alt="10" style="zoom:67%;" /></td>
 <td><code>[1]→2</code><br /><code>[2]→1→3→4→5</code><br /><code>[3]→2</code><br /><code>[4]→2</code><br /><code>[5]→2→6</code><br /><code>[6]→5</code></td>
 </tr>
 </tbody></table>
 </li>
 <li><p>初次鉴别<br>标号不管怎么变都无法影响烷烃基的种类，但是观察邻接链表，不难发现链长可以进行初次区分。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">正己烷		2-甲基苯丙烷		3-甲基苯丙烷		2,3-二甲基丁烷		2,2-二甲基丁烷</span><br><span class="line">  1			   1			   1			   1				   1</span><br><span class="line">  2			   3			   2			   3				   4</span><br><span class="line">  2			   1			   3			   1				   1</span><br><span class="line">  2			   2			   1			   3				   1</span><br><span class="line">  2			   2			   2			   1				   2</span><br><span class="line">  1			   1			   1			   1				   1</span><br></pre></td></tr></table></figure>
-
-<p>可以设3个<code>int</code>变量<code>count2, count3, count4</code>用来记录<code>链长 = x</code>的出现次数。<br>只有<em>2,2-dimethylbutane</em>的<code>count4 = 1</code>;<br>只有<em>n-hexane</em>的<code>count2 = 4</code>;<br>只有<em>2,3-dimethylbutane</em>的<code>count3 = 2</code>;<br>对于<em>2-methylpentane</em>和<em>3-methylpentane</em>，<code>count2 = 2, count3 = 1, count4 = 0</code>，无法通过链长来区分。</p>
+<table>
+<thead>
+<tr>
+<th align="center">正己烷</th>
+<th align="center">2-甲基苯丙烷</th>
+<th align="center">3-甲基苯丙烷</th>
+<th align="center">2,3-二甲基丁烷</th>
+<th align="center">2,2-二甲基丁烷</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">3</td>
+<td align="center">2</td>
+<td align="center">3</td>
+<td align="center">4</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">1</td>
+<td align="center">3</td>
+<td align="center">1</td>
+<td align="center">1</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">2</td>
+<td align="center">1</td>
+<td align="center">3</td>
+<td align="center">1</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">2</td>
+<td align="center">2</td>
+<td align="center">1</td>
+<td align="center">2</td>
+</tr>
+<tr>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+</tr>
+</tbody></table>
 </li>
-<li><p>鉴别<em>2-methylpentane<em>和</em>3-methylpentane</em><br>不难发现，不管怎么编号(正/反)，当<code>链长 = 3</code>时，与这个碳原子相连的甲基个数不同。因此可记录<code>链长 = 3</code>时数组编号<code>no</code>，然后找到此数组所在的链<code>arr[no]</code>，记录该条链储存的元素，即记录与之相连的碳原子的编号。<br>比如图中<em>2-methylpentane</em>与<code>2</code>相连的是<code>1, 3, 4</code>，属于甲基(即<code>链长 = 1</code>)的是<code>1, 3</code>;<br><em>3-methylpentane</em>与<code>3</code>相连的是<code>2, 4, 5</code>，属于甲基的是<code>4</code>。<br><em>2-methylpentane</em>的甲基个数为2，<em>3-methylpentane</em>的甲基个数为1，以此鉴别。</p>
-</li>
+</ol>
+<p>可以设3个<code>int</code>变量<code>count2, count3, count4</code>用来记录<code>链长 = x</code>的出现次数。<br>   只有<em>2,2-dimethylbutane</em>的<code>count4 = 1</code>;<br>   只有<em>n-hexane</em>的<code>count2 = 4</code>;<br>   只有<em>2,3-dimethylbutane</em>的<code>count3 = 2</code>;<br>   对于<em>2-methylpentane</em>和<em>3-methylpentane</em>，<code>count2 = 2, count3 = 1, count4 = 0</code>，无法通过链长来区分。</p>
+<ol start="3">
+<li>鉴别<em>2-methylpentane<em>和</em>3-methylpentane</em><br>不难发现，不管怎么编号(正/反)，当<code>链长 = 3</code>时，与这个碳原子相连的甲基个数不同。因此可记录<code>链长 = 3</code>时数组编号<code>no</code>，然后找到此数组所在的链<code>arr[no]</code>，记录该条链储存的元素，即记录与之相连的碳原子的编号。<br>比如图中<em>2-methylpentane</em>与<code>2</code>相连的是<code>1, 3, 4</code>，属于甲基(即<code>链长 = 1</code>)的是<code>1, 3</code>;<br><em>3-methylpentane</em>与<code>3</code>相连的是<code>2, 4, 5</code>，属于甲基的是<code>4</code>。<br><em>2-methylpentane</em>的甲基个数为2，<em>3-methylpentane</em>的甲基个数为1，以此鉴别。</li>
 </ol>
 <h2 id="数据结构及实现方法"><a href="#数据结构及实现方法" class="headerlink" title="数据结构及实现方法"></a><strong>数据结构及实现方法</strong></h2><p>采用邻接链表表示的有向图，本题只需提供插入、查找、遍历操作。详见源代码注释。</p>
 <h2 id="源代码"><a href="#源代码" class="headerlink" title="源代码"></a><strong>源代码</strong></h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*链表的节点*/</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">node</span> &#123;</span></span><br><span class="line">	<span class="keyword">int</span> a;</span><br><span class="line">	node* next;</span><br><span class="line">	node() &#123; a = <span class="number">0</span>; next = <span class="literal">NULL</span>; &#125;</span><br><span class="line">	node(<span class="keyword">const</span> <span class="keyword">int</span>&amp; a) &#123; <span class="keyword">this</span>-&gt;a = a; next = <span class="literal">NULL</span>; &#125;</span><br><span class="line">	node(<span class="keyword">const</span> <span class="keyword">int</span>&amp; a, node* next) &#123;</span><br><span class="line">		<span class="keyword">this</span>-&gt;a = a;	<span class="keyword">this</span>-&gt;next = next;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*链表*/</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">chain</span> &#123;</span></span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">	node* firstNode;<span class="comment">//指向链表头节点的指针</span></span><br><span class="line">	<span class="keyword">int</span> listSize;<span class="comment">//链表长度</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	chain(<span class="keyword">int</span> initialCapacity = <span class="number">10</span>) &#123;<span class="comment">//初始化构造函数</span></span><br><span class="line">		firstNode = <span class="literal">NULL</span>;</span><br><span class="line">		listSize = <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	chain(<span class="keyword">const</span> chain&amp;);</span><br><span class="line">	~chain() &#123;<span class="comment">//析构函数</span></span><br><span class="line">		<span class="keyword">while</span> (firstNode != <span class="literal">NULL</span>) &#123;</span><br><span class="line">			node* nextNode = firstNode-&gt;next;</span><br><span class="line">			<span class="keyword">delete</span> firstNode;</span><br><span class="line">			firstNode = nextNode;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">int</span> <span class="title">getSize</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> listSize; &#125;<span class="comment">//返回链表长度</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">insert</span><span class="params">(<span class="keyword">const</span> <span class="keyword">int</span>&amp; theElement)</span> </span>&#123;<span class="comment">//链表的有序插入操作</span></span><br><span class="line">		<span class="keyword">if</span> (firstNode == <span class="literal">NULL</span>)<span class="comment">//当链表为空时，直接插入</span></span><br><span class="line">			firstNode = <span class="keyword">new</span> node(theElement, firstNode);</span><br><span class="line">		<span class="keyword">else</span> &#123;<span class="comment">//链表非空时</span></span><br><span class="line">			node* p = firstNode;<span class="comment">//指向头节点的指针</span></span><br><span class="line">			node* pp = <span class="literal">NULL</span>;<span class="comment">//指针pp紧跟p的后面</span></span><br><span class="line">			<span class="keyword">while</span> (p != <span class="literal">NULL</span> &amp;&amp; p-&gt;a &lt; theElement) &#123;<span class="comment">//要插入的元素小于当前指向的节点</span></span><br><span class="line">				pp = p;<span class="comment">//pp跟上p</span></span><br><span class="line">				p = p-&gt;next;<span class="comment">//p指向下一节点</span></span><br><span class="line">			&#125;</span><br><span class="line">            <span class="comment">//到了合适的插入位</span></span><br><span class="line">			node* newNode = <span class="keyword">new</span> node(theElement, p);<span class="comment">//新建节点，插入的元素指向p</span></span><br><span class="line">			<span class="keyword">if</span> (pp == <span class="literal">NULL</span>)<span class="comment">//当插入为头节点时</span></span><br><span class="line">				firstNode = newNode;</span><br><span class="line">			<span class="keyword">else</span><span class="comment">//否则，插入点之前的指针指向新节点</span></span><br><span class="line">				pp-&gt;next = newNode;</span><br><span class="line">		&#125;</span><br><span class="line">		listSize++;<span class="comment">//每次成功插入，链表大小+1</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">int</span> <span class="title">indexOf</span><span class="params">(<span class="keyword">const</span> <span class="keyword">int</span>&amp; theElement)</span> <span class="keyword">const</span> </span>&#123;<span class="comment">//获取该元素所在位置</span></span><br><span class="line">		node* currentNode = firstNode;</span><br><span class="line">		<span class="keyword">int</span> index = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">while</span> (currentNode != <span class="literal">NULL</span> &amp;&amp; currentNode-&gt;a != theElement) &#123;<span class="comment">//遍历即可</span></span><br><span class="line">			currentNode = currentNode-&gt;next;</span><br><span class="line">			index++;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> (currentNode == <span class="literal">NULL</span>)</span><br><span class="line">			<span class="keyword">return</span> <span class="number">-1</span>;<span class="comment">//未找到时返回-1</span></span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">			<span class="keyword">return</span> index;<span class="comment">//找到时返回index</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">getElement</span><span class="params">()</span> </span>&#123;<span class="comment">//遍历，获取链表所有元素，用vector储存</span></span><br><span class="line">		<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; nei;</span><br><span class="line">		node *p = firstNode;</span><br><span class="line">		<span class="keyword">while</span> (p != <span class="literal">NULL</span>) &#123;</span><br><span class="line">			nei.push_back(p-&gt;a);</span><br><span class="line">			p = p-&gt;next;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> nei;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ane</span> &#123;</span><span class="comment">//烷烃基无向图的类</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	chain arr[<span class="number">6</span>];<span class="comment">//邻接链表，每个碳原子标号，0~5一一对应</span></span><br><span class="line">	<span class="keyword">int</span> chainSize[<span class="number">6</span>];<span class="comment">//记录每条链的大小</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	ane()&#123; &#125;</span><br><span class="line">	~ane()&#123; &#125;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">insert</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span> </span>&#123;<span class="comment">//向无向图中插入点</span></span><br><span class="line">		<span class="keyword">if</span> (arr[a].indexOf(b) == <span class="number">-1</span>) &#123;<span class="comment">//未找到，即标号还未存在时插入</span></span><br><span class="line">			arr[a].insert(b);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">getSize</span><span class="params">()</span> </span>&#123;<span class="comment">//6个点插入完成后，记录每条链大小</span></span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">6</span>; i++) &#123;</span><br><span class="line">			chainSize[i] = arr[i].getSize();</span><br><span class="line">			<span class="comment">//cout &lt;&lt; chainSize[i] &lt;&lt; endl;</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="built_in">string</span> <span class="title">type</span><span class="params">()</span> </span>&#123;<span class="comment">//判断属于哪种烷</span></span><br><span class="line">		<span class="keyword">int</span> count2 = <span class="number">0</span>, count3 = <span class="number">0</span>, count4 = <span class="number">0</span>;<span class="comment">/*分别记录</span></span><br><span class="line"><span class="comment">		链长 = 2，链长 = 3，链长 = 4出现次数*/</span></span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">6</span>; i++) &#123;</span><br><span class="line">			<span class="keyword">if</span> (chainSize[i] == <span class="number">2</span>)</span><br><span class="line">				count2++;</span><br><span class="line">			<span class="keyword">if</span> (chainSize[i] == <span class="number">3</span>)</span><br><span class="line">				count3++;</span><br><span class="line">			<span class="keyword">if</span> (chainSize[i] == <span class="number">4</span>)</span><br><span class="line">				count4++;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> (count2 == <span class="number">4</span>)</span><br><span class="line">			<span class="keyword">return</span> <span class="string">"n-hexane"</span>;<span class="comment">//链长 = 2 出现4次</span></span><br><span class="line">		<span class="keyword">if</span> (count4 == <span class="number">1</span>)</span><br><span class="line">			<span class="keyword">return</span> <span class="string">"2,2-dimethylbutane"</span>;<span class="comment">//链长 = 4 出现1次</span></span><br><span class="line">		<span class="keyword">if</span> (count3 == <span class="number">2</span>)</span><br><span class="line">			<span class="keyword">return</span> <span class="string">"2,3-dimethylbutane"</span>;<span class="comment">//链长 = 3 出现2次</span></span><br><span class="line">        <span class="comment">//以上区分出3种，剩下2种另外区分</span></span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span> (count2 == <span class="number">2</span> &amp;&amp; count3 == <span class="number">1</span> &amp;&amp; count4 == <span class="number">0</span>) &#123;</span><br><span class="line">			<span class="keyword">int</span> no = <span class="number">0</span>;<span class="comment">// no用于记录 链长 = 3 所在数组位置</span></span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">6</span>; i++)</span><br><span class="line">				<span class="keyword">if</span> (chainSize[i] == <span class="number">3</span>)</span><br><span class="line">					no = i;<span class="comment">//找到位置i</span></span><br><span class="line">			<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; nei = arr[no].getElement();<span class="comment">//获得该链元素</span></span><br><span class="line">			<span class="keyword">int</span> count1 = <span class="number">0</span>;<span class="comment">//记录甲基个数</span></span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i != nei.<span class="built_in">size</span>(); i++)</span><br><span class="line">				<span class="keyword">if</span> (chainSize[nei.at(i)] == <span class="number">1</span>)</span><br><span class="line">					count1++;</span><br><span class="line">			<span class="keyword">if</span> (count1 == <span class="number">2</span>)</span><br><span class="line">				<span class="keyword">return</span> <span class="string">"2-methylpentane"</span>;<span class="comment">//甲基个数 = 2 得出</span></span><br><span class="line">			<span class="keyword">else</span></span><br><span class="line">				<span class="keyword">return</span> <span class="string">"3-methylpentane"</span>;<span class="comment">//否则，甲基个数 = 1</span></span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> n;</span><br><span class="line">	<span class="built_in">cin</span> &gt;&gt; n;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">		ane tane;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; <span class="number">5</span>; j++) &#123;</span><br><span class="line">			<span class="keyword">int</span> a, b;</span><br><span class="line">			<span class="built_in">cin</span> &gt;&gt; a &gt;&gt; b;</span><br><span class="line">			tane.insert(a - <span class="number">1</span>, b - <span class="number">1</span>);</span><br><span class="line">			tane.insert(b - <span class="number">1</span>, a - <span class="number">1</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		tane.getSize();</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; tane.type() &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -269,81 +698,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2020/03/05/%E7%83%B7%E7%83%83%E5%9F%BA%E7%9A%84%E7%B1%BB%E5%88%AB/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-hello-world" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/03/05/hello-world/">Hello World</a>
-    </h1>
-  
-
-        
-        <a href="/2020/03/05/hello-world/" class="archive-article-date">
-  	<time datetime="2020-03-05T09:44:42.387Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-05</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/03/05/hello-world/">展开全文 >></a>
         </p>
       
 
@@ -460,6 +814,18 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
             <input type="checkbox" q-on="click:toggleTag(e)" q-attr="checked:showTags">
           </label>
           <ul class="article-tag-list" q-show="showTags">
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">倒水问题</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">排序问题</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">BFS</a>
+              </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">无向图</a>
