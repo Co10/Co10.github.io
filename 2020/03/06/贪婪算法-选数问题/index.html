@@ -6,13 +6,17 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="co10.github.io">
-  <title>荒芜知地</title>
+  <title>贪婪算法 选数问题 | 荒芜知地</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="荒芜知地">
-<meta property="og:url" content="co10.github.io/index.html">
+  <meta name="description" content="选数问题问题描述123Given n positive numbers, ZJM can select exactly K of them that sums to S. Now ZJM wonders how many ways to get it!_______________________________________________________给出n个正数，选出其中K个，使其总和为">
+<meta property="og:type" content="article">
+<meta property="og:title" content="贪婪算法 选数问题">
+<meta property="og:url" content="co10.github.io/2020/03/06/%E8%B4%AA%E5%A9%AA%E7%AE%97%E6%B3%95-%E9%80%89%E6%95%B0%E9%97%AE%E9%A2%98/index.html">
 <meta property="og:site_name" content="荒芜知地">
+<meta property="og:description" content="选数问题问题描述123Given n positive numbers, ZJM can select exactly K of them that sums to S. Now ZJM wonders how many ways to get it!_______________________________________________________给出n个正数，选出其中K个，使其总和为">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-03-06T05:07:10.000Z">
+<meta property="article:modified_time" content="2020-03-06T15:30:45.059Z">
 <meta property="article:author" content="K">
 <meta name="twitter:card" content="summary">
   
@@ -143,20 +147,26 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-    <article id="post-贪婪算法-选数问题" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+            <article id="post-贪婪算法-选数问题" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/03/06/%E8%B4%AA%E5%A9%AA%E7%AE%97%E6%B3%95-%E9%80%89%E6%95%B0%E9%97%AE%E9%A2%98/">贪婪算法 选数问题</a>
+    <h1 class="article-title" itemprop="name">
+      贪婪算法 选数问题
     </h1>
   
 
 		<!--显示阅读次数-->
+		
+		<br/>
+		<a class="cloud-tie-join-count" href="javascript:void(0);" style="color:gray;font-size:14px;">
+		<span class="icon-sort"></span>
+		<span id="busuanzi_container_page_pv" style="color:#ef7522;font-size:14px;">
+            阅读数: <span id="busuanzi_value_page_pv"></span>次 &nbsp;&nbsp;
+		</span>
+		</a>
 		
 		<!--显示阅读次数完毕-->
         
@@ -169,9 +179,19 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h1 id="选数问题"><a href="#选数问题" class="headerlink" title="选数问题"></a><strong>选数问题</strong></h1><h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a><strong>问题描述</strong></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Given n positive numbers, ZJM can select exactly K of them that sums to S. Now ZJM wonders how many ways to get it!</span><br><span class="line">_______________________________________________________</span><br><span class="line">给出n个正数，选出其中K个，使其总和为S —— 问共有多少种方法？</span><br></pre></td></tr></table></figure>
-        
-          <a class="article-more-a" href="/2020/03/06/%E8%B4%AA%E5%A9%AA%E7%AE%97%E6%B3%95-%E9%80%89%E6%95%B0%E9%97%AE%E9%A2%98/#more">more >></a>
-        
+
+<a id="more"></a>
+
+<h2 id="Input"><a href="#Input" class="headerlink" title="Input"></a><strong>Input</strong></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">The first line, an integer T ≤ 100, indicates the number of test cases. For each case, there are two lines. The first line, three integers indicate n, K and S. The second line, n integers indicate the positive numbers.</span><br><span class="line">Remember that k ≤ n ≤ 16 and all numbers can be stored in 32-bit integer. </span><br><span class="line">_______________________________________________________</span><br><span class="line">第一行，一个整数 T (T ≤ 100), 表示数据组数。</span><br><span class="line">对于每组数据，接下来两行，第一行：3个整数 n, K, S。第二行：n 个正整数。</span><br><span class="line">k ≤ n ≤ 16。所有数都能存在32位寄存器中。</span><br></pre></td></tr></table></figure>
+
+<h2 id="Output"><a href="#Output" class="headerlink" title="Output"></a><strong>Output</strong></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">For each case, an integer indicate the answer in a independent line.</span><br><span class="line">____________________________</span><br><span class="line">对于每组数据，独立一行输出答案。</span><br></pre></td></tr></table></figure>
+
+<h2 id="Sample"><a href="#Sample" class="headerlink" title="Sample"></a><strong>Sample</strong></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">input: </span><br><span class="line">1</span><br><span class="line">10 3 10</span><br><span class="line">1 2 3 4 5 6 7 8 9 10</span><br><span class="line"></span><br><span class="line">output:</span><br><span class="line">4</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a><strong>解题思路</strong></h2><p>组合问题。<br>n个选出K个，共有${n \choose K}$种组合，然后从这些组合中选出符合数之和为S的情况即可。</p>
+<h2 id="源代码"><a href="#源代码" class="headerlink" title="源代码"></a><strong>源代码</strong></h2>
       
 
       
@@ -182,16 +202,75 @@
       
 
       
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/03/06/%E8%B4%AA%E5%A9%AA%E7%AE%97%E6%B3%95-%E9%80%89%E6%95%B0%E9%97%AE%E9%A2%98/">展开全文 >></a>
-        </p>
-      
 
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http:co10.github.io/2020/03/06/%E8%B4%AA%E5%A9%AA%E7%AE%97%E6%B3%95-%E9%80%89%E6%95%B0%E9%97%AE%E9%A2%98/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
       
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+  
+    <a href="/2020/03/05/%E5%80%92%E6%B0%B4%E9%97%AE%E9%A2%98/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">倒水问题</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
@@ -206,436 +285,30 @@
         </div>
         
         
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-倒水问题" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/03/05/%E5%80%92%E6%B0%B4%E9%97%AE%E9%A2%98/">倒水问题</a>
-    </h1>
-  
-
-		<!--显示阅读次数-->
-		
-		<!--显示阅读次数完毕-->
-        
-        <a href="/2020/03/05/%E5%80%92%E6%B0%B4%E9%97%AE%E9%A2%98/" class="archive-article-date">
-  	<time datetime="2020-03-05T12:55:19.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-05</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="倒水问题"><a href="#倒水问题" class="headerlink" title="倒水问题"></a><strong>倒水问题</strong></h1><h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a><strong>问题描述</strong></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">“fill A” 表示倒满A杯，“empty A” 表示倒空A杯，“pour A B” 表示把A的水倒到B杯并且把B杯倒满或A倒空。</span><br></pre></td></tr></table></figure>
-        
-          <a class="article-more-a" href="/2020/03/05/%E5%80%92%E6%B0%B4%E9%97%AE%E9%A2%98/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">倒水问题</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/03/05/%E5%80%92%E6%B0%B4%E9%97%AE%E9%A2%98/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#选数问题"><span class="toc-number">1.</span> <span class="toc-text">选数问题</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#问题描述"><span class="toc-number">1.1.</span> <span class="toc-text">问题描述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Input"><span class="toc-number">1.2.</span> <span class="toc-text">Input</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Output"><span class="toc-number">1.3.</span> <span class="toc-text">Output</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Sample"><span class="toc-number">1.4.</span> <span class="toc-text">Sample</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解题思路"><span class="toc-number">1.5.</span> <span class="toc-text">解题思路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#源代码"><span class="toc-number">1.6.</span> <span class="toc-text">源代码</span></a></li></ol></li></ol>
+                    </div>
+                </span>
             </div>
         </div>
         
-        
     </div>
 </aside>
 
 
 
-
   
-    <article id="post-迷宫问题-广度优先搜索" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/03/05/%E8%BF%B7%E5%AE%AB%E9%97%AE%E9%A2%98-%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2/">迷宫问题 广度优先搜索</a>
-    </h1>
   
 
-		<!--显示阅读次数-->
-		
-		<!--显示阅读次数完毕-->
-        
-        <a href="/2020/03/05/%E8%BF%B7%E5%AE%AB%E9%97%AE%E9%A2%98-%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2/" class="archive-article-date">
-  	<time datetime="2020-03-05T12:54:52.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-05</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="迷宫问题-广度优先搜索"><a href="#迷宫问题-广度优先搜索" class="headerlink" title="迷宫问题: 广度优先搜索"></a><strong>迷宫问题: 广度优先搜索</strong></h1><h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a><strong>问题描述</strong></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">东东有一张地图，想通过地图找到妹纸。地图显示，0表示可以走，1表示不可以走，左上角是入口，右下角是妹纸，这两个位置保证为0。既然已经知道了地图，那么东东找到妹纸就不难了，请你编一个程序，写出东东找到妹纸的最短路线。</span><br></pre></td></tr></table></figure>
-        
-          <a class="article-more-a" href="/2020/03/05/%E8%BF%B7%E5%AE%AB%E9%97%AE%E9%A2%98-%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">BFS</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/03/05/%E8%BF%B7%E5%AE%AB%E9%97%AE%E9%A2%98-%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-扑克牌手牌排序" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/03/05/%E6%89%91%E5%85%8B%E7%89%8C%E6%89%8B%E7%89%8C%E6%8E%92%E5%BA%8F/">扑克牌手牌排序</a>
-    </h1>
   
 
-		<!--显示阅读次数-->
-		
-		<!--显示阅读次数完毕-->
-        
-        <a href="/2020/03/05/%E6%89%91%E5%85%8B%E7%89%8C%E6%89%8B%E7%89%8C%E6%8E%92%E5%BA%8F/" class="archive-article-date">
-  	<time datetime="2020-03-05T12:54:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-05</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="扑克牌手牌排序"><a href="#扑克牌手牌排序" class="headerlink" title="扑克牌手牌排序"></a><strong>扑克牌手牌排序</strong></h1><h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a><strong>问题描述</strong></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">瑞神HRZ因为疫情在家闲得无聊，同时他又非常厉害，所有的课对他来说都是水一水就能拿A+，所以他无聊，找来了另外三个人：咕咕东，腾神以及zjm来打牌(天下苦瑞神久矣)。</span><br><span class="line">显然，牌局由四个人构成，围成一圈。我们称四个方向为北 东 南 西。对应的英文是North，East，South，West。游戏一共由一副扑克，也就是52张构成。开始，我们指定一位发牌员(东南西北中的一个，用英文首字母标识)开始发牌，发牌顺序为顺时针，发牌员第一个不发自己，而是发他的下一个人(顺时针的下一个人)。这样，每个人都会拿到13张牌。</span><br><span class="line">现在我们定义牌的顺序，首先，花色是 梅花 &lt; 方片 &lt; 黑桃 &lt; 红桃，(输入时，我们用C, D, S, H分别表示梅花，方片，黑桃，红桃，即其单词首字母)。对于牌面的值，我们规定 2 &lt; 3 &lt; 4 &lt; 5 &lt; 6 &lt; 7 &lt; 8 &lt; 9 &lt; T &lt; J &lt; Q &lt; K &lt; A。</span><br><span class="line">现在你作为上帝，你要从小到大排序每个人手中的牌，并按照给定格式输出。(具体格式见输出描述和样例输出)。</span><br></pre></td></tr></table></figure>
-        
-          <a class="article-more-a" href="/2020/03/05/%E6%89%91%E5%85%8B%E7%89%8C%E6%89%8B%E7%89%8C%E6%8E%92%E5%BA%8F/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">排序问题</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/03/05/%E6%89%91%E5%85%8B%E7%89%8C%E6%89%8B%E7%89%8C%E6%8E%92%E5%BA%8F/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-实时排名" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/03/05/%E5%AE%9E%E6%97%B6%E6%8E%92%E5%90%8D/">实时排名</a>
-    </h1>
-  
-
-		<!--显示阅读次数-->
-		
-		<!--显示阅读次数完毕-->
-        
-        <a href="/2020/03/05/%E5%AE%9E%E6%97%B6%E6%8E%92%E5%90%8D/" class="archive-article-date">
-  	<time datetime="2020-03-05T12:54:13.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-05</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="实时排名"><a href="#实时排名" class="headerlink" title="实时排名"></a><strong>实时排名</strong></h1><h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a><strong>问题描述</strong></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">程序设计思维作业和实验使用的实时评测系统，具有及时获得成绩排名的特点，那它的功能是怎么实现的呢？</span><br><span class="line">我们千辛万苦怼完了不忍直视的程序并提交以后，评测系统要么返回AC，要么是返回各种其他的错误，不论是怎样的错法，它总会给你记上一笔，表明你曾经在这儿被坑过，而当你历经千辛终将它AC之后，它便会和你算笔总账,表明这题共错误提交了几次。</span><br><span class="line">在岁月的长河中，你通过的题数虽然越来越多，但通过每题时你所共花去的时间(从最开始算起，直至通过题目时的这段时间)都会被记录下来，作为你曾经奋斗的痕迹。特别的，对于你通过的题目，你曾经的关于这题的每次错误提交都会被算上一定的单位时间罚时，这样一来，你在做出的题数上，可能领先别人很多，但是在做出同样题数的人中，你可能会因为罚时过高而处于排名上的劣势。</span><br><span class="line">例如某次考试一共八道题(A, B, C, D, E, F, G, H)，每个人做的题都在对应的题号下有个数量标记，负数表示该学生在该题上有过的错误提交次数但到现在还没有AC，正数表示AC所耗的时间，如果正数a跟上了一对括号，里面有个正数b,则表示该学生AC了这道题，耗去了时间a，同时曾经错误提交了b次。例子可见下方的样例输入与输出部分。</span><br></pre></td></tr></table></figure>
-        
-          <a class="article-more-a" href="/2020/03/05/%E5%AE%9E%E6%97%B6%E6%8E%92%E5%90%8D/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">排序问题</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/03/05/%E5%AE%9E%E6%97%B6%E6%8E%92%E5%90%8D/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-烷烃基的类别" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/03/05/%E7%83%B7%E7%83%83%E5%9F%BA%E7%9A%84%E7%B1%BB%E5%88%AB/">烷烃基的类别</a>
-    </h1>
-  
-
-		<!--显示阅读次数-->
-		
-		<!--显示阅读次数完毕-->
-        
-        <a href="/2020/03/05/%E7%83%B7%E7%83%83%E5%9F%BA%E7%9A%84%E7%B1%BB%E5%88%AB/" class="archive-article-date">
-  	<time datetime="2020-03-05T10:13:42.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-05</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="烷烃基的类别"><a href="#烷烃基的类别" class="headerlink" title="烷烃基的类别"></a><strong>烷烃基的类别</strong></h1><h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a><strong>问题描述</strong></h2><p>化学很神奇，以下是烷烃基。</p>
-<table>
-<thead>
-<tr>
-<th>Name</th>
-<th>HDMG</th>
-<th>Name</th>
-<th>HDMG</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>n-hexane</td>
-<td><img src="https://i.loli.net/2020/03/06/PDuvRZLO5YrmIB8.png" alt="01.png"></td>
-<td>2-methylpentane</td>
-<td><img src="https://i.loli.net/2020/03/06/lVBZqugfItOzmFU.png" alt="02.png"></td>
-</tr>
-<tr>
-<td>3-methylpentane</td>
-<td><img src="https://i.loli.net/2020/03/06/i1RbSPtM5yoCecp.png" alt="03.png"></td>
-<td>2,3-dimethylbutane</td>
-<td><img src="https://i.loli.net/2020/03/06/ADbymgKM5S1YFJt.png" alt="04.png"></td>
-</tr>
-<tr>
-<td>2,2-dimethylbutane</td>
-<td><img src="https://i.loli.net/2020/03/06/delSR7chwiEG4oV.png" alt="05.png"></td>
-<td>-</td>
-<td>-</td>
-</tr>
-</tbody></table>
-        
-          <a class="article-more-a" href="/2020/03/05/%E7%83%B7%E7%83%83%E5%9F%BA%E7%9A%84%E7%B1%BB%E5%88%AB/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">无向图</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/03/05/%E7%83%B7%E7%83%83%E5%9F%BA%E7%9A%84%E7%B1%BB%E5%88%AB/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
 
 
@@ -659,8 +332,8 @@
     <script>
 	var yiliaConfig = {
 		mathjax: false,
-		isHome: true,
-		isPost: false,
+		isHome: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,

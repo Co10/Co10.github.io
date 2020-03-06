@@ -16,7 +16,7 @@
 <meta property="og:description" content="实时排名问题描述1234程序设计思维作业和实验使用的实时评测系统，具有及时获得成绩排名的特点，那它的功能是怎么实现的呢？我们千辛万苦怼完了不忍直视的程序并提交以后，评测系统要么返回AC，要么是返回各种其他的错误，不论是怎样的错法，它总会给你记上一笔，表明你曾经在这儿被坑过，而当你历经千辛终将它AC之后，它便会和你算笔总账,表明这题共错误提交了几次。在岁月的长河中，你通过的题数虽然越来越多，但通过每">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-03-05T12:54:13.000Z">
-<meta property="article:modified_time" content="2020-03-05T12:56:52.563Z">
+<meta property="article:modified_time" content="2020-03-06T15:10:01.739Z">
 <meta property="article:author" content="K">
 <meta property="article:tag" content="排序问题">
 <meta name="twitter:card" content="summary">
@@ -30,7 +30,7 @@
   <style type="text/css">
   
     #container.show {
-      background: linear-gradient(200deg,#a0cfe4,#7b4eed);
+      background: linear-gradient(100deg,#6854eb,#89ccf5);
     }
   </style>
   
@@ -44,11 +44,11 @@
     <canvas id="anm-canvas" class="anm-canvas"></canvas>
     <div class="left-col" q-class="show:isShow">
       
-<div class="overlay" style="background: #353a3d"></div>
+<div class="overlay" style="background: #304d80"></div>
 <div class="intrude-less">
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
-			<img src="/uploads/avatar.png" class="js-avatar">
+			<img src="/assets/avatar.png" class="js-avatar">
 		</a>
 		<hgroup>
 		  <h1 class="header-author"><a href="/">K</a></h1>
@@ -67,7 +67,7 @@
 			</ul>
 		</nav>
 		<nav>
-		总文章数 5
+		总文章数 6
 		</nav>
 		<nav class="header-smart-menu">
     		
@@ -96,14 +96,14 @@
     <div class="mid-col" q-class="show:isShow,hide:isShow|isFalse">
       
 <nav id="mobile-nav">
-  	<div class="overlay js-overlay" style="background: #353a3d"></div>
+  	<div class="overlay js-overlay" style="background: #304d80"></div>
 	<div class="btnctn js-mobile-btnctn">
   		<div class="slider-trigger list" q-on="click: openSlider(e)"><i class="icon icon-sort"></i></div>
 	</div>
 	<div class="intrude-less">
 		<header id="header" class="inner">
 			<div class="profilepic">
-				<img src="/uploads/avatar.png" class="js-avatar">
+				<img src="/assets/avatar.png" class="js-avatar">
 			</div>
 			<hgroup>
 			  <h1 class="header-author js-header-author">K</h1>
@@ -180,6 +180,8 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h1 id="实时排名"><a href="#实时排名" class="headerlink" title="实时排名"></a><strong>实时排名</strong></h1><h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a><strong>问题描述</strong></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">程序设计思维作业和实验使用的实时评测系统，具有及时获得成绩排名的特点，那它的功能是怎么实现的呢？</span><br><span class="line">我们千辛万苦怼完了不忍直视的程序并提交以后，评测系统要么返回AC，要么是返回各种其他的错误，不论是怎样的错法，它总会给你记上一笔，表明你曾经在这儿被坑过，而当你历经千辛终将它AC之后，它便会和你算笔总账,表明这题共错误提交了几次。</span><br><span class="line">在岁月的长河中，你通过的题数虽然越来越多，但通过每题时你所共花去的时间(从最开始算起，直至通过题目时的这段时间)都会被记录下来，作为你曾经奋斗的痕迹。特别的，对于你通过的题目，你曾经的关于这题的每次错误提交都会被算上一定的单位时间罚时，这样一来，你在做出的题数上，可能领先别人很多，但是在做出同样题数的人中，你可能会因为罚时过高而处于排名上的劣势。</span><br><span class="line">例如某次考试一共八道题(A, B, C, D, E, F, G, H)，每个人做的题都在对应的题号下有个数量标记，负数表示该学生在该题上有过的错误提交次数但到现在还没有AC，正数表示AC所耗的时间，如果正数a跟上了一对括号，里面有个正数b,则表示该学生AC了这道题，耗去了时间a，同时曾经错误提交了b次。例子可见下方的样例输入与输出部分。</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
 
 <h2 id="Input"><a href="#Input" class="headerlink" title="Input"></a><strong>Input</strong></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入数据包含多行，第一行是共有的题数 n (1 ≤ n ≤ 12)以及单位罚时 m (10 ≤ m ≤ 20)，之后的每行数据描述一个学生的信息，首先是学生的用户名(不多于10个字符的字串)其次是所有 n 道题的得分现状，其描述采用问题描述中的数量标记的格式。</span><br><span class="line">负数表示尝试但没通过的次数，正数表示得分，正数+括号表示得分+尝试没通过的次数。</span><br></pre></td></tr></table></figure>
 
@@ -442,15 +444,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">倒水问题</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">无向图</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">BFS</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">倒水问题</a>
               </li>
             
             <div class="clearfix"></div>

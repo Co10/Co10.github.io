@@ -8,12 +8,12 @@
   <link rel="dns-prefetch" href="co10.github.io">
   <title>烷烃基的类别 | 荒芜知地</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="烷烃基的类别问题描述化学很神奇，以下是烷烃基。    Name HDMG Name HDMG    n-hexane  2-methylpentane    3-methylpentane  2,3-dimethylbutane    2,2-dimethylbutane  - -   假设如上图，这个烷烃基有6个原子和5个化学键，6个原子分别标号1~6，然后用一对数字 a,b 表示原子a和原子b">
+  <meta name="description" content="烷烃基的类别问题描述化学很神奇，以下是烷烃基。    Name HDMG Name HDMG    n-hexane  2-methylpentane    3-methylpentane  2,3-dimethylbutane    2,2-dimethylbutane  - -">
 <meta property="og:type" content="article">
 <meta property="og:title" content="烷烃基的类别">
 <meta property="og:url" content="co10.github.io/2020/03/05/%E7%83%B7%E7%83%83%E5%9F%BA%E7%9A%84%E7%B1%BB%E5%88%AB/index.html">
 <meta property="og:site_name" content="荒芜知地">
-<meta property="og:description" content="烷烃基的类别问题描述化学很神奇，以下是烷烃基。    Name HDMG Name HDMG    n-hexane  2-methylpentane    3-methylpentane  2,3-dimethylbutane    2,2-dimethylbutane  - -   假设如上图，这个烷烃基有6个原子和5个化学键，6个原子分别标号1~6，然后用一对数字 a,b 表示原子a和原子b">
+<meta property="og:description" content="烷烃基的类别问题描述化学很神奇，以下是烷烃基。    Name HDMG Name HDMG    n-hexane  2-methylpentane    3-methylpentane  2,3-dimethylbutane    2,2-dimethylbutane  - -">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://i.loli.net/2020/03/06/PDuvRZLO5YrmIB8.png">
 <meta property="og:image" content="https://i.loli.net/2020/03/06/lVBZqugfItOzmFU.png">
@@ -26,7 +26,7 @@
 <meta property="og:image" content="https://i.loli.net/2020/03/06/hns7fKtdUEr6vi2.png">
 <meta property="og:image" content="https://i.loli.net/2020/03/06/RlrhLUBGVP3ifD8.png">
 <meta property="article:published_time" content="2020-03-05T10:13:42.000Z">
-<meta property="article:modified_time" content="2020-03-05T16:31:34.837Z">
+<meta property="article:modified_time" content="2020-03-06T15:10:30.382Z">
 <meta property="article:author" content="K">
 <meta property="article:tag" content="无向图">
 <meta name="twitter:card" content="summary">
@@ -41,7 +41,7 @@
   <style type="text/css">
   
     #container.show {
-      background: linear-gradient(200deg,#a0cfe4,#7b4eed);
+      background: linear-gradient(100deg,#6854eb,#89ccf5);
     }
   </style>
   
@@ -55,11 +55,11 @@
     <canvas id="anm-canvas" class="anm-canvas"></canvas>
     <div class="left-col" q-class="show:isShow">
       
-<div class="overlay" style="background: #353a3d"></div>
+<div class="overlay" style="background: #304d80"></div>
 <div class="intrude-less">
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
-			<img src="/uploads/avatar.png" class="js-avatar">
+			<img src="/assets/avatar.png" class="js-avatar">
 		</a>
 		<hgroup>
 		  <h1 class="header-author"><a href="/">K</a></h1>
@@ -78,7 +78,7 @@
 			</ul>
 		</nav>
 		<nav>
-		总文章数 5
+		总文章数 6
 		</nav>
 		<nav class="header-smart-menu">
     		
@@ -107,14 +107,14 @@
     <div class="mid-col" q-class="show:isShow,hide:isShow|isFalse">
       
 <nav id="mobile-nav">
-  	<div class="overlay js-overlay" style="background: #353a3d"></div>
+  	<div class="overlay js-overlay" style="background: #304d80"></div>
 	<div class="btnctn js-mobile-btnctn">
   		<div class="slider-trigger list" q-on="click: openSlider(e)"><i class="icon icon-sort"></i></div>
 	</div>
 	<div class="intrude-less">
 		<header id="header" class="inner">
 			<div class="profilepic">
-				<img src="/uploads/avatar.png" class="js-avatar">
+				<img src="/assets/avatar.png" class="js-avatar">
 			</div>
 			<hgroup>
 			  <h1 class="header-author js-header-author">K</h1>
@@ -219,6 +219,8 @@
 <td>-</td>
 </tr>
 </tbody></table>
+<a id="more"></a>
+
 <p>假设如上图，这个烷烃基有6个原子和5个化学键，6个原子分别标号1~6，然后用一对数字 a,b 表示原子a和原子b间有一个化学键。这样通过5行a,b可以描述一个烷烃基<br>你的任务是甄别烷烃基的类别。<br>原子没有编号方法，比如<br>1 2<br>2 3<br>3 4<br>4 5<br>5 6<br>和<br>1 3<br>2 3<br>2 4<br>4 5<br>5 6<br>是同一种，本质上就是一条链，编号其实是没有关系的，可以在纸上画画就懂了</p>
 <h2 id="input"><a href="#input" class="headerlink" title="input"></a><strong>input</strong></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入第一行为数据的组数 T (1 ≤ T ≤ 200000)。</span><br><span class="line">每组数据有5行，每行是两个整数 a, b (1 ≤ a,b ≤ 6, a ≤ b)</span><br><span class="line">数据保证，输入的烷烃基是以上5种之一</span><br></pre></td></tr></table></figure>
 
@@ -559,15 +561,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">倒水问题</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">无向图</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">BFS</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">倒水问题</a>
               </li>
             
             <div class="clearfix"></div>

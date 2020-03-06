@@ -8,15 +8,15 @@
   <link rel="dns-prefetch" href="co10.github.io">
   <title>倒水问题 | 荒芜知地</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="倒水问题问题描述1“fill A” 表示倒满A杯，“empty A” 表示倒空A杯，“pour A B” 表示把A的水倒到B杯并且把B杯倒满或A倒空。  input1输入包含多组数据。每组数据输入 A, B, C 数据范围 0 &lt; A ≤ B 、C ≤ B ≤ 1000 、A和B互质。  Output1你的程序的输出将由一系列的指令组成。这些输出行将导致任何一个罐子正好包含C单位的水。每组数">
+  <meta name="description" content="倒水问题问题描述1“fill A” 表示倒满A杯，“empty A” 表示倒空A杯，“pour A B” 表示把A的水倒到B杯并且把B杯倒满或A倒空。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="倒水问题">
 <meta property="og:url" content="co10.github.io/2020/03/05/%E5%80%92%E6%B0%B4%E9%97%AE%E9%A2%98/index.html">
 <meta property="og:site_name" content="荒芜知地">
-<meta property="og:description" content="倒水问题问题描述1“fill A” 表示倒满A杯，“empty A” 表示倒空A杯，“pour A B” 表示把A的水倒到B杯并且把B杯倒满或A倒空。  input1输入包含多组数据。每组数据输入 A, B, C 数据范围 0 &lt; A ≤ B 、C ≤ B ≤ 1000 、A和B互质。  Output1你的程序的输出将由一系列的指令组成。这些输出行将导致任何一个罐子正好包含C单位的水。每组数">
+<meta property="og:description" content="倒水问题问题描述1“fill A” 表示倒满A杯，“empty A” 表示倒空A杯，“pour A B” 表示把A的水倒到B杯并且把B杯倒满或A倒空。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-03-05T12:55:19.000Z">
-<meta property="article:modified_time" content="2020-03-05T14:44:11.639Z">
+<meta property="article:modified_time" content="2020-03-06T15:09:46.231Z">
 <meta property="article:author" content="K">
 <meta property="article:tag" content="倒水问题">
 <meta name="twitter:card" content="summary">
@@ -30,7 +30,7 @@
   <style type="text/css">
   
     #container.show {
-      background: linear-gradient(200deg,#a0cfe4,#7b4eed);
+      background: linear-gradient(100deg,#6854eb,#89ccf5);
     }
   </style>
   
@@ -44,11 +44,11 @@
     <canvas id="anm-canvas" class="anm-canvas"></canvas>
     <div class="left-col" q-class="show:isShow">
       
-<div class="overlay" style="background: #353a3d"></div>
+<div class="overlay" style="background: #304d80"></div>
 <div class="intrude-less">
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
-			<img src="/uploads/avatar.png" class="js-avatar">
+			<img src="/assets/avatar.png" class="js-avatar">
 		</a>
 		<hgroup>
 		  <h1 class="header-author"><a href="/">K</a></h1>
@@ -67,7 +67,7 @@
 			</ul>
 		</nav>
 		<nav>
-		总文章数 5
+		总文章数 6
 		</nav>
 		<nav class="header-smart-menu">
     		
@@ -96,14 +96,14 @@
     <div class="mid-col" q-class="show:isShow,hide:isShow|isFalse">
       
 <nav id="mobile-nav">
-  	<div class="overlay js-overlay" style="background: #353a3d"></div>
+  	<div class="overlay js-overlay" style="background: #304d80"></div>
 	<div class="btnctn js-mobile-btnctn">
   		<div class="slider-trigger list" q-on="click: openSlider(e)"><i class="icon icon-sort"></i></div>
 	</div>
 	<div class="intrude-less">
 		<header id="header" class="inner">
 			<div class="profilepic">
-				<img src="/uploads/avatar.png" class="js-avatar">
+				<img src="/assets/avatar.png" class="js-avatar">
 			</div>
 			<hgroup>
 			  <h1 class="header-author js-header-author">K</h1>
@@ -180,6 +180,8 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h1 id="倒水问题"><a href="#倒水问题" class="headerlink" title="倒水问题"></a><strong>倒水问题</strong></h1><h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a><strong>问题描述</strong></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">“fill A” 表示倒满A杯，“empty A” 表示倒空A杯，“pour A B” 表示把A的水倒到B杯并且把B杯倒满或A倒空。</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
 
 <h2 id="input"><a href="#input" class="headerlink" title="input"></a><strong>input</strong></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">输入包含多组数据。每组数据输入 A, B, C 数据范围 0 &lt; A ≤ B 、C ≤ B ≤ 1000 、A和B互质。</span><br></pre></td></tr></table></figure>
 
@@ -281,6 +283,15 @@
 
   
 <nav id="article-nav">
+  
+    <a href="/2020/03/06/%E8%B4%AA%E5%A9%AA%E7%AE%97%E6%B3%95-%E9%80%89%E6%95%B0%E9%97%AE%E9%A2%98/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          贪婪算法 选数问题
+        
+      </div>
+    </a>
   
   
     <a href="/2020/03/05/%E8%BF%B7%E5%AE%AB%E9%97%AE%E9%A2%98-%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2/" id="article-nav-older" class="article-nav-link-wrap">
@@ -425,15 +436,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">倒水问题</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">无向图</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">BFS</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">倒水问题</a>
               </li>
             
             <div class="clearfix"></div>
