@@ -6,14 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="co10.github.io">
-  <title>Tag: 排序问题 | 荒芜知地</title>
+  <title>贪婪算法-区间覆盖问题 | 荒芜知地</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="荒芜知地">
-<meta property="og:url" content="co10.github.io/tags/%E6%8E%92%E5%BA%8F%E9%97%AE%E9%A2%98/index.html">
+  <meta name="description" content="区间覆盖问题问题描述123数轴上有 n (1 ≤ n ≤ 25000) 个闭区间 [ai, bi]，选择尽量少的区间覆盖一条指定线段 [1, t] ( 1 ≤ t ≤ 1,000,000)。覆盖整点，即[1,2]+[3,4]可以覆盖[1,4]。不可能办到输出-1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="贪婪算法-区间覆盖问题">
+<meta property="og:url" content="co10.github.io/2020/03/19/%E8%B4%AA%E5%A9%AA%E7%AE%97%E6%B3%95-%E5%8C%BA%E9%97%B4%E8%A6%86%E7%9B%96%E9%97%AE%E9%A2%98/index.html">
 <meta property="og:site_name" content="荒芜知地">
+<meta property="og:description" content="区间覆盖问题问题描述123数轴上有 n (1 ≤ n ≤ 25000) 个闭区间 [ai, bi]，选择尽量少的区间覆盖一条指定线段 [1, t] ( 1 ≤ t ≤ 1,000,000)。覆盖整点，即[1,2]+[3,4]可以覆盖[1,4]。不可能办到输出-1">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-03-19T09:08:08.000Z">
+<meta property="article:modified_time" content="2020-03-19T09:55:36.680Z">
 <meta property="article:author" content="K">
+<meta property="article:tag" content="贪婪算法">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="荒芜知地" type="application/atom+xml">
@@ -143,98 +148,194 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-贪婪算法-区间覆盖问题" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2020" class="archive-year">2020</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/03/05/%E6%89%91%E5%85%8B%E7%89%8C%E6%89%8B%E7%89%8C%E6%8E%92%E5%BA%8F/" class="archive-article-date">
-  	<time datetime="2020-03-05T12:54:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-05</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/03/05/%E6%89%91%E5%85%8B%E7%89%8C%E6%89%8B%E7%89%8C%E6%8E%92%E5%BA%8F/">扑克牌手牌排序</a>
+    <h1 class="article-title" itemprop="name">
+      贪婪算法-区间覆盖问题
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+		<!--显示阅读次数-->
+		
+		<br/>
+		<a class="cloud-tie-join-count" href="javascript:void(0);" style="color:gray;font-size:14px;">
+		<span class="icon-sort"></span>
+		<span id="busuanzi_container_page_pv" style="color:#ef7522;font-size:14px;">
+            阅读数: <span id="busuanzi_value_page_pv"></span>次 &nbsp;&nbsp;
+		</span>
+		</a>
+		
+		<!--显示阅读次数完毕-->
+        
+        <a href="/2020/03/19/%E8%B4%AA%E5%A9%AA%E7%AE%97%E6%B3%95-%E5%8C%BA%E9%97%B4%E8%A6%86%E7%9B%96%E9%97%AE%E9%A2%98/" class="archive-article-date">
+  	<time datetime="2020-03-19T09:08:08.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-19</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="区间覆盖问题"><a href="#区间覆盖问题" class="headerlink" title="区间覆盖问题"></a><strong>区间覆盖问题</strong></h1><h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a><strong>问题描述</strong></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">数轴上有 n (1 ≤ n ≤ 25000) 个闭区间 [ai, bi]，选择尽量少的区间覆盖一条指定线段 [1, t] ( 1 ≤ t ≤ 1,000,000)。</span><br><span class="line">覆盖整点，即[1,2]+[3,4]可以覆盖[1,4]。</span><br><span class="line">不可能办到输出-1</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
+
+<h2 id="Input"><a href="#Input" class="headerlink" title="Input"></a><strong>Input</strong></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">第一行：N 和 T</span><br><span class="line">第二行至 N+1 行: 每一行一个闭区间。</span><br></pre></td></tr></table></figure>
+
+<h2 id="Output"><a href="#Output" class="headerlink" title="Output"></a><strong>Output</strong></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">选择的区间的数目，不可能办到输出-1</span><br></pre></td></tr></table></figure>
+
+<h2 id="Sample"><a href="#Sample" class="headerlink" title="Sample"></a><strong>Sample</strong></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Input: </span><br><span class="line">3 10</span><br><span class="line">1 7</span><br><span class="line">3 6</span><br><span class="line">6 10</span><br><span class="line">Output: </span><br><span class="line">2</span><br></pre></td></tr></table></figure>
+
+<h2 id="Limitation"><a href="#Limitation" class="headerlink" title="Limitation"></a><strong>Limitation</strong></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Time limit		1000 ms</span><br><span class="line">Memory limit	65536 kB</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a><strong>解题思路</strong></h2><p>这道题<code>WA</code>了好多次，主要是整点覆盖比较坑，是要在录入时就进行<code>始端-1</code>或者<code>末端+1</code>，还是在<code>if</code>条件判断的时候考虑整点，容易出错，可能会多考虑了区间比如<code>[1, 2]</code>和<code>[4, 5]</code> (2往后延长到3, 4往前延长到3)。还有录入的时候我进行了裁剪，我怕<code>[-2, 1]</code>裁剪成<code>[1, 1]</code>会影响对<code>[2, 3]</code>的判断，就选择了在<code>if</code>处判断整点，而没有选择延长区间。</p>
+<p>首先对区间a升序，a相同时按b降序，保证每次能选到的区间最长。每次标记一个区间的起点<code>begin</code>和终点<code>end</code>，再从接下来的区间中选取起点落在<code>[begin, end+1]</code>范围内的，可行就选取最长的，然后更新起点<code>begin</code>和终点<code>end</code>，计数 + 1，如此循环，直到遇到目标终点<code>t</code>。</p>
+<h2 id="源代码"><a href="#源代码" class="headerlink" title="源代码"></a><strong>源代码</strong></h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*区间 [a, b] */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">range</span> &#123;</span></span><br><span class="line">	<span class="keyword">int</span> a, b;</span><br><span class="line">	range(<span class="keyword">int</span> _a, <span class="keyword">int</span> _b) :a(_a), b(_b) &#123;&#125;</span><br><span class="line">	<span class="keyword">bool</span> <span class="keyword">operator</span> &lt; (<span class="keyword">const</span> range r)<span class="keyword">const</span> &#123;</span><br><span class="line">		<span class="keyword">if</span> (a == r.a)</span><br><span class="line">			<span class="keyword">return</span> b &gt; r.b;</span><br><span class="line">		<span class="keyword">return</span> a &lt; r.a;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">rangeCover</span><span class="params">(<span class="built_in">vector</span>&lt;range&gt; v, <span class="keyword">int</span> t)</span> </span>&#123;</span><br><span class="line">	<span class="comment">//按a升序 按b降序</span></span><br><span class="line">	sort(v.<span class="built_in">begin</span>(), v.<span class="built_in">end</span>());</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (v.at(<span class="number">0</span>).a &gt; <span class="number">1</span>)<span class="comment">//起始不是 1，一定不能办到</span></span><br><span class="line">		<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">	<span class="comment">//标记当前选取区间的起点，终点</span></span><br><span class="line">	<span class="keyword">int</span> <span class="built_in">begin</span> = <span class="number">1</span>, <span class="built_in">end</span> = v.at(<span class="number">0</span>).b, pos = <span class="number">0</span>, count = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">while</span> (<span class="built_in">end</span> != t) &#123;</span><br><span class="line">		<span class="keyword">int</span> temp = <span class="number">0</span>;</span><br><span class="line">		<span class="built_in">begin</span> = <span class="built_in">end</span> + <span class="number">1</span>;<span class="comment">//下一个标记的起始点为本次标记终点+1</span></span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = pos; i &lt; v.<span class="built_in">size</span>(); i++) &#123;</span><br><span class="line">			<span class="keyword">if</span> (v.at(i).a &gt; <span class="built_in">begin</span>) &#123;<span class="comment">//遇到了第一个起始点 &gt; 标记起始点的</span></span><br><span class="line">				pos = i;</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">else</span> <span class="keyword">if</span> (v.at(i).a &lt;= <span class="built_in">begin</span> &amp;&amp; v.at(i).b &gt;= <span class="built_in">end</span>) &#123;<span class="comment">//可选区间</span></span><br><span class="line">				temp = i;<span class="comment">//记录当前标号</span></span><br><span class="line">				<span class="built_in">end</span> = v.at(i).b;<span class="comment">//更新标记末端</span></span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> (<span class="built_in">begin</span> &gt; <span class="built_in">end</span>) &#123;<span class="comment">//标记了下一个区间的起始点 但没有找到此区间</span></span><br><span class="line">			<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> &#123;<span class="comment">//这个标记的区间可行</span></span><br><span class="line">			pos = temp + <span class="number">1</span>;<span class="comment">//从那个标记的标号开始 进行下一次循环</span></span><br><span class="line">			count++;<span class="comment">//计数+1</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> count;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> n, t;</span><br><span class="line">	scanf_s(<span class="string">"%d%d"</span>, &amp;n, &amp;t);</span><br><span class="line">	<span class="built_in">vector</span>&lt;range&gt; v;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">		<span class="keyword">int</span> a, b;</span><br><span class="line">		scanf_s(<span class="string">"%d%d"</span>, &amp;a, &amp;b);</span><br><span class="line">		<span class="keyword">if</span> ((a &gt;= <span class="number">1</span> &amp;&amp; a &lt;= t) || (b &gt;= <span class="number">1</span> &amp;&amp; b &lt;= t)) &#123;<span class="comment">//先对输入进行裁剪</span></span><br><span class="line">			<span class="keyword">if</span> (a &lt; <span class="number">1</span>)<span class="comment">//合法区间 但 a &lt; 1，可令 a = 1</span></span><br><span class="line">				a = <span class="number">1</span>;</span><br><span class="line">			<span class="function">range <span class="title">r</span><span class="params">(a, b)</span></span>;</span><br><span class="line">			v.push_back(r);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">int</span> res = rangeCover(v, t);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"%d\n"</span>, res);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">排序问题</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">贪婪算法</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http:co10.github.io/2020/03/19/%E8%B4%AA%E5%A9%AA%E7%AE%97%E6%B3%95-%E5%8C%BA%E9%97%B4%E8%A6%86%E7%9B%96%E9%97%AE%E9%A2%98/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/03/05/%E5%AE%9E%E6%97%B6%E6%8E%92%E5%90%8D/" class="archive-article-date">
-  	<time datetime="2020-03-05T12:54:13.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-05</time>
-</a>
+<nav id="article-nav">
+  
+    <a href="/2020/03/19/%E5%92%95%E5%92%95%E4%B8%9C%E7%9A%84%E5%A5%87%E9%81%87/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          咕咕东的奇遇
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/03/19/%E8%B4%AA%E5%A9%AA%E7%AE%97%E6%B3%95-%E5%8C%BA%E9%97%B4%E9%80%89%E7%82%B9%E9%97%AE%E9%A2%98/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">贪婪算法-区间选点问题</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/03/05/%E5%AE%9E%E6%97%B6%E6%8E%92%E5%90%8D/">实时排名</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">排序问题</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#区间覆盖问题"><span class="toc-number">1.</span> <span class="toc-text">区间覆盖问题</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#问题描述"><span class="toc-number">1.1.</span> <span class="toc-text">问题描述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Input"><span class="toc-number">1.2.</span> <span class="toc-text">Input</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Output"><span class="toc-number">1.3.</span> <span class="toc-text">Output</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Sample"><span class="toc-number">1.4.</span> <span class="toc-text">Sample</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Limitation"><span class="toc-number">1.5.</span> <span class="toc-text">Limitation</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解题思路"><span class="toc-number">1.6.</span> <span class="toc-text">解题思路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#源代码"><span class="toc-number">1.7.</span> <span class="toc-text">源代码</span></a></li></ol></li></ol>
+                    </div>
+                </span>
+            </div>
         </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
+        
+    </div>
+</aside>
+
+
+
   
   
-    </div></section>
   
 
-    
+  
+
+  
 
 
 
@@ -258,9 +359,9 @@
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: true,
 		toc_hide_index: true,
