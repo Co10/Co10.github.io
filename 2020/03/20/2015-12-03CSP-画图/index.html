@@ -6,14 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="co10.github.io">
-  <title>Archives: 2020 | 荒芜知地</title>
+  <title>2015-12-03CSP-画图 | 荒芜知地</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="荒芜知地">
-<meta property="og:url" content="co10.github.io/archives/2020/index.html">
+  <meta name="description" content="画图问题描述123456789101112　　用 ASCII 字符来画图是一件有趣的事情，并形成了一门被称为 ASCII Art 的艺术。例如，下图是用 ASCII 字符画出来的 CSPRO 字样。　　..____.____..____..____...___..　　.&#x2F;.___&#x2F;.___||.._.\|.._.\.&#x2F;._.\.　　|.|...\___.\|.|_).">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2015-12-03CSP-画图">
+<meta property="og:url" content="co10.github.io/2020/03/20/2015-12-03CSP-%E7%94%BB%E5%9B%BE/index.html">
 <meta property="og:site_name" content="荒芜知地">
+<meta property="og:description" content="画图问题描述123456789101112　　用 ASCII 字符来画图是一件有趣的事情，并形成了一门被称为 ASCII Art 的艺术。例如，下图是用 ASCII 字符画出来的 CSPRO 字样。　　..____.____..____..____...___..　　.&#x2F;.___&#x2F;.___||.._.\|.._.\.&#x2F;._.\.　　|.|...\___.\|.|_).">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-03-20T00:15:06.000Z">
+<meta property="article:modified_time" content="2020-03-20T03:19:23.517Z">
 <meta property="article:author" content="K">
+<meta property="article:tag" content="DFS">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="荒芜知地" type="application/atom+xml">
@@ -143,36 +148,68 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
+            <article id="post-2015-12-03CSP-画图" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
+    <h1 class="article-title" itemprop="name">
+      2015-12-03CSP-画图
+    </h1>
   
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2020" class="archive-year">2020</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/03/20/2015-12-03CSP-%E7%94%BB%E5%9B%BE/" class="archive-article-date">
+
+		<!--显示阅读次数-->
+		
+		<br/>
+		<a class="cloud-tie-join-count" href="javascript:void(0);" style="color:gray;font-size:14px;">
+		<span class="icon-sort"></span>
+		<span id="busuanzi_container_page_pv" style="color:#ef7522;font-size:14px;">
+            阅读数: <span id="busuanzi_value_page_pv"></span>次 &nbsp;&nbsp;
+		</span>
+		</a>
+		
+		<!--显示阅读次数完毕-->
+        
+        <a href="/2020/03/20/2015-12-03CSP-%E7%94%BB%E5%9B%BE/" class="archive-article-date">
   	<time datetime="2020-03-20T00:15:06.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-20</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/03/20/2015-12-03CSP-%E7%94%BB%E5%9B%BE/">2015-12-03CSP-画图</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="画图"><a href="#画图" class="headerlink" title="画图"></a><strong>画图</strong></h1><h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a><strong>问题描述</strong></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">　　用 ASCII 字符来画图是一件有趣的事情，并形成了一门被称为 ASCII Art 的艺术。例如，下图是用 ASCII 字符画出来的 CSPRO 字样。</span><br><span class="line">　　..____.____..____..____...___..</span><br><span class="line">　　.&#x2F;.___&#x2F;.___||.._.\|.._.\.&#x2F;._.\.</span><br><span class="line">　　|.|...\___.\|.|_).|.|_).|.|.|.|</span><br><span class="line">　　|.|___.___).|..__&#x2F;|.._.&lt;|.|_|.|</span><br><span class="line">　　.\____|____&#x2F;|_|...|_|.\_\\___&#x2F;.</span><br><span class="line">　　本题要求编程实现一个用 ASCII 字符来画图的程序，支持以下两种操作：</span><br><span class="line">　　 画线：给出两个端点的坐标，画一条连接这两个端点的线段。简便起见题目保证要画的每条线段都是水平或者竖直的。水平线段用字符 - 来画，竖直线段用字符 | 来画。如果一条水平线段和一条竖直线段在某个位置相交，则相交位置用字符 + 代替。</span><br><span class="line">　　 填充：给出填充的起始位置坐标和需要填充的字符，从起始位置开始，用该字符填充相邻位置，直到遇到画布边缘或已经画好的线段。注意这里的相邻位置只需要考虑上下左右 4 个方向，如下图所示，字符 @ 只和 4 个字符 * 相邻。</span><br><span class="line">　　.*.</span><br><span class="line">　　*@*</span><br><span class="line">　　.*.</span><br></pre></td></tr></table></figure>
 
-        <div class="article-info info-on-right">
-          
+<a id="more"></a>
+
+<h2 id="Input"><a href="#Input" class="headerlink" title="Input"></a><strong>Input</strong></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">　　第1行有三个整数m, n和q。m和n分别表示画布的宽度和高度，以字符为单位。q表示画图操作的个数。</span><br><span class="line">　　第2行至第q + 1行，每行是以下两种形式之一：</span><br><span class="line">　　 0 x1 y1 x2 y2：表示画线段的操作，(x1, y1)和(x2, y2)分别是线段的两端，满足要么x1 &#x3D; x2 且y1 ≠ y2，要么 y1 &#x3D; y2 且 x1 ≠ x2。</span><br><span class="line">　　 1 x y c：表示填充操作，(x, y)是起始位置，保证不会落在任何已有的线段上；c 为填充字符，是大小写字母。</span><br><span class="line">　　画布的左下角是坐标为 (0, 0) 的位置，向右为x坐标增大的方向，向上为y坐标增大的方向。这q个操作按照数据给出的顺序依次执行。画布最初时所有位置都是字符 .（小数点）。</span><br></pre></td></tr></table></figure>
+
+<h2 id="Output"><a href="#Output" class="headerlink" title="Output"></a><strong>Output</strong></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">　　输出有n行，每行m个字符，表示依次执行这q个操作后得到的画图结果。</span><br></pre></td></tr></table></figure>
+
+<h2 id="Sample"><a href="#Sample" class="headerlink" title="Sample"></a><strong>Sample</strong></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">Input: </span><br><span class="line">4 2 3</span><br><span class="line">1 0 0 B</span><br><span class="line">0 1 0 2 0</span><br><span class="line">1 0 0 A</span><br><span class="line">Output: </span><br><span class="line">AAAA</span><br><span class="line">A--A</span><br><span class="line"></span><br><span class="line">input: </span><br><span class="line">16 13 9</span><br><span class="line">0 3 1 12 1</span><br><span class="line">0 12 1 12 3</span><br><span class="line">0 12 3 6 3</span><br><span class="line">0 6 3 6 9</span><br><span class="line">0 6 9 12 9</span><br><span class="line">0 12 9 12 11</span><br><span class="line">0 12 11 3 11</span><br><span class="line">0 3 11 3 1</span><br><span class="line">1 4 2 C</span><br><span class="line">output: </span><br><span class="line">................</span><br><span class="line">...+--------+...</span><br><span class="line">...|CCCCCCCC|...</span><br><span class="line">...|CC+-----+...</span><br><span class="line">...|CC|.........</span><br><span class="line">...|CC|.........</span><br><span class="line">...|CC|.........</span><br><span class="line">...|CC|.........</span><br><span class="line">...|CC|.........</span><br><span class="line">...|CC+-----+...</span><br><span class="line">...|CCCCCCCC|...</span><br><span class="line">...+--------+...</span><br><span class="line">................</span><br></pre></td></tr></table></figure>
+
+<h2 id="Limitation"><a href="#Limitation" class="headerlink" title="Limitation"></a><strong>Limitation</strong></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Time limit		1.0 s</span><br><span class="line">Memory limit	256 MB</span><br></pre></td></tr></table></figure>
+
+<h2 id="数据规模"><a href="#数据规模" class="headerlink" title="数据规模"></a><strong>数据规模</strong></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">　　所有的评测用例满足：2 ≤ m, n ≤ 100，0 ≤ q ≤ 100，0 ≤ x &lt; m（x表示输入数据中所有位置的x坐标），0 ≤ y &lt; n（y表示输入数据中所有位置的y坐标）。</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a><strong>解题思路</strong></h2><p>画线就是一个for循环，if判断对就行，填充的思路就是DFS。</p>
+<p>但是，这道题有些坑啊😵……</p>
+<h3 id="横纵坐标问题"><a href="#横纵坐标问题" class="headerlink" title="横纵坐标问题"></a>横纵坐标问题</h3><p>输入是<code>0 ≤ x &lt; m, 0 ≤ y &lt; n</code>，然而用数组表示的话，要用<code>array[y][x]</code>来表示点的坐标，因为数组是<code>n</code>行<code>m</code>列的，<code>y</code>为行，列为<code>x</code>。<br>还有就是最后的输出，由于直角坐标第一象限左下角是起始端，然而二维数组左上角是起始端，所以输出要倒过来，第一维逆序遍历，第二维正序遍历。(样例2是水平对称的，但样例1竖直对称、水平不对称，很容易发现错误)</p>
+<h3 id="画线交界问题"><a href="#画线交界问题" class="headerlink" title="画线交界问题"></a>画线交界问题</h3><p>题意应该是只要在边界内且遇到的不是<code>-</code>或<code>|</code>就可以直接覆盖，即使是遇到了填充字符串也可以覆盖，此处很容易漏了遇到<code>+</code>的话不能覆盖。<code>|</code>遇到<code>-</code>的话覆盖成<code>+</code>，<code>-</code>遇到|的话覆盖成<code>+</code>，遇到<code>+</code>不覆盖，这边比较容易的。<br>还有就是覆盖时for循环的结束条件。题目给的从一个点(<em>x</em><sub>1</sub>, <em>y</em><sub>1</sub>)到另一个点(<em>x</em><sub>2</sub>, <em>y</em><sub>2</sub>)，for循环就是由小到大或者由大到小，但是终止的时候是<code>&lt;= 或 &gt;= 结束点横/纵坐标</code>而不是<code>!= 结束点横/纵坐标</code>，这边这个<code>=</code>很容易遗漏。</p>
+<h3 id="标记到达问题"><a href="#标记到达问题" class="headerlink" title="标记到达问题"></a>标记到达问题</h3><p>由于填充是可以覆盖的，从样例一可以看出，A把B覆盖了，所以每一次填充，<code>reach</code>数组都要重置。</p>
+<h2 id="源代码"><a href="#源代码" class="headerlink" title="源代码"></a><strong>源代码</strong></h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;queue&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> maxN = <span class="number">103</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">char</span> canvas[maxN][maxN];<span class="comment">//画布</span></span><br><span class="line"><span class="keyword">bool</span> reach[maxN][maxN];<span class="comment">//标记到达</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">dot</span> &#123;</span></span><br><span class="line">	<span class="keyword">int</span> x;</span><br><span class="line">	<span class="keyword">int</span> y;</span><br><span class="line">	dot(<span class="keyword">int</span> _x, <span class="keyword">int</span> _y) :x(_x), y(_y) &#123;  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">drawLine</span><span class="params">(<span class="keyword">int</span> x1, <span class="keyword">int</span> y1, <span class="keyword">int</span> x2, <span class="keyword">int</span> y2)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (x1 == x2 &amp;&amp; y1 != y2) &#123;<span class="comment">// |</span></span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="built_in">min</span>(y1, y2); i &lt;= <span class="built_in">max</span>(y1, y2); i++) &#123;<span class="comment">//这边&lt;=容易写成&lt;</span></span><br><span class="line">			<span class="keyword">if</span> (canvas[i][x1] == <span class="string">'-'</span>)<span class="comment">//有交叉</span></span><br><span class="line">				canvas[i][x1] = <span class="string">'+'</span>;</span><br><span class="line">			<span class="keyword">if</span> (canvas[i][x1] == <span class="string">'+'</span>)<span class="comment">//这个容易遗漏判断</span></span><br><span class="line">				<span class="keyword">continue</span>;</span><br><span class="line">			<span class="keyword">else</span></span><br><span class="line">				canvas[i][x1] = <span class="string">'|'</span>;</span><br><span class="line">		&#125;	</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> (y1 == y2 &amp;&amp; x1 != x2) &#123;<span class="comment">// -</span></span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="built_in">min</span>(x1, x2); i &lt;= <span class="built_in">max</span>(x1, x2); i++) &#123;</span><br><span class="line">			<span class="keyword">if</span> (canvas[y1][i] == <span class="string">'|'</span>)<span class="comment">//有交叉</span></span><br><span class="line">				canvas[y1][i] = <span class="string">'+'</span>;</span><br><span class="line">			<span class="keyword">if</span> (canvas[y1][i] == <span class="string">'+'</span>)</span><br><span class="line">				<span class="keyword">continue</span>;</span><br><span class="line">			<span class="keyword">else</span></span><br><span class="line">				canvas[y1][i] = <span class="string">'-'</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> dx[<span class="number">4</span>] = &#123; <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">-1</span> &#125;;<span class="comment">//右 左</span></span><br><span class="line"><span class="keyword">int</span> dy[<span class="number">4</span>] = &#123; <span class="number">1</span>, <span class="number">-1</span>, <span class="number">0</span>, <span class="number">0</span> &#125;;<span class="comment">//上 下</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">fillCanvas</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y, <span class="keyword">char</span> c, <span class="keyword">int</span> m, <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">		<span class="built_in">fill</span>(reach[i], reach[i] + m, <span class="literal">false</span>);<span class="comment">//每次都需要重置</span></span><br><span class="line"></span><br><span class="line">	<span class="function">dot <span class="title">ori</span><span class="params">(x, y)</span></span>;</span><br><span class="line">	<span class="built_in">queue</span>&lt;dot&gt; q;</span><br><span class="line">	q.push(ori);</span><br><span class="line">	<span class="keyword">while</span> (!q.empty()) &#123;</span><br><span class="line">		dot temp = q.front();</span><br><span class="line">		q.pop();</span><br><span class="line">		<span class="keyword">int</span> xx = temp.x, yy = temp.y;</span><br><span class="line">		</span><br><span class="line">		canvas[yy][xx] = c;<span class="comment">//入了队的是一定能填充的</span></span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">4</span>; i++) &#123;<span class="comment">//上下右左4个方向</span></span><br><span class="line">			<span class="keyword">int</span> xxx = temp.x + dx[i];</span><br><span class="line">			<span class="keyword">int</span> yyy = temp.y + dy[i];</span><br><span class="line">			<span class="function">dot <span class="title">temp2</span><span class="params">(xxx, yyy)</span></span>;</span><br><span class="line">			<span class="keyword">if</span> (xxx &gt;= <span class="number">0</span> &amp;&amp; xxx &lt; m &amp;&amp; yyy &gt;= <span class="number">0</span> &amp;&amp; yyy &lt; n</span><br><span class="line">				&amp;&amp; canvas[yyy][xxx] != <span class="string">'-'</span></span><br><span class="line">				&amp;&amp; canvas[yyy][xxx] != <span class="string">'+'</span></span><br><span class="line">				&amp;&amp; canvas[yyy][xxx] != <span class="string">'|'</span></span><br><span class="line">				&amp;&amp; reach[yyy][xxx] != <span class="literal">true</span>) &#123;<span class="comment">//在边界内 &amp;&amp; 不是画的线 &amp;&amp; 没到达</span></span><br><span class="line">				q.push(temp2);<span class="comment">//符合条件 可以入队</span></span><br><span class="line">				reach[yyy][xxx] = <span class="literal">true</span>;<span class="comment">//标记到达</span></span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> m, n, q;</span><br><span class="line">	<span class="built_in">cin</span> &gt;&gt; m &gt;&gt; n &gt;&gt; q;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">		<span class="built_in">fill</span>(canvas[i], canvas[i] + m, <span class="string">'.'</span>);</span><br><span class="line">		<span class="built_in">fill</span>(reach[i], reach[i] + m, <span class="literal">false</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; q; i++) &#123;</span><br><span class="line">		<span class="keyword">int</span> ops;</span><br><span class="line">		<span class="built_in">cin</span> &gt;&gt; ops;</span><br><span class="line">		<span class="keyword">switch</span> (ops) &#123;</span><br><span class="line">		<span class="keyword">case</span> <span class="number">0</span>: &#123;<span class="comment">//画线</span></span><br><span class="line">			<span class="keyword">int</span> x1, y1, x2, y2;</span><br><span class="line">			<span class="built_in">cin</span> &gt;&gt; x1 &gt;&gt; y1 &gt;&gt; x2 &gt;&gt; y2;</span><br><span class="line">			drawLine(x1, y1, x2, y2);</span><br><span class="line">		&#125;<span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">case</span> <span class="number">1</span>: &#123;<span class="comment">//填充</span></span><br><span class="line">			<span class="keyword">int</span> x, y;</span><br><span class="line">			<span class="built_in">cin</span> &gt;&gt; x &gt;&gt; y;</span><br><span class="line">			<span class="keyword">char</span> c;</span><br><span class="line">			<span class="built_in">cin</span> &gt;&gt; c;</span><br><span class="line">			fillCanvas(x, y, c, m, n);</span><br><span class="line">		&#125;<span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">default</span>: <span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = n - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) &#123;<span class="comment">//y要记得倒序输出</span></span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; m; j++)</span><br><span class="line">			<span class="built_in">cout</span> &lt;&lt; canvas[i][j];</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -184,353 +221,116 @@
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http:co10.github.io/2020/03/20/2015-12-03CSP-%E7%94%BB%E5%9B%BE/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/03/19/%E6%96%B0%E6%95%B0%E7%BB%84%E4%B8%AD%E4%BD%8D%E6%95%B0%E9%97%AE%E9%A2%98/" class="archive-article-date">
-  	<time datetime="2020-03-19T12:31:57.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-19</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2020/03/19/%E6%96%B0%E6%95%B0%E7%BB%84%E4%B8%AD%E4%BD%8D%E6%95%B0%E9%97%AE%E9%A2%98/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">新数组中位数问题</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/03/19/%E6%96%B0%E6%95%B0%E7%BB%84%E4%B8%AD%E4%BD%8D%E6%95%B0%E9%97%AE%E9%A2%98/">新数组中位数问题</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">二分</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#画图"><span class="toc-number">1.</span> <span class="toc-text">画图</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#问题描述"><span class="toc-number">1.1.</span> <span class="toc-text">问题描述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Input"><span class="toc-number">1.2.</span> <span class="toc-text">Input</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Output"><span class="toc-number">1.3.</span> <span class="toc-text">Output</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Sample"><span class="toc-number">1.4.</span> <span class="toc-text">Sample</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Limitation"><span class="toc-number">1.5.</span> <span class="toc-text">Limitation</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#数据规模"><span class="toc-number">1.6.</span> <span class="toc-text">数据规模</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解题思路"><span class="toc-number">1.7.</span> <span class="toc-text">解题思路</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#横纵坐标问题"><span class="toc-number">1.7.1.</span> <span class="toc-text">横纵坐标问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#画线交界问题"><span class="toc-number">1.7.2.</span> <span class="toc-text">画线交界问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#标记到达问题"><span class="toc-number">1.7.3.</span> <span class="toc-text">标记到达问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#源代码"><span class="toc-number">1.8.</span> <span class="toc-text">源代码</span></a></li></ol></li></ol>
+                    </div>
+                </span>
+            </div>
         </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
+        
+    </div>
+</aside>
+
+
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/03/19/4%E6%95%B0%E5%88%97%E9%80%89%E6%95%B0%E9%97%AE%E9%A2%98/" class="archive-article-date">
-  	<time datetime="2020-03-19T12:31:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-19</time>
-</a>
-        </div>
-    	 
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/03/19/4%E6%95%B0%E5%88%97%E9%80%89%E6%95%B0%E9%97%AE%E9%A2%98/">4数列选数问题</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">二分</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/03/19/DDL-%E8%B4%AA%E5%A9%AA%E7%AE%97%E6%B3%95/" class="archive-article-date">
-  	<time datetime="2020-03-19T12:30:27.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-19</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/03/19/DDL-%E8%B4%AA%E5%A9%AA%E7%AE%97%E6%B3%95/">DDL-贪婪算法</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">贪婪算法</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/03/19/%E6%81%90%E6%80%96%E7%9A%84%E5%AE%87%E5%AE%99%E5%B0%84%E7%BA%BF/" class="archive-article-date">
-  	<time datetime="2020-03-19T12:29:17.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-19</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/03/19/%E6%81%90%E6%80%96%E7%9A%84%E5%AE%87%E5%AE%99%E5%B0%84%E7%BA%BF/">恐怖的宇宙射线</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">DFS</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/03/19/%E5%92%95%E5%92%95%E4%B8%9C%E6%83%B3%E5%90%83%E9%A5%AD/" class="archive-article-date">
-  	<time datetime="2020-03-19T11:30:57.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-19</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/03/19/%E5%92%95%E5%92%95%E4%B8%9C%E6%83%B3%E5%90%83%E9%A5%AD/">咕咕东想吃饭</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/03/19/%E5%92%95%E5%92%95%E4%B8%9C%E7%9A%84%E5%A5%87%E9%81%87/" class="archive-article-date">
-  	<time datetime="2020-03-19T09:58:11.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-19</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/03/19/%E5%92%95%E5%92%95%E4%B8%9C%E7%9A%84%E5%A5%87%E9%81%87/">咕咕东的奇遇</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">转盘问题</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/03/19/%E8%B4%AA%E5%A9%AA%E7%AE%97%E6%B3%95-%E5%8C%BA%E9%97%B4%E8%A6%86%E7%9B%96%E9%97%AE%E9%A2%98/" class="archive-article-date">
-  	<time datetime="2020-03-19T09:08:08.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-19</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/03/19/%E8%B4%AA%E5%A9%AA%E7%AE%97%E6%B3%95-%E5%8C%BA%E9%97%B4%E8%A6%86%E7%9B%96%E9%97%AE%E9%A2%98/">贪婪算法-区间覆盖问题</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">贪婪算法</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/03/19/%E8%B4%AA%E5%A9%AA%E7%AE%97%E6%B3%95-%E5%8C%BA%E9%97%B4%E9%80%89%E7%82%B9%E9%97%AE%E9%A2%98/" class="archive-article-date">
-  	<time datetime="2020-03-19T07:40:09.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-19</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/03/19/%E8%B4%AA%E5%A9%AA%E7%AE%97%E6%B3%95-%E5%8C%BA%E9%97%B4%E9%80%89%E7%82%B9%E9%97%AE%E9%A2%98/">贪婪算法-区间选点问题</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">贪婪算法</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/03/06/%E8%B4%AA%E5%A9%AA%E7%AE%97%E6%B3%95-%E9%80%89%E6%95%B0%E9%97%AE%E9%A2%98/" class="archive-article-date">
-  	<time datetime="2020-03-06T05:07:10.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-06</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/03/06/%E8%B4%AA%E5%A9%AA%E7%AE%97%E6%B3%95-%E9%80%89%E6%95%B0%E9%97%AE%E9%A2%98/">贪婪算法 选数问题</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">贪婪算法</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-    
-    <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/archives/2020/page/2/">2</a><a class="extend next" rel="next" href="/archives/2020/page/2/">Next &amp;raquo;</a>
-    </nav>
   
 
 
@@ -555,8 +355,8 @@
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: true,
