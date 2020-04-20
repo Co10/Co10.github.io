@@ -17,10 +17,10 @@
 <meta property="og:description" content="区间选点Plus问题描述12给定一个数轴上的 n 个区间，要求在数轴上选取最少的点使得第 i 个区间 [ai, bi] 里至少有 ci 个点。使用差分约束系统的解法解决这道题。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-04-14T02:54:18.000Z">
-<meta property="article:modified_time" content="2020-04-20T01:59:14.501Z">
+<meta property="article:modified_time" content="2020-04-20T10:59:26.320Z">
 <meta property="article:author" content="K">
-<meta property="article:tag" content="SPFA">
 <meta property="article:tag" content="差分约束">
+<meta property="article:tag" content="SPFA">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="荒芜知地" type="application/atom+xml">
@@ -194,7 +194,7 @@
 
 
 
-<h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a><strong>解题思路</strong></h2><h3 id="差分约束"><a href="#差分约束" class="headerlink" title="差分约束"></a>差分约束</h3><p>差分约束系统中的每个约束条件$x_i - x_j \leg c_k$都可变形成$x_i \leg x_j + c_k$，这与单源最短路中的不等式dis[u] ≤ dis[v] + w非常相似。因此可以把 <em>x</em><sub><em>i</em></sub> 看作图中的节点，$x_i - x_j \leg c_k$表示从节点 <em>i</em> 到节点 <em>j</em> 的一条权值为<em>c</em><sub><em>k</em></sub>的有向边。</p>
+<h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a><strong>解题思路</strong></h2><h3 id="差分约束"><a href="#差分约束" class="headerlink" title="差分约束"></a>差分约束</h3><p>差分约束系统中的每个约束条件$x_i - x_j ≤ c_k$都可变形成$x_i ≤ x_j + c_k$，这与单源最短路中的不等式dis[u] ≤ dis[v] + w非常相似。因此可以把 <em>x</em><sub><em>i</em></sub> 看作图中的节点，$x_i - x_j ≤ c_k$表示从节点 <em>i</em> 到节点 <em>j</em> 的一条权值为<em>c</em><sub><em>k</em></sub>的有向边。</p>
 <p>设<code>dis[0] = 0</code>并向每一个点连一条边，跑单源最短路，若图中存在负环，则给定的差分约束系统无解，否则， <em>x</em><sub><em>i</em></sub> = dis[<em>i</em>]为该差分约束系统的一组解。</p>
 <p>求存在负边的单源最短路可以用SPFA。</p>
 <h3 id="本题解法"><a href="#本题解法" class="headerlink" title="本题解法"></a>本题解法</h3><p>用一个前缀和<code>sum[i]</code>表示区间<code>[begin, i]</code>之内选取的点的个数，则<code>sum[b] - sum[a] ≥ c</code>表示区间<code>[a, b]</code>内至少选取了<code>c</code>个点，<code>sum[i] - sum[i - 1]</code>表示第 <code>i</code> 个点选或不选，因此可以转化成差分约束的形式。</p>
@@ -215,11 +215,11 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">SPFA</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">差分约束</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">差分约束</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">SPFA</a>
         		</li>
       		
 		</ul>
@@ -523,11 +523,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">贪婪算法</a>
+                <a href="javascript:void(0)" class="js-tag color3">二分</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">二分</a>
+                <a href="javascript:void(0)" class="js-tag color5">贪婪算法</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -547,22 +547,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">Bellman-Ford</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">SPFA</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">最短路径</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">差分约束</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">前缀和</a>
               </li>
              
@@ -571,7 +555,27 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">差分约束</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">SPFA</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">Bellman-Ford</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">最短路径</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">转盘问题</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">排序问题</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -583,7 +587,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">排序问题</a>
+                <a href="javascript:void(0)" class="js-tag color3">枚举</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -595,7 +599,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">枚举</a>
+                <a href="javascript:void(0)" class="js-tag color5">单调队列</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -611,7 +615,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">单调队列</a>
+                <a href="javascript:void(0)" class="js-tag color1">字符串处理</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -619,15 +623,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">拓扑排序</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">字符串处理</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">BFS</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">拓扑排序</a>
               </li>
              
               <li class="article-tag-list-item">
