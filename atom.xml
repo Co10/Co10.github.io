@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="co10.github.io/"/>
-  <updated>2020-06-12T00:46:40.455Z</updated>
+  <updated>2020-07-21T02:34:04.563Z</updated>
   <id>co10.github.io/</id>
   
   <author>
@@ -15,6 +15,25 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Seedr - The best FREE cloud torrenting service</title>
+    <link href="co10.github.io/2020/07/20/Seedr-The-best-FREE-cloud-torrenting-service/"/>
+    <id>co10.github.io/2020/07/20/Seedr-The-best-FREE-cloud-torrenting-service/</id>
+    <published>2020-07-20T00:22:10.000Z</published>
+    <updated>2020-07-21T02:34:04.563Z</updated>
+    
+    <content type="html"><![CDATA[<p>It’s been quite a long time since I used Seedr (<a href="https://www.seedr.cc" target="_blank" rel="noopener">https://www.seedr.cc</a>), and here is my experience.</p><a id="more"></a><p><img src="https://i.loli.net/2020/07/21/ikRurJfACIODz6Q.jpg" alt="seedr.jpg"></p><h2 id="Why-Seedr"><a href="#Why-Seedr" class="headerlink" title="Why Seedr"></a>Why Seedr</h2><p>Torrenting a movie is forbidden, as we all know, which results in FBI warning or something worse from your ISP. So the thought of clouding torrent occurred to me. That is to say, the cloud seeds via BT and once it’s done, I can download the file from cloud via HTTP. That’s how seedr works.</p><p>At first I googled several cloud torrenting service providers, and seedr, with an obvious ad label marked at the top of search results, draw my attention, and I gave it a try in 2018.</p><p>Compared to some other torrenting providers I tried  mostly at the same period, such as FileStream and Bitport, 2GB Seedr providing for free users is considerably sufficient because they only offer 1GB at most for free users. We know that a 720p or 1080p movie is usually around 1.5GB or 2GB if the quality is at least acceptable. Obviously Seedr is the best choice.</p><p><img src="https://i.loli.net/2020/07/21/Asa4Qu6lOqrZ7iy.jpg" alt="interface.jpg"></p><p><em>User Interface</em></p><h2 id="Experience"><a href="#Experience" class="headerlink" title="Experience"></a>Experience</h2><p>Seedr supports both magnet and torrent.</p><p>The experience is good, ad-free, and what’s more amazing is that you can <strong>earn free space</strong> by inviting friends, posting blogs, following pinterest and twitter, up to 4Gb at most. That helps a lot since a better quality movie is usually more than 3GB and that solves the problem a bit. </p><p><img src="https://i.loli.net/2020/07/21/18C69VDkXPb5EjF.jpg" alt="earnfreespace.jpg"></p><p><em>earn free space</em></p><h2 id="Speed"><a href="#Speed" class="headerlink" title="Speed"></a>Speed</h2><p>The speed is pretty fast. If a torrent has been downloaded before, I believe it’s stored in the cloud and thus you don’t have to wait for fetching files and just directly download it from the cloud. Mostly a YIFI torrent is instantly accessible, none of which has resulted in waiting as many times as I’ve tried. If a torrent happens to download, you just leave it and have a cup of tea. The speed is okay if it’s not dead. </p><p>Free users are allowed to keep it downloading for 3 hours, but if it fails to completely download you may cancel it and restart from the very beginning. It doesn’t bother me since it only happens few times if the torrent has good tracks and seeders.</p><p><img src="https://i.loli.net/2020/07/21/9OJGaW4FSD5MxYZ.jpg" alt="cloud speed.jpg"></p><p><em>Cloud torrenting speed when fetching files</em></p><p>The downloading speed is unlimited, and it’s extremely fast. A 2GB file would be completed within 5 minutes.</p><p><img src="https://i.loli.net/2020/07/21/DtWBTmrgjXUV8kd.jpg" alt="downloadingspeed.jpg"></p><p><em>local download speed from Seedr</em></p><h2 id="One-more-thing"><a href="#One-more-thing" class="headerlink" title="One more thing"></a>One more thing</h2><p>Sadly it currently doesn’t support to choose what to download in a torrent file. So if a torrent contains several videos up to 6GB, but each video is merely 1GB, you may fail to fetch them. Usually packed TV episodes can’t do because of this.  </p><p>Free users like me would appreciate it were it improved.</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;It’s been quite a long time since I used Seedr (&lt;a href=&quot;https://www.seedr.cc&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;https://www.seedr.cc&lt;/a&gt;), and here is my experience.&lt;/p&gt;
+    
+    </summary>
+    
+    
+    
+  </entry>
   
   <entry>
     <title>201809-3-元素选择器</title>
@@ -382,25 +401,6 @@
     <summary type="html">
     
       &lt;h1 id=&quot;方阵旋转&quot;&gt;&lt;a href=&quot;#方阵旋转&quot; class=&quot;headerlink&quot; title=&quot;方阵旋转&quot;&gt;&lt;/a&gt;&lt;strong&gt;方阵旋转&lt;/strong&gt;&lt;/h1&gt;&lt;h2 id=&quot;问题描述&quot;&gt;&lt;a href=&quot;#问题描述&quot; class=&quot;headerlink&quot; title=&quot;问题描述&quot;&gt;&lt;/a&gt;&lt;strong&gt;问题描述&lt;/strong&gt;&lt;/h2&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;蒜头君的班级里有 n^2 (1 ≤ n ≤ 20) 个同学，现在全班同学已经排列成一个 n × n 的方阵，但是老师却临时给出了一组新的列队方案&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;为了方便列队，所以老师只关注这个方阵中同学的性别，不看具体的人是谁&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;这里我们用 0 表示男生，用 1 表示女生&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;现在蒜头君告诉你同学们已经排好的方阵是什么样的，再告诉你老师希望的方阵是什么样的&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;他想知道同学们已经列好的方阵能否通过顺时针旋转变成老师希望的方阵&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;不需要旋转则输出 0&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;顺时针旋转 90° 则输出 1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;顺时针旋转 180° 则输出 2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;顺时针旋转 270° 则输出 3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;若不满足以上四种情况则输出 -1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;若满足多种情况，则输出较小的数字&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-    
-    </summary>
-    
-    
-    
-  </entry>
-  
-  <entry>
-    <title>买房</title>
-    <link href="co10.github.io/2020/05/05/%E4%B9%B0%E6%88%BF/"/>
-    <id>co10.github.io/2020/05/05/%E4%B9%B0%E6%88%BF/</id>
-    <published>2020-05-05T07:46:29.000Z</published>
-    <updated>2020-06-12T00:49:41.028Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="买房问题"><a href="#买房问题" class="headerlink" title="买房问题"></a><strong>买房问题</strong></h1><h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a><strong>问题描述</strong></h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">蒜头君从现在开始工作，年薪 N 万。他希望在蒜厂附近买一套 60 平米的房子，现在价格是 200 万。假设房子价格以每年百分之 K 增长，并且蒜头君未来年薪不变，且不吃不喝，不用交税，每年所得 N 万全都积攒起来，问第几年能够买下这套房子？（第一年年薪 N 万，房价 200 万）</span><br></pre></td></tr></table></figure><a id="more"></a><h2 id="Input"><a href="#Input" class="headerlink" title="Input"></a><strong>Input</strong></h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">一行，包含两个正整数 N (10 ≤N ≤ 50)，K (1 ≤ K ≤ 20)，中间用单个空格隔开。</span><br></pre></td></tr></table></figure><h2 id="Output"><a href="#Output" class="headerlink" title="Output"></a><strong>Output</strong></h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">如果在第 20 年或者之前就能买下这套房子，则输出一个整数 M，表示最早需要在第 M 年能买下；否则输出&quot;Impossible&quot;。</span><br><span class="line">输出时每行末尾的多余空格，不影响答案正确性</span><br></pre></td></tr></table></figure><h2 id="Sample"><a href="#Sample" class="headerlink" title="Sample"></a><strong>Sample</strong></h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Input: </span><br><span class="line">50 10</span><br><span class="line"></span><br><span class="line">Output: </span><br><span class="line">8</span><br></pre></td></tr></table></figure><h2 id="Limitation"><a href="#Limitation" class="headerlink" title="Limitation"></a><strong>Limitation</strong></h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Time limit      1000 ms</span><br><span class="line">Memory limit    32767 kb</span><br></pre></td></tr></table></figure><h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a><strong>解题思路</strong></h2><p>纯数学题。假设 <em>x</em> 年后可买房，则：</p><script type="math/tex; mode=display">xN ≥ 200(1+0.01k)^{x-1}，1 ≤ x ≤ 20</script><p>逐年枚举 <em>x</em> 求解就行，注意 <code>float</code> 的细节。</p><h2 id="源代码"><a href="#源代码" class="headerlink" title="源代码"></a><strong>源代码</strong></h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cmath&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line"><span class="keyword">int</span> n, k;</span><br><span class="line"><span class="keyword">while</span> (!(<span class="built_in">cin</span> &gt;&gt; n &gt;&gt; k).eof()) &#123;</span><br><span class="line"><span class="keyword">float</span> y = (<span class="keyword">float</span>) n / <span class="number">200</span>;</span><br><span class="line"><span class="keyword">int</span> x = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">float</span> z = (<span class="keyword">float</span>)(powf((<span class="keyword">float</span>)(<span class="number">1</span> + k * <span class="number">0.01</span>), (<span class="keyword">float</span>)(x - <span class="number">1</span>))) / x;</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> (z &gt;= y) &#123;</span><br><span class="line">x++;</span><br><span class="line"><span class="keyword">if</span> (x &gt; <span class="number">20</span>)</span><br><span class="line"><span class="keyword">break</span>;</span><br><span class="line">z = (<span class="keyword">float</span>) (powf((<span class="keyword">float</span>)(<span class="number">1</span> + k * <span class="number">0.01</span>), (<span class="keyword">float</span>)(x - <span class="number">1</span>))) / x;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> (x &gt; <span class="number">20</span>)</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="string">"Impossible"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; x &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;买房问题&quot;&gt;&lt;a href=&quot;#买房问题&quot; class=&quot;headerlink&quot; title=&quot;买房问题&quot;&gt;&lt;/a&gt;&lt;strong&gt;买房问题&lt;/strong&gt;&lt;/h1&gt;&lt;h2 id=&quot;问题描述&quot;&gt;&lt;a href=&quot;#问题描述&quot; class=&quot;headerlink&quot; title=&quot;问题描述&quot;&gt;&lt;/a&gt;&lt;strong&gt;问题描述&lt;/strong&gt;&lt;/h2&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;蒜头君从现在开始工作，年薪 N 万。他希望在蒜厂附近买一套 60 平米的房子，现在价格是 200 万。假设房子价格以每年百分之 K 增长，并且蒜头君未来年薪不变，且不吃不喝，不用交税，每年所得 N 万全都积攒起来，问第几年能够买下这套房子？（第一年年薪 N 万，房价 200 万）&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
     
     </summary>
     
