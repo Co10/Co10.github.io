@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"co10.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Histogram">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Histogram">
+<meta property="og:url" content="co10.github.io/2020/10/07/Histogram/index.html">
+<meta property="og:site_name" content="荒芜知地">
+<meta property="og:description" content="Histogram">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-10-07T07:08:14.000Z">
+<meta property="article:modified_time" content="2021-01-14T07:24:25.006Z">
+<meta property="article:author" content="K">
+<meta property="article:tag" content="HTML">
+<meta property="article:tag" content="D3">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="co10.github.io/2020/10/07/Histogram/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Histogram | 荒芜知地</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="荒芜知地" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">荒芜知地</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Knowhere</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">41</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">76</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="co10.github.io/2020/10/07/Histogram/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="K">
+      <meta itemprop="description" content="You know Knowhere is nowhere, but KnowWhere.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="荒芜知地">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Histogram
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-10-07 15:08:14" itemprop="dateCreated datePublished" datetime="2020-10-07T15:08:14+08:00">2020-10-07</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Visualization/" itemprop="url" rel="index"><span itemprop="name">Visualization</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/10/07/Histogram/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/10/07/Histogram/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Histogram"><a href="#Histogram" class="headerlink" title="Histogram"></a>Histogram</h1><a id="more"></a>
+<h2 id="设计思路"><a href="#设计思路" class="headerlink" title="设计思路"></a>设计思路</h2><p>直方图用于统计样本及其数量的度量，由于中国疫情已经过去，使用历史数据筛选出来太麻烦了，所以我找了美国疫情的当天的数据(Cases, Deaths, Recovery, Hospitalization)<sup><a href="https://en.wikipedia.org/wiki/COVID-19_pandemic_in_the_United_States#covid19-container" target="_blank" rel="noopener">[1]</a></sup>。</p>
+<p>先找一个模板<sup><a href="https://www.d3-graph-gallery.com/graph/histogram_basic.html" target="_blank" rel="noopener">[2]</a></sup>，然后修改。</p>
+<p>后来我又加入了<code>button</code>的功能<sup><a href="https://www.d3-graph-gallery.com/graph/line_change_data.html" target="_blank" rel="noopener">[3]</a></sup>，用于查看那4类数据。</p>
+<h2 id="效果图"><a href="#效果图" class="headerlink" title="效果图"></a>效果图</h2><html>
+    <body>
+        <p>Covid-19 statistics in US of all states, 7th, Oct, 2020</p>
+        <meta charset="utf-8">
+        <script src="https://d3js.org/d3.v4.js"></script>
+        <style>
+            .button {
+                background-color: #fff5eb;
+                border: none;
+                border-radius: 8px;
+                color: #936223;
+                padding: 8px 20px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                box-shadow: 0 8px 12px 0 rgba(0,0,0,0.2), 0 3px 6px 0 rgba(0,0,0,0.19);
+            }
+        </style>
+        <button class="button" onclick="choose(1)">Cases</button>
+        <button class="button" onclick="choose(2)">Deaths</button>
+        <button class="button" onclick="choose(3)">Recov.</button>
+        <button class="button" onclick="choose(4)">Hosp.</button>
+        <div id="covid19"></div>
+        <script>
+            var p = d3.select("body").selectAll("p");
+            var margin = {top: 30, right: 30, bottom: 30, left: 40},
+                width = 600 - margin.left - margin.right,
+                height = 450 - margin.top - margin.bottom;
+            var svg = d3.select("#covid19")
+                .append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+            var x = d3.scaleLinear().range([0, width]);
+            var xAxis = d3.axisBottom().scale(x);
+            svg.append("g")
+                .attr("transform", "translate(0," + height + ")")
+                .attr("class","myXaxis");
+            var y = d3.scaleLinear().range([height, 0]);
+            var yAxis = d3.axisLeft().scale(y);
+            svg.append("g")
+                .attr("class","myYaxis");
+            var cases = [], deaths = [], recovery = [], hosp = [];
+            d3.csv("https://raw.githubusercontent.com/Co10/d3_files/master/CSV_files/02/covid-19_US_7th%2COct%2C20.csv", function(data){
+                data.map(function(d) {
+                    cases.push(d.Cases);
+                    deaths.push(d.Deaths);
+                    recovery.push(d.Recovery);
+                    hosp.push(d.Hospitalization);
+                });
+            })
+            function choose(choice) {
+                var datas = [];
+                switch(choice){
+                    case 1: datas = cases; break;
+                    case 2: datas = deaths; break;
+                    case 3: datas = recovery; break;
+                    case 4: datas = hosp; break;
+                    default: datas = cases; break;
+                }
+                update(datas);
+            }
+            function update(datas) {
+                var durSpeed = 1000;
+                var maxX = d3.max(datas, function(d) { return +d });
+                x.domain([0, maxX])
+                svg.selectAll(".myXaxis").transition()
+                    .duration(durSpeed)
+                    .call(xAxis);
+                var bins = d3.histogram()
+                    .domain(x.domain())
+                    .thresholds(x.ticks(90))
+                    (datas);
+                y.domain([0, d3.max(bins, function(d) { return d.length; })]);
+                svg.selectAll(".myYaxis")
+                    .transition()
+                    .duration(durSpeed)
+                    .call(yAxis);
+                var u = svg.selectAll(".rectTrans")
+                    .data(bins);
+                u.enter()
+                    .append("rect")
+                    .attr("class", "rectTrans")
+                    .merge(u)
+                    .transition()
+                    .duration(durSpeed)
+                    .attr("x", 1)
+                    .attr("transform", function(d) { return "translate(" + x(d.x0) + "," + y(d.length) + ")"; })
+                    .attr("width", function(d) { return x(d.x1) - x(d.x0) - 1; })
+                    .attr("height", function(d) { return height - y(d.length); })
+                    .style("fill", "#f26e5d");
+                svg.append("text")
+                    .attr("x", width)
+                    .attr("y", height+10)
+                    .text("count")
+                    .style("font-size", "10px")
+                    .attr("alignment-baseline","middle")
+                svg.append("text")
+                    .attr("x", 6)
+                    .attr("y", 0)
+                    .text("frequency")
+                    .style("font-size", "10px")
+                    .attr("alignment-baseline","middle")
+            }
+            choose(1);
+        </script>
+    </body>
+</html>
+
+<h2 id="HTML源代码"><a href="#HTML源代码" class="headerlink" title="HTML源代码"></a>HTML源代码</h2><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">head</span>&gt;</span><span class="tag">&lt;<span class="name">p</span>&gt;</span>Covid-19 statistics in US of all states, 7th, Oct, 2020<span class="tag">&lt;/<span class="name">p</span>&gt;</span><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"utf-8"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://d3js.org/d3.v4.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="css">            <span class="selector-class">.button</span> &#123;</span></span><br><span class="line"><span class="css">                <span class="selector-tag">background-color</span>: <span class="selector-id">#fff5eb</span>;</span></span><br><span class="line">                border: none;</span><br><span class="line">                border-radius: 8px;</span><br><span class="line"><span class="css">                <span class="selector-tag">color</span>: <span class="selector-id">#936223</span>;</span></span><br><span class="line">                padding: 8px 20px;</span><br><span class="line">                text-align: center;</span><br><span class="line">                text-decoration: none;</span><br><span class="line">                display: inline-block;</span><br><span class="line">                font-size: 16px;</span><br><span class="line"><span class="css">                <span class="selector-tag">box-shadow</span>: 0 8<span class="selector-tag">px</span> 12<span class="selector-tag">px</span> 0 <span class="selector-tag">rgba</span>(0,0,0,0<span class="selector-class">.2</span>), 0 3<span class="selector-tag">px</span> 6<span class="selector-tag">px</span> 0 <span class="selector-tag">rgba</span>(0,0,0,0<span class="selector-class">.19</span>);</span></span><br><span class="line">            &#125;</span><br><span class="line">        <span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">button</span> <span class="attr">class</span> = <span class="string">"button"</span> <span class="attr">onclick</span>=<span class="string">"choose(1)"</span>&gt;</span>Cases<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">button</span> <span class="attr">class</span> = <span class="string">"button"</span> <span class="attr">onclick</span>=<span class="string">"choose(2)"</span>&gt;</span>Deaths<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">button</span> <span class="attr">class</span> = <span class="string">"button"</span> <span class="attr">onclick</span>=<span class="string">"choose(3)"</span>&gt;</span>Recov.<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">button</span> <span class="attr">class</span> = <span class="string">"button"</span> <span class="attr">onclick</span>=<span class="string">"choose(4)"</span>&gt;</span>Hosp.<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span> = <span class="string">"covid19"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="actionscript">            <span class="keyword">var</span> p = d3.select(<span class="string">"body"</span>).selectAll(<span class="string">"p"</span>);</span></span><br><span class="line"><span class="actionscript">            p.style(<span class="string">"color"</span>,<span class="string">"#87753c"</span>).style(<span class="string">"font-size"</span>,<span class="string">"24px"</span>);</span></span><br><span class="line"></span><br><span class="line"><span class="actionscript">            <span class="keyword">var</span> margin = &#123;top: <span class="number">30</span>, right: <span class="number">30</span>, bottom: <span class="number">30</span>, left: <span class="number">40</span>&#125;,</span></span><br><span class="line">                width = 600 - margin.left - margin.right,</span><br><span class="line">                height = 450 - margin.top - margin.bottom;</span><br><span class="line"></span><br><span class="line"><span class="actionscript">            <span class="keyword">var</span> svg = d3.select(<span class="string">"#covid19"</span>)</span></span><br><span class="line"><span class="actionscript">                .append(<span class="string">"svg"</span>)</span></span><br><span class="line"><span class="actionscript">                .attr(<span class="string">"width"</span>, width + margin.left + margin.right)</span></span><br><span class="line"><span class="actionscript">                .attr(<span class="string">"height"</span>, height + margin.top + margin.bottom)</span></span><br><span class="line"><span class="actionscript">                .append(<span class="string">"g"</span>)</span></span><br><span class="line"><span class="actionscript">                .attr(<span class="string">"transform"</span>, <span class="string">"translate("</span> + margin.left + <span class="string">","</span> + margin.top + <span class="string">")"</span>);</span></span><br><span class="line"></span><br><span class="line"><span class="actionscript">            <span class="keyword">var</span> x = d3.scaleLinear().range([<span class="number">0</span>, width]);</span></span><br><span class="line"><span class="actionscript">            <span class="keyword">var</span> xAxis = d3.axisBottom().scale(x);</span></span><br><span class="line"><span class="actionscript">            svg.append(<span class="string">"g"</span>)</span></span><br><span class="line"><span class="actionscript">                .attr(<span class="string">"transform"</span>, <span class="string">"translate(0,"</span> + height + <span class="string">")"</span>)</span></span><br><span class="line"><span class="actionscript">                .attr(<span class="string">"class"</span>,<span class="string">"myXaxis"</span>);</span></span><br><span class="line"></span><br><span class="line"><span class="actionscript">            <span class="keyword">var</span> y = d3.scaleLinear().range([height, <span class="number">0</span>]);</span></span><br><span class="line"><span class="actionscript">            <span class="keyword">var</span> yAxis = d3.axisLeft().scale(y);</span></span><br><span class="line"><span class="actionscript">            svg.append(<span class="string">"g"</span>)</span></span><br><span class="line"><span class="actionscript">                .attr(<span class="string">"class"</span>,<span class="string">"myYaxis"</span>);</span></span><br><span class="line">            </span><br><span class="line"><span class="actionscript">            <span class="keyword">var</span> cases = [], deaths = [], recovery = [], hosp = [];</span></span><br><span class="line"><span class="actionscript">            d3.csv(<span class="string">"https://raw.githubusercontent.com/Co10/d3_files/master/CSV_files/02/covid-19_US_7th%2COct%2C20.csv"</span>, <span class="function"><span class="keyword">function</span><span class="params">(data)</span></span>&#123;</span></span><br><span class="line"><span class="actionscript">                data.map(<span class="function"><span class="keyword">function</span><span class="params">(d)</span> </span>&#123;</span></span><br><span class="line">                    cases.push(d.Cases);</span><br><span class="line">                    deaths.push(d.Deaths);</span><br><span class="line">                    recovery.push(d.Recovery);</span><br><span class="line">                    hosp.push(d.Hospitalization);</span><br><span class="line">                &#125;);</span><br><span class="line">            &#125;)</span><br><span class="line"><span class="actionscript">            <span class="function"><span class="keyword">function</span> <span class="title">choose</span><span class="params">(choice)</span> </span>&#123;</span></span><br><span class="line"><span class="actionscript">                <span class="keyword">var</span> datas = [];</span></span><br><span class="line"><span class="actionscript">                <span class="keyword">switch</span>(choice)&#123;</span></span><br><span class="line"><span class="actionscript">                    <span class="keyword">case</span> <span class="number">1</span>: datas = cases; <span class="keyword">break</span>;</span></span><br><span class="line"><span class="actionscript">                    <span class="keyword">case</span> <span class="number">2</span>: datas = deaths; <span class="keyword">break</span>;</span></span><br><span class="line"><span class="actionscript">                    <span class="keyword">case</span> <span class="number">3</span>: datas = recovery; <span class="keyword">break</span>;</span></span><br><span class="line"><span class="actionscript">                    <span class="keyword">case</span> <span class="number">4</span>: datas = hosp; <span class="keyword">break</span>;</span></span><br><span class="line"><span class="actionscript">                    <span class="keyword">default</span>: datas = cases; <span class="keyword">break</span>;</span></span><br><span class="line">                &#125;</span><br><span class="line">                update(datas);</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line"><span class="actionscript">            <span class="function"><span class="keyword">function</span> <span class="title">update</span><span class="params">(datas)</span> </span>&#123;</span></span><br><span class="line"><span class="actionscript">                <span class="keyword">var</span> durSpeed = <span class="number">1000</span>;</span></span><br><span class="line"><span class="actionscript">                <span class="keyword">var</span> maxX = d3.max(datas, <span class="function"><span class="keyword">function</span><span class="params">(d)</span> </span>&#123; <span class="keyword">return</span> +d &#125;);</span></span><br><span class="line">                x.domain([0, maxX])</span><br><span class="line"><span class="actionscript">                svg.selectAll(<span class="string">".myXaxis"</span>).transition()</span></span><br><span class="line">                    .duration(durSpeed)</span><br><span class="line">                    .call(xAxis);</span><br><span class="line"></span><br><span class="line"><span class="actionscript">                <span class="keyword">var</span> bins = d3.histogram()</span></span><br><span class="line">                    .domain(x.domain())</span><br><span class="line">                    .thresholds(x.ticks(90))</span><br><span class="line">                    (datas);</span><br><span class="line"></span><br><span class="line"><span class="actionscript">                y.domain([<span class="number">0</span>, d3.max(bins, <span class="function"><span class="keyword">function</span><span class="params">(d)</span> </span>&#123; <span class="keyword">return</span> d.length; &#125;)]);</span></span><br><span class="line"><span class="actionscript">                svg.selectAll(<span class="string">".myYaxis"</span>)</span></span><br><span class="line">                    .transition()</span><br><span class="line">                    .duration(durSpeed)</span><br><span class="line">                    .call(yAxis);</span><br><span class="line">                    </span><br><span class="line"><span class="actionscript">                <span class="keyword">var</span> u = svg.selectAll(<span class="string">".rectTrans"</span>)</span></span><br><span class="line">                    .data(bins);</span><br><span class="line">                </span><br><span class="line">                u.enter()</span><br><span class="line"><span class="actionscript">                    .append(<span class="string">"rect"</span>)</span></span><br><span class="line"><span class="actionscript">                    .attr(<span class="string">"class"</span>, <span class="string">"rectTrans"</span>)</span></span><br><span class="line">                    .merge(u)</span><br><span class="line">                    .transition()</span><br><span class="line">                    .duration(durSpeed)</span><br><span class="line"><span class="actionscript">                    .attr(<span class="string">"x"</span>, <span class="number">1</span>)</span></span><br><span class="line"><span class="actionscript">                    .attr(<span class="string">"transform"</span>, <span class="function"><span class="keyword">function</span><span class="params">(d)</span> </span>&#123; <span class="keyword">return</span> <span class="string">"translate("</span> + x(d.x0) + <span class="string">","</span> + y(d.length) + <span class="string">")"</span>; &#125;)</span></span><br><span class="line"><span class="actionscript">                    .attr(<span class="string">"width"</span>, <span class="function"><span class="keyword">function</span><span class="params">(d)</span> </span>&#123; <span class="keyword">return</span> x(d.x1) - x(d.x0) - <span class="number">1</span>; &#125;)</span></span><br><span class="line"><span class="actionscript">                    .attr(<span class="string">"height"</span>, <span class="function"><span class="keyword">function</span><span class="params">(d)</span> </span>&#123; <span class="keyword">return</span> height - y(d.length); &#125;)</span></span><br><span class="line"><span class="actionscript">                    .style(<span class="string">"fill"</span>, <span class="string">"#f26e5d"</span>);</span></span><br><span class="line">                    </span><br><span class="line"></span><br><span class="line"><span class="actionscript">                svg.append(<span class="string">"text"</span>)</span></span><br><span class="line"><span class="actionscript">                    .attr(<span class="string">"x"</span>, width)</span></span><br><span class="line"><span class="actionscript">                    .attr(<span class="string">"y"</span>, height+<span class="number">10</span>)</span></span><br><span class="line"><span class="actionscript">                    .text(<span class="string">"count"</span>)</span></span><br><span class="line"><span class="actionscript">                    .style(<span class="string">"font-size"</span>, <span class="string">"10px"</span>)</span></span><br><span class="line"><span class="actionscript">                    .attr(<span class="string">"alignment-baseline"</span>,<span class="string">"middle"</span>)</span></span><br><span class="line"><span class="actionscript">                svg.append(<span class="string">"text"</span>)</span></span><br><span class="line"><span class="actionscript">                    .attr(<span class="string">"x"</span>, <span class="number">6</span>)</span></span><br><span class="line"><span class="actionscript">                    .attr(<span class="string">"y"</span>, <span class="number">0</span>)</span></span><br><span class="line"><span class="actionscript">                    .text(<span class="string">"frequency"</span>)</span></span><br><span class="line"><span class="actionscript">                    .style(<span class="string">"font-size"</span>, <span class="string">"10px"</span>)</span></span><br><span class="line"><span class="actionscript">                    .attr(<span class="string">"alignment-baseline"</span>,<span class="string">"middle"</span>)</span></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            choose(1);</span><br><span class="line">        <span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="实现方法"><a href="#实现方法" class="headerlink" title="实现方法"></a>实现方法</h2><p><code>d3.histogram()</code>创建直方图。用<code>bins</code>存每一桶的数据。</p>
+<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><p>数据选的是2020年10月7日(或者说是6日)美国各个州的感染、死亡、恢复、住院数量，各个州差别可能会比较大，所以数据还是太稀疏了，有些数据中间的数据点空了一大片。</p>
+<p>修正方法是将X轴中间的空白处折叠，但是我不会折叠啊……</p>
+<p>本来也想加入渐变色的，越后面颜色越深表示越严重，但是改来改去没改出来……</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>[1] <a href="https://en.wikipedia.org/wiki/COVID-19_pandemic_in_the_United_States#covid19-container" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/COVID-19_pandemic_in_the_United_States#covid19-container</a></p>
+<p>[2] <a href="https://www.d3-graph-gallery.com/graph/histogram_basic.html" target="_blank" rel="noopener">https://www.d3-graph-gallery.com/graph/histogram_basic.html</a></p>
+<p>[3] <a href="https://www.d3-graph-gallery.com/graph/line_change_data.html" target="_blank" rel="noopener">https://www.d3-graph-gallery.com/graph/line_change_data.html</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/HTML/" rel="tag"><i class="fa fa-tag"></i> HTML</a>
+              <a href="/tags/D3/" rel="tag"><i class="fa fa-tag"></i> D3</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/09/25/Grouped-Bar/" rel="prev" title="Grouped Bar">
+      <i class="fa fa-chevron-left"></i> Grouped Bar
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/10/07/Boxplot/" rel="next" title="Boxplot">
+      Boxplot <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Histogram"><span class="nav-number">1.</span> <span class="nav-text">Histogram</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#设计思路"><span class="nav-number">1.1.</span> <span class="nav-text">设计思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#效果图"><span class="nav-number">1.2.</span> <span class="nav-text">效果图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HTML源代码"><span class="nav-number">1.3.</span> <span class="nav-text">HTML源代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现方法"><span class="nav-number">1.4.</span> <span class="nav-text">实现方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Summary"><span class="nav-number">1.5.</span> <span class="nav-text">Summary</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reference"><span class="nav-number">1.6.</span> <span class="nav-text">Reference</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="K"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">K</p>
+  <div class="site-description" itemprop="description">You know Knowhere is nowhere, but KnowWhere.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">76</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:colivener@outlook.com" title="E-Mail → mailto:colivener@outlook.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+
+
+    <div class="links-of-blogroll motion-element links-of-blogroll-undefined">
+      <div class="links-of-blogroll-title">
+        <!-- modify icon to fire by szw -->
+        <i class="fa fa-history fa-" aria-hidden="true"></i>
+        
+      </div>
+      <ul class="links-of-blogroll-list">
+        
+        
+          <li>
+            <a href="/" title="" target="_blank"></a>
+          </li>
+        
+          <li>
+            <a href="/" title="" target="_blank"></a>
+          </li>
+        
+          <li>
+            <a href="/" title="" target="_blank"></a>
+          </li>
+        
+          <li>
+            <a href="/" title="" target="_blank"></a>
+          </li>
+        
+          <li>
+            <a href="/" title="" target="_blank"></a>
+          </li>
+        
+      </ul>
+    </div>
+
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">K</span>
+</div>
+  <div class="addthis_inline_share_toolbox">
+    <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5e9ea4a022889786" async="async"></script>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'nydWvj5q5w14PIVolKD4JOtS-MdYXbMMI',
+      appKey     : '7vFccLCEXIsFn1VxvpyQAibm',
+      placeholder: "knowhere to know here",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

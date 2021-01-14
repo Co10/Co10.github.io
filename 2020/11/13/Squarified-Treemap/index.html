@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"co10.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Squarified TreemapAlgorithmprocedure squarify(list of real children, list of real row, real w)begin	real c &#x3D; head(children);	if worst(row, w)  worst(row++[c], w) then		squarify(tail(children), row++[">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Squarified Treemap">
+<meta property="og:url" content="co10.github.io/2020/11/13/Squarified-Treemap/index.html">
+<meta property="og:site_name" content="荒芜知地">
+<meta property="og:description" content="Squarified TreemapAlgorithmprocedure squarify(list of real children, list of real row, real w)begin	real c &#x3D; head(children);	if worst(row, w)  worst(row++[c], w) then		squarify(tail(children), row++[">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.researchgate.net/profile/Fernando_Marson3/publication/47696530/figure/fig13/AS:325701468213287@1454664689810/Example-of-squarified-treemap-process-6.png">
+<meta property="og:image" content="https://i.loli.net/2020/11/22/lBhtcrIbQzq6Nf9.png">
+<meta property="og:image" content="https://i.loli.net/2020/11/22/aFRp5SKOoCrzjyi.png">
+<meta property="article:published_time" content="2020-11-13T07:27:59.000Z">
+<meta property="article:modified_time" content="2021-01-14T07:30:14.292Z">
+<meta property="article:author" content="K">
+<meta property="article:tag" content="HTML">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.researchgate.net/profile/Fernando_Marson3/publication/47696530/figure/fig13/AS:325701468213287@1454664689810/Example-of-squarified-treemap-process-6.png">
+
+<link rel="canonical" href="co10.github.io/2020/11/13/Squarified-Treemap/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Squarified Treemap | 荒芜知地</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="荒芜知地" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">荒芜知地</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Knowhere</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">41</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">76</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="co10.github.io/2020/11/13/Squarified-Treemap/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="K">
+      <meta itemprop="description" content="You know Knowhere is nowhere, but KnowWhere.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="荒芜知地">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Squarified Treemap
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-11-13 15:27:59" itemprop="dateCreated datePublished" datetime="2020-11-13T15:27:59+08:00">2020-11-13</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Visualization/" itemprop="url" rel="index"><span itemprop="name">Visualization</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/11/13/Squarified-Treemap/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/11/13/Squarified-Treemap/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Squarified-Treemap"><a href="#Squarified-Treemap" class="headerlink" title="Squarified Treemap"></a>Squarified Treemap</h1><h2 id="Algorithm"><a href="#Algorithm" class="headerlink" title="Algorithm"></a>Algorithm</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">procedure squarify(list of real children, list of real row, real w)</span><br><span class="line">begin</span><br><span class="line">	real c = head(children);</span><br><span class="line">	<span class="keyword">if</span> worst(row, w)  worst(row++[c], w) then</span><br><span class="line">		squarify(tail(children), row++[c], w)</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		layoutrow(row);</span><br><span class="line">		squarify(children, [], width());</span><br><span class="line">	fi</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="https://www.researchgate.net/profile/Fernando_Marson3/publication/47696530/figure/fig13/AS:325701468213287@1454664689810/Example-of-squarified-treemap-process-6.png" alt="img-001"></p>
+<p>如图所示，数据为 <code>[6, 6, 4, 3, 2, 2, 1]</code> , <code>sum = 24 = 6 * 4</code> 所以 treemap 可用 $6×4$ 的矩形表示。</p>
+<ol>
+<li>放入 6，优先靠着短边放，比例为 <code>4:1.5</code>， 标记灰色(表示可更改)。</li>
+<li>放入 6，测试与原先放置的 6 堆叠，靠着短边放，所得 2 个 $2×3$ 的矩形，<code>长边:短边=3:2</code> ，小于 <code>4:1.5</code> 的放置方式。可取，同时加入灰色标记。</li>
+<li>放入 4， 如 Step 3 所示，<code>max(长边:短边) in step3</code> &gt; <code>max(长边:短边) in step 4</code> ，故采取 Step 4 的放置方式，同时把原先标记灰色的部分画出来，标记白色(表示不可更改)。灰色清空，新加入的 4 标记灰色。</li>
+<li>循环方式如前述，最后把剩余空间填满。</li>
+</ol>
+<p>代码采用递归，判断思路如上。</p>
+<h2 id="Major-function-code-of-the-Algorithm"><a href="#Major-function-code-of-the-Algorithm" class="headerlink" title="Major function code of the Algorithm"></a>Major function code of the Algorithm</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">squarify</span>(<span class="params">children, modifiable, w, h, sum, m_area</span>) </span>&#123;</span><br><span class="line">            <span class="comment">//console.log("current in: ",children[0], modifiable);</span></span><br><span class="line">            <span class="keyword">if</span>(children.length === <span class="number">0</span>)&#123;</span><br><span class="line">                <span class="built_in">console</span>.log(<span class="string">"quit"</span>);</span><br><span class="line">                <span class="keyword">var</span> to_right = modifiable[<span class="number">0</span>].verti;</span><br><span class="line">                draw(modifiable, to_right);<span class="comment">// ..............</span></span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">var</span> c = children.shift();</span><br><span class="line">            <span class="keyword">var</span> _area = c, _wid, _hei, verti;</span><br><span class="line">            <span class="keyword">if</span>(modifiable.length === <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="comment">//console.log("case 0");</span></span><br><span class="line">                m_area += c;</span><br><span class="line">                <span class="keyword">if</span>(w &lt;= h) &#123;<span class="comment">// vertical set</span></span><br><span class="line">                    _wid = w;</span><br><span class="line">                    verti = <span class="literal">true</span>;</span><br><span class="line">                    _hei = c / _wid;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span> &#123;<span class="comment">// horizontal set</span></span><br><span class="line">                    _hei = h;</span><br><span class="line">                    _wid = c / _hei;</span><br><span class="line">                    verti = <span class="literal">false</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                modifiable.push(&#123;_area,_wid,_hei,verti&#125;);</span><br><span class="line">                squarify(children,modifiable,w,h,sum, m_area);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="comment">//case 1</span></span><br><span class="line">                <span class="keyword">var</span> leftover = sum - m_area;</span><br><span class="line">                <span class="keyword">var</span> neww, newh;</span><br><span class="line">                <span class="keyword">if</span> (w &gt; h) &#123;</span><br><span class="line">                    neww = leftover / h;</span><br><span class="line">                    newh = h;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span> &#123;</span><br><span class="line">                    neww = w;</span><br><span class="line">                    newh = leftover / w;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span> (neww &lt;= newh)&#123;<span class="comment">// vertical set</span></span><br><span class="line">                    _wid = neww;</span><br><span class="line">                    _hei = c / _wid;</span><br><span class="line">                    verti = <span class="literal">true</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span>&#123;<span class="comment">// horizontal set</span></span><br><span class="line">                    _wid = c / newh;</span><br><span class="line">                    _hei = newh;</span><br><span class="line">                    verti= <span class="literal">false</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">//console.log("w,h",_wid,_hei);</span></span><br><span class="line">                <span class="keyword">var</span> temp1 = <span class="built_in">Math</span>.max(_wid,_hei)/<span class="built_in">Math</span>.min(_wid,_hei);<span class="comment">// put in new area</span></span><br><span class="line"></span><br><span class="line">                <span class="comment">// case 2</span></span><br><span class="line">                <span class="keyword">var</span> temp_area = m_area + c;<span class="comment">// else include in old area</span></span><br><span class="line">                <span class="keyword">var</span> w1, h1, temp2;</span><br><span class="line">                <span class="keyword">if</span>(w &gt; h) &#123;</span><br><span class="line">                    w1 = temp_area / h;</span><br><span class="line">                    h1 = h;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span> &#123;</span><br><span class="line">                    w1 = w;</span><br><span class="line">                    h1 = temp_area / w;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span>(w1 &lt;= h1)&#123;<span class="comment">// stack up, width is the same</span></span><br><span class="line">                    <span class="built_in">console</span>.log(<span class="string">"current 1"</span>, w1, h1);</span><br><span class="line">                    temp2 = <span class="built_in">Math</span>.max(w1,c/w1)/<span class="built_in">Math</span>.min(w1,c/w1);<span class="comment">// put in old area, w1/(c/w1), wid:hei</span></span><br><span class="line">                    <span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; modifiable.length; i++)</span><br><span class="line">                        temp2 = <span class="built_in">Math</span>.max(temp2, <span class="built_in">Math</span>.max(w1,modifiable[i]._area/w1)/<span class="built_in">Math</span>.min(w1,modifiable[i]._area/w1));</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span>&#123;<span class="comment">//stack right, height is the same</span></span><br><span class="line">                    <span class="built_in">console</span>.log(<span class="string">"current 2"</span>, w1, h1);</span><br><span class="line">                    temp2 = <span class="built_in">Math</span>.max(h1,c/h1)/<span class="built_in">Math</span>.min(h1,c/h1);</span><br><span class="line">                    <span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; modifiable.length; i++)</span><br><span class="line">                        temp2 = <span class="built_in">Math</span>.max(temp2, <span class="built_in">Math</span>.max(modifiable[i]._area/h1,h1)/<span class="built_in">Math</span>.min(modifiable[i]._area/h1,h1));</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">//console.log("t1,t2",temp1,temp2);</span></span><br><span class="line">                </span><br><span class="line">                <span class="comment">// case 1</span></span><br><span class="line">                <span class="keyword">if</span> (temp1 &lt;= temp2)&#123;<span class="comment">// clear all modifiable, draw</span></span><br><span class="line">                    <span class="comment">//console.log("case 1");</span></span><br><span class="line">                    <span class="keyword">var</span> to_right = <span class="literal">true</span>;</span><br><span class="line">                    <span class="keyword">if</span>(w &lt;= h)</span><br><span class="line">                        to_right = <span class="literal">false</span>;</span><br><span class="line">                    draw(modifiable, to_right);<span class="comment">// ..............</span></span><br><span class="line">                    </span><br><span class="line">                    modifiable = [];<span class="comment">//clear it</span></span><br><span class="line">                    modifiable.push(&#123;_area,_wid,_hei,verti&#125;);</span><br><span class="line">                    squarify(children,modifiable,neww,newh,sum-m_area,_area);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">//case 2</span></span><br><span class="line">                <span class="keyword">else</span>&#123;<span class="comment">// put in modifiable</span></span><br><span class="line">                    <span class="comment">//console.log("case 2");</span></span><br><span class="line">                    <span class="keyword">if</span>(w &gt; h)&#123;</span><br><span class="line">                        <span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; modifiable.length; i++)&#123;</span><br><span class="line">                            <span class="keyword">var</span> cur_area = modifiable[i]._area;</span><br><span class="line">                            <span class="keyword">var</span> h_tem = cur_area / w1;</span><br><span class="line">                            modifiable[i]._wid = w1;</span><br><span class="line">                            modifiable[i]._hei = h_tem;</span><br><span class="line">                            modifiable[i].verti = <span class="literal">true</span>;</span><br><span class="line">                        &#125;</span><br><span class="line">                        _wid = w1;</span><br><span class="line">                        _hei = c / _wid;</span><br><span class="line">                        verti = <span class="literal">true</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="keyword">else</span>&#123;</span><br><span class="line">                        <span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; modifiable.length; i++)&#123;</span><br><span class="line">                            <span class="keyword">var</span> cur_area = modifiable[i]._area;</span><br><span class="line">                            <span class="keyword">var</span> w_tem = cur_area / h1;</span><br><span class="line">                            modifiable[i]._wid = w_tem;</span><br><span class="line">                            modifiable[i]._hei = h1;</span><br><span class="line">                            modifiable[i].verti = <span class="literal">false</span>;</span><br><span class="line">                        &#125;</span><br><span class="line">                        _wid = c / h1;</span><br><span class="line">                        _hei = h1;</span><br><span class="line">                        verti = <span class="literal">false</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                    modifiable.push(&#123;_area,_wid,_hei,verti&#125;);</span><br><span class="line">                    m_area += c;</span><br><span class="line">                    squarify(children,modifiable,w,h,sum,m_area);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Output"><a href="#Output" class="headerlink" title="Output"></a>Output</h2><p>数据采用 <code>javascript</code> 的 <code>Math.random()</code> 随机生成，个数为 10 ，范围 1 到 100 。(可是这个函数生成的随机数不太随机……)</p>
+<p>整体 Treemap 的长宽比固定为 3:2 ，其中一个生成效果图如下：</p>
+<p><img src="https://i.loli.net/2020/11/22/lBhtcrIbQzq6Nf9.png" alt="image.png"></p>
+<p>有点问题就是，如果随机生成的这些数十分接近的话，会变成堆叠的长矩形……</p>
+<p><img src="https://i.loli.net/2020/11/22/aFRp5SKOoCrzjyi.png" alt="image.png"></p>
+<h2 id="Source-Code"><a href="#Source-Code" class="headerlink" title="Source Code"></a>Source Code</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;html&gt;</span><br><span class="line">    &lt;meta charset=<span class="string">"utf-8"</span>&gt;</span><br><span class="line">    &lt;header&gt;treemap&lt;<span class="regexp">/header&gt;</span></span><br><span class="line"><span class="regexp">    &lt;body&gt;</span></span><br><span class="line"><span class="regexp">    &lt;svg id="svgOne" viewBox="0 0 610 410" xmlns="http:/</span><span class="regexp">/www.w3.org/</span><span class="number">2000</span>/svg<span class="string">"&gt;&lt;/svg&gt;</span></span><br><span class="line"><span class="string">    &lt;script&gt;</span></span><br><span class="line"><span class="string">        var margin = &#123;top: 10, right: 10, bottom: 10, left: 10&#125;,</span></span><br><span class="line"><span class="string">          width = 600 - margin.left - margin.right,</span></span><br><span class="line"><span class="string">          height = 400 - margin.top - margin.bottom;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        var last_vert = true, beginx = margin.left, beginy = margin.top;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        var colori = 0;</span></span><br><span class="line"><span class="string">        var colorset = ['#ABDE9C','#5EAC39', '#688F30', '#256E4B', '#285D77', '#3A6CAD', '#489CC2',</span></span><br><span class="line"><span class="string">        '#D4A77F', '#E1CBA6', '#EBECC6', '#E3F2D8', '#EDC9DB', '#CFB5E6', '#ADA8E2'];</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        var randtimes = 10, maxrand = 100;</span></span><br><span class="line"><span class="string">        var data = [];</span></span><br><span class="line"><span class="string">        for(var i = 0; i &lt; randtimes; i++)</span></span><br><span class="line"><span class="string">            data.push(Math.floor((Math.random() * maxrand) + 1));</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        //var data = [2, 4, 23, 33, 69, 90, 54, 22, 61, 34, 32];</span></span><br><span class="line"><span class="string">        data.sort(function(a, b)&#123;return b - a&#125;);</span></span><br><span class="line"><span class="string">        </span></span><br><span class="line"><span class="string">        var sum = data.reduce(function(a, b)&#123; return a + b; &#125;, 0);</span></span><br><span class="line"><span class="string">        console.log("</span>data, sum<span class="string">", data, sum);</span></span><br><span class="line"><span class="string">        //var tempsum = prime_factor(sum);</span></span><br><span class="line"><span class="string">        //console.log("</span>tempsum<span class="string">", tempsum);</span></span><br><span class="line"><span class="string">        var tmpd = Math.sqrt(sum / 6);</span></span><br><span class="line"><span class="string">        var ori_w = 3 * tmpd, ori_h = 2 * tmpd;</span></span><br><span class="line"><span class="string">        console.log("</span>original wid, <span class="attr">hei</span>: <span class="string">", ori_w, ori_h);</span></span><br><span class="line"><span class="string">        var svgns = "</span>http:<span class="comment">//www.w3.org/2000/svg";</span></span><br><span class="line"></span><br><span class="line">        squarify(data,[],ori_w,ori_h,sum,<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">function</span> <span class="title">drawRect</span>(<span class="params">x1, y1, w, h, area</span>)</span>&#123;</span><br><span class="line">            <span class="keyword">var</span> rect = <span class="built_in">document</span>.createElementNS(svgns, <span class="string">'rect'</span>);</span><br><span class="line">            rect.setAttributeNS(<span class="literal">null</span>, <span class="string">'x'</span>, x1);</span><br><span class="line">            rect.setAttributeNS(<span class="literal">null</span>, <span class="string">'y'</span>, y1);</span><br><span class="line">            rect.setAttributeNS(<span class="literal">null</span>, <span class="string">'height'</span>, h - <span class="number">1</span>);</span><br><span class="line">            rect.setAttributeNS(<span class="literal">null</span>, <span class="string">'width'</span>, w - <span class="number">1</span>);</span><br><span class="line">            rect.setAttributeNS(<span class="literal">null</span>, <span class="string">'fill'</span>, colorset[colori]);</span><br><span class="line">            <span class="built_in">document</span>.getElementById(<span class="string">'svgOne'</span>).appendChild(rect);</span><br><span class="line"></span><br><span class="line">            colori++;</span><br><span class="line">            colori%=colorset.length;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> newText = <span class="built_in">document</span>.createElementNS(svgns,<span class="string">"text"</span>);</span><br><span class="line">            newText.setAttributeNS(<span class="literal">null</span>,<span class="string">"x"</span>,x1+w/<span class="number">2</span><span class="number">-1</span>);     </span><br><span class="line">            newText.setAttributeNS(<span class="literal">null</span>,<span class="string">"y"</span>,y1+h/<span class="number">2</span><span class="number">-1</span>); </span><br><span class="line">            newText.setAttributeNS(<span class="literal">null</span>,<span class="string">"font-size"</span>,<span class="string">"12"</span>);</span><br><span class="line">            <span class="keyword">var</span> textNode = <span class="built_in">document</span>.createTextNode(area);</span><br><span class="line">            newText.appendChild(textNode);</span><br><span class="line">            <span class="built_in">document</span>.getElementById(<span class="string">'svgOne'</span>).appendChild(newText);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">function</span> <span class="title">draw</span>(<span class="params">rectangle, to_right</span>)</span>&#123;</span><br><span class="line">            <span class="built_in">console</span>.log(rectangle);</span><br><span class="line">            <span class="keyword">var</span> orix = beginx, oriy = beginy;</span><br><span class="line">            <span class="keyword">var</span> ratio1, ratio2;</span><br><span class="line">            <span class="keyword">var</span> sameDir = rectangle[<span class="number">0</span>].vert;</span><br><span class="line">            <span class="keyword">if</span>(sameDir == last_vert)</span><br><span class="line">                sameDir = <span class="literal">true</span>;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                sameDir = <span class="literal">false</span>;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; rectangle.length; i++)&#123;</span><br><span class="line">                <span class="keyword">var</span> _area = rectangle[i]._area;</span><br><span class="line">                <span class="keyword">var</span> vert = rectangle[i].verti;</span><br><span class="line">                last_vert = vert;</span><br><span class="line">                <span class="keyword">var</span> w = rectangle[i]._wid, h = rectangle[i]._hei;</span><br><span class="line">                <span class="built_in">console</span>.log(<span class="string">"area, width, height, vert?"</span>, _area, w, h, vert);</span><br><span class="line">                ratio1 = w/ori_w*width, ratio2 = h/ori_h*height;</span><br><span class="line">                drawRect(beginx, beginy, ratio1, ratio2, _area);</span><br><span class="line">                <span class="keyword">if</span>(vert == <span class="literal">true</span>)&#123;</span><br><span class="line">                    beginy += ratio2;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span>&#123;</span><br><span class="line">                    beginx += ratio1;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span>(to_right == <span class="literal">false</span>)&#123;<span class="comment">// to below</span></span><br><span class="line">                beginx = orix;</span><br><span class="line">                beginy = oriy + ratio2;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> &#123;<span class="comment">//to right</span></span><br><span class="line">                beginx = orix + ratio1;</span><br><span class="line">                beginy = oriy;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// assume w &gt; h, put in h first</span></span><br><span class="line">        <span class="function"><span class="keyword">function</span> <span class="title">squarify</span>(<span class="params">children, modifiable, w, h, sum, m_area</span>) </span>&#123;</span><br><span class="line">            <span class="comment">//console.log("current in: ",children[0], modifiable);</span></span><br><span class="line">            <span class="keyword">if</span>(children.length === <span class="number">0</span>)&#123;</span><br><span class="line">                <span class="built_in">console</span>.log(<span class="string">"quit"</span>);</span><br><span class="line">                <span class="keyword">var</span> to_right = modifiable[<span class="number">0</span>].verti;</span><br><span class="line">                draw(modifiable, to_right);<span class="comment">// ..............</span></span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">var</span> c = children.shift();</span><br><span class="line">            <span class="keyword">var</span> _area = c, _wid, _hei, verti;</span><br><span class="line">            <span class="keyword">if</span>(modifiable.length === <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="comment">//console.log("case 0");</span></span><br><span class="line">                m_area += c;</span><br><span class="line">                <span class="keyword">if</span>(w &lt;= h) &#123;<span class="comment">// vertical set</span></span><br><span class="line">                    _wid = w;</span><br><span class="line">                    verti = <span class="literal">true</span>;</span><br><span class="line">                    _hei = c / _wid;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span> &#123;<span class="comment">// horizontal set</span></span><br><span class="line">                    _hei = h;</span><br><span class="line">                    _wid = c / _hei;</span><br><span class="line">                    verti = <span class="literal">false</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                modifiable.push(&#123;_area,_wid,_hei,verti&#125;);</span><br><span class="line">                squarify(children,modifiable,w,h,sum, m_area);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="comment">//case 1</span></span><br><span class="line">                <span class="keyword">var</span> leftover = sum - m_area;</span><br><span class="line">                <span class="keyword">var</span> neww, newh;</span><br><span class="line">                <span class="keyword">if</span> (w &gt; h) &#123;</span><br><span class="line">                    neww = leftover / h;</span><br><span class="line">                    newh = h;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span> &#123;</span><br><span class="line">                    neww = w;</span><br><span class="line">                    newh = leftover / w;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span> (neww &lt;= newh)&#123;<span class="comment">// vertical set</span></span><br><span class="line">                    _wid = neww;</span><br><span class="line">                    _hei = c / _wid;</span><br><span class="line">                    verti = <span class="literal">true</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span>&#123;<span class="comment">// horizontal set</span></span><br><span class="line">                    _wid = c / newh;</span><br><span class="line">                    _hei = newh;</span><br><span class="line">                    verti= <span class="literal">false</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">//console.log("w,h",_wid,_hei);</span></span><br><span class="line">                <span class="keyword">var</span> temp1 = <span class="built_in">Math</span>.max(_wid,_hei)/<span class="built_in">Math</span>.min(_wid,_hei);<span class="comment">// put in new area</span></span><br><span class="line"></span><br><span class="line">                <span class="comment">// case 2</span></span><br><span class="line">                <span class="keyword">var</span> temp_area = m_area + c;<span class="comment">// else include in old area</span></span><br><span class="line">                <span class="keyword">var</span> w1, h1, temp2;</span><br><span class="line">                <span class="keyword">if</span>(w &gt; h) &#123;</span><br><span class="line">                    w1 = temp_area / h;</span><br><span class="line">                    h1 = h;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span> &#123;</span><br><span class="line">                    w1 = w;</span><br><span class="line">                    h1 = temp_area / w;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span>(w1 &lt;= h1)&#123;<span class="comment">// stack up, width is the same</span></span><br><span class="line">                    <span class="built_in">console</span>.log(<span class="string">"current 1"</span>, w1, h1);</span><br><span class="line">                    temp2 = <span class="built_in">Math</span>.max(w1,c/w1)/<span class="built_in">Math</span>.min(w1,c/w1);<span class="comment">// put in old area, w1/(c/w1), wid:hei</span></span><br><span class="line">                    <span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; modifiable.length; i++)</span><br><span class="line">                        temp2 = <span class="built_in">Math</span>.max(temp2, <span class="built_in">Math</span>.max(w1,modifiable[i]._area/w1)/<span class="built_in">Math</span>.min(w1,modifiable[i]._area/w1));</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span>&#123;<span class="comment">//stack right, height is the same</span></span><br><span class="line">                    <span class="built_in">console</span>.log(<span class="string">"current 2"</span>, w1, h1);</span><br><span class="line">                    temp2 = <span class="built_in">Math</span>.max(h1,c/h1)/<span class="built_in">Math</span>.min(h1,c/h1);</span><br><span class="line">                    <span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; modifiable.length; i++)</span><br><span class="line">                        temp2 = <span class="built_in">Math</span>.max(temp2, <span class="built_in">Math</span>.max(modifiable[i]._area/h1,h1)/<span class="built_in">Math</span>.min(modifiable[i]._area/h1,h1));</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">//console.log("t1,t2",temp1,temp2);</span></span><br><span class="line">                </span><br><span class="line">                <span class="comment">// case 1</span></span><br><span class="line">                <span class="keyword">if</span> (temp1 &lt;= temp2)&#123;<span class="comment">// clear all modifiable, draw</span></span><br><span class="line">                    <span class="comment">//console.log("case 1");</span></span><br><span class="line">                    <span class="keyword">var</span> to_right = <span class="literal">true</span>;</span><br><span class="line">                    <span class="keyword">if</span>(w &lt;= h)</span><br><span class="line">                        to_right = <span class="literal">false</span>;</span><br><span class="line">                    draw(modifiable, to_right);<span class="comment">// ..............</span></span><br><span class="line">                    </span><br><span class="line">                    modifiable = [];<span class="comment">//clear it</span></span><br><span class="line">                    modifiable.push(&#123;_area,_wid,_hei,verti&#125;);</span><br><span class="line">                    squarify(children,modifiable,neww,newh,sum-m_area,_area);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">//case 2</span></span><br><span class="line">                <span class="keyword">else</span>&#123;<span class="comment">// put in modifiable</span></span><br><span class="line">                    <span class="comment">//console.log("case 2");</span></span><br><span class="line">                    <span class="keyword">if</span>(w &gt; h)&#123;</span><br><span class="line">                        <span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; modifiable.length; i++)&#123;</span><br><span class="line">                            <span class="keyword">var</span> cur_area = modifiable[i]._area;</span><br><span class="line">                            <span class="keyword">var</span> h_tem = cur_area / w1;</span><br><span class="line">                            modifiable[i]._wid = w1;</span><br><span class="line">                            modifiable[i]._hei = h_tem;</span><br><span class="line">                            modifiable[i].verti = <span class="literal">true</span>;</span><br><span class="line">                        &#125;</span><br><span class="line">                        _wid = w1;</span><br><span class="line">                        _hei = c / _wid;</span><br><span class="line">                        verti = <span class="literal">true</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="keyword">else</span>&#123;</span><br><span class="line">                        <span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; modifiable.length; i++)&#123;</span><br><span class="line">                            <span class="keyword">var</span> cur_area = modifiable[i]._area;</span><br><span class="line">                            <span class="keyword">var</span> w_tem = cur_area / h1;</span><br><span class="line">                            modifiable[i]._wid = w_tem;</span><br><span class="line">                            modifiable[i]._hei = h1;</span><br><span class="line">                            modifiable[i].verti = <span class="literal">false</span>;</span><br><span class="line">                        &#125;</span><br><span class="line">                        _wid = c / h1;</span><br><span class="line">                        _hei = h1;</span><br><span class="line">                        verti = <span class="literal">false</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                    modifiable.push(&#123;_area,_wid,_hei,verti&#125;);</span><br><span class="line">                    m_area += c;</span><br><span class="line">                    squarify(children,modifiable,w,h,sum,m_area);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &lt;<span class="regexp">/script&gt;</span></span><br><span class="line"><span class="regexp">    &lt;/</span>body&gt;</span><br><span class="line">&lt;<span class="regexp">/html&gt;</span></span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/HTML/" rel="tag"><i class="fa fa-tag"></i> HTML</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/10/28/Bezier-Curve/" rel="prev" title="Bézier Curve">
+      <i class="fa fa-chevron-left"></i> Bézier Curve
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/11/20/Force-Directed-Graph-Layout/" rel="next" title="Force Directed Graph Layout">
+      Force Directed Graph Layout <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Squarified-Treemap"><span class="nav-number">1.</span> <span class="nav-text">Squarified Treemap</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Algorithm"><span class="nav-number">1.1.</span> <span class="nav-text">Algorithm</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Example"><span class="nav-number">1.2.</span> <span class="nav-text">Example</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Major-function-code-of-the-Algorithm"><span class="nav-number">1.3.</span> <span class="nav-text">Major function code of the Algorithm</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Output"><span class="nav-number">1.4.</span> <span class="nav-text">Output</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Source-Code"><span class="nav-number">1.5.</span> <span class="nav-text">Source Code</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="K"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">K</p>
+  <div class="site-description" itemprop="description">You know Knowhere is nowhere, but KnowWhere.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">76</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:colivener@outlook.com" title="E-Mail → mailto:colivener@outlook.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+
+
+    <div class="links-of-blogroll motion-element links-of-blogroll-undefined">
+      <div class="links-of-blogroll-title">
+        <!-- modify icon to fire by szw -->
+        <i class="fa fa-history fa-" aria-hidden="true"></i>
+        
+      </div>
+      <ul class="links-of-blogroll-list">
+        
+        
+          <li>
+            <a href="/" title="" target="_blank"></a>
+          </li>
+        
+          <li>
+            <a href="/" title="" target="_blank"></a>
+          </li>
+        
+          <li>
+            <a href="/" title="" target="_blank"></a>
+          </li>
+        
+          <li>
+            <a href="/" title="" target="_blank"></a>
+          </li>
+        
+          <li>
+            <a href="/" title="" target="_blank"></a>
+          </li>
+        
+      </ul>
+    </div>
+
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">K</span>
+</div>
+  <div class="addthis_inline_share_toolbox">
+    <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5e9ea4a022889786" async="async"></script>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'nydWvj5q5w14PIVolKD4JOtS-MdYXbMMI',
+      appKey     : '7vFccLCEXIsFn1VxvpyQAibm',
+      placeholder: "knowhere to know here",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"co10.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Data Collection">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Comparison">
+<meta property="og:url" content="co10.github.io/2020/10/09/Comparison/index.html">
+<meta property="og:site_name" content="荒芜知地">
+<meta property="og:description" content="Data Collection">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2020/10/24/4tdHxinfRMJ2GyK.png">
+<meta property="og:image" content="https://i.loli.net/2020/10/24/QKk3WYCTRH9aA7D.png">
+<meta property="og:image" content="https://i.loli.net/2020/10/24/ZE46Lfh3B1mKyiT.png">
+<meta property="og:image" content="https://i.loli.net/2020/10/24/teqo9G2ZNP6yDKC.png">
+<meta property="og:image" content="https://i.loli.net/2020/10/24/kUVSTDBOKNLui9x.png">
+<meta property="og:image" content="https://i.loli.net/2020/10/24/KZcJGF6pd51Ms4e.png">
+<meta property="og:image" content="https://i.loli.net/2020/10/24/zNierkafZgVwBL1.png">
+<meta property="og:image" content="https://i.loli.net/2020/10/24/JLafBIbjz8XFEtv.png">
+<meta property="og:image" content="https://i.loli.net/2020/10/24/Zhf3ILgAjl5ENkF.png">
+<meta property="article:published_time" content="2020-10-09T07:54:33.000Z">
+<meta property="article:modified_time" content="2021-01-14T07:56:32.190Z">
+<meta property="article:author" content="K">
+<meta property="article:tag" content="HTML">
+<meta property="article:tag" content="D3">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2020/10/24/4tdHxinfRMJ2GyK.png">
+
+<link rel="canonical" href="co10.github.io/2020/10/09/Comparison/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Comparison | 荒芜知地</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="荒芜知地" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">荒芜知地</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Knowhere</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">41</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">76</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="co10.github.io/2020/10/09/Comparison/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="K">
+      <meta itemprop="description" content="You know Knowhere is nowhere, but KnowWhere.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="荒芜知地">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Comparison
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-10-09 15:54:33" itemprop="dateCreated datePublished" datetime="2020-10-09T15:54:33+08:00">2020-10-09</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Visualization/" itemprop="url" rel="index"><span itemprop="name">Visualization</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/10/09/Comparison/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/10/09/Comparison/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="Data-Collection"><a href="#Data-Collection" class="headerlink" title="Data Collection"></a>Data Collection</h2><a id="more"></a>
+<p>The raw data are from <a href="https://github.com/ZeningQu/World-Bank-Data-by-Indicators" target="_blank" rel="noopener">Word-Bank-Data-by-Indicators</a> . And I picked the <a href="https://github.com/ZeningQu/World-Bank-Data-by-Indicators/tree/master/environment" target="_blank" rel="noopener">Environment data</a> . </p>
+<p>数据来源于 <a href="https://github.com/ZeningQu/World-Bank-Data-by-Indicators" target="_blank" rel="noopener">Word-Bank-Data-by-Indicators</a> . 我挑出了 <a href="https://github.com/ZeningQu/World-Bank-Data-by-Indicators/tree/master/environment" target="_blank" rel="noopener">Environment data</a> . </p>
+<p>However, the raw data are large, widely-ranged, and unobservable. So I sorted them in Excel and choose the data of China simply because I’m a Chinese and I want to explore the historical environment changes in China, where I am living now.</p>
+<p>So I put forward some questions: </p>
+<ul>
+<li>Did the environment changed a great deal in a particular time, or it just simply gets better or worse as time goes by?</li>
+<li>Does it has anything to do with the economy? Do we just develop by means of changing our environment? </li>
+<li>Compared to some countries around us, such as Japan, what can we learn?</li>
+</ul>
+<h2 id="Visual-Analysis"><a href="#Visual-Analysis" class="headerlink" title="Visual Analysis"></a>Visual Analysis</h2><h3 id="Adjusted-savings"><a href="#Adjusted-savings" class="headerlink" title="Adjusted savings"></a>Adjusted savings</h3><p><img src="https://i.loli.net/2020/10/24/4tdHxinfRMJ2GyK.png" alt="image.png"></p>
+<p>很明显可以看出，固定资本消费(consumption of <a href="https://en.wikipedia.org/wiki/Fixed_capital" target="_blank" rel="noopener">fixed capital</a>)是最高的，毕竟中国在发展，在某一方面的投入比重会很大(具体哪一方面不知道)，但同时，二氧化碳的危害也是俱增的，两条折线几乎平行且比重较大。</p>
+<p>能源损耗和矿产损耗也是呈现增长的趋势，但可以发现 <code>[1995, 2005]</code> 这个区间，矿产消耗有一段的急剧下滑，猜测跟当时的某个大事件有关(1999年的洪水？猜的)。</p>
+<h3 id="Emissions"><a href="#Emissions" class="headerlink" title="Emissions"></a>Emissions</h3><p><img src="https://i.loli.net/2020/10/24/QKk3WYCTRH9aA7D.png" alt="image.png"></p>
+<p>氧化气体的排放量逐年增加，同时也可以看出一个特别的波动：1970、1980与1990年的排放量三者均脱离原始趋势而飙升，次年复原。推测是某个事件引起，或者说数据错了。</p>
+<p>同时也可以看出，在2002年后，三者增幅明显增加。</p>
+<h3 id="Fisheries-Production"><a href="#Fisheries-Production" class="headerlink" title="Fisheries Production"></a>Fisheries Production</h3><p><img src="https://i.loli.net/2020/10/24/ZE46Lfh3B1mKyiT.png" alt="image.png"></p>
+<p>1985年以前，以捕鱼业为主。1985年之后，以水产养殖业为主。从中可以看出中国的发展的：随着人民经济水平的提高，从较原始的捕鱼业(自给自足)转向水产养殖业(商品买卖)。</p>
+<h3 id="Rents"><a href="#Rents" class="headerlink" title="Rents"></a>Rents</h3><p><img src="https://i.loli.net/2020/10/24/teqo9G2ZNP6yDKC.png" alt="image-20201024201932114.png"></p>
+<p>6条曲线，其中天然气、矿产、森林资源非常接近0，可见收入主要是煤和石油。</p>
+<p><del>（就是说中国还有大量的地下资源可以开采嘛）</del></p>
+<h3 id="Area"><a href="#Area" class="headerlink" title="Area"></a>Area</h3><p><img src="https://i.loli.net/2020/10/24/kUVSTDBOKNLui9x.png" alt="image.png"></p>
+<p>陆地和森林面几有基础突起的波动——总觉得是数据错了。</p>
+<p>森林面积虽然说逐年增长，但总觉得跟陆地面积比起来还是差了好多。</p>
+<h3 id="Comparison"><a href="#Comparison" class="headerlink" title="Comparison"></a>Comparison</h3><h4 id="Area-amp-Forest"><a href="#Area-amp-Forest" class="headerlink" title="Area &amp; Forest"></a>Area &amp; Forest</h4><p><img src="https://i.loli.net/2020/10/24/KZcJGF6pd51Ms4e.png" alt="image.png"></p>
+<p>左上：中日陆地面积对比；左下：1991年至2015年中日森林面积的变化；右：1991年至2015年中日森林面积占陆地面积的比重。</p>
+<p>显而易见，中国陆地面积比日本大得多，森林面积也比日本多，但问题在于，中国森林面积占陆地面积的比重是远低于日本的。</p>
+<p>虽然说中国森林面积逐年增长，比重也逐年增大，但对于日本森林面积基本维持不变的状况，我们不难思考：是日本的森林面积受限于陆地面积而停止增长，还是说，发展到如此程度后，对森林资源的开发和再生已经达到了一种可持续的动态平衡？</p>
+<p><img src="https://i.loli.net/2020/10/24/zNierkafZgVwBL1.png" alt="image.png"></p>
+<p>结合该图可知，日本收入来源基本不包含森林，而中国收入来源森林的比重也越来越低，可见，为了我们的环境，不要破坏森林。</p>
+<h4 id="Fishing-Production"><a href="#Fishing-Production" class="headerlink" title="Fishing Production"></a>Fishing Production</h4><p><img src="https://i.loli.net/2020/10/24/JLafBIbjz8XFEtv.png" alt="image.png"></p>
+<p>1990年是个转折点，之后中国水产超过日本，日本不断降低，中国增幅明显增大。难道说，日本在刻意的保护本国资源，其需要的资源靠进口？</p>
+<h4 id="CO2-排放量"><a href="#CO2-排放量" class="headerlink" title="CO2 排放量"></a>CO<sub>2</sub> 排放量</h4><p><img src="https://i.loli.net/2020/10/24/Zhf3ILgAjl5ENkF.png" alt="image.png"></p>
+<p>日本二氧化碳排放量挺稳定的，而且比中国低，中国的排放实在是太猛了，而且增幅一直变大。</p>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ol>
+<li>中国在不断发展，从 CO<sub>2</sub> 、CH<sub>4</sub> 、NO 等排放量可知，环境越来越差。</li>
+<li>某些历史时期的突破事件可能源于对环境的破坏，大自然的惩罚才缓解了我们对他的索取与破坏。然后时过境迁，烂事依旧。</li>
+<li>煤矿、石油资源不断开发，不可持续，以后迟早耗尽。这点该学日本，靠进口，抑制本土不可再生资源的开发。</li>
+<li>为了生物多样性，捕鱼业道理同上，需要适当降低。</li>
+<li>森林面积的曲线不够陡，占比还是太低了。</li>
+<li>虽然说森林面积在增大，但资源也不断在开发、 CO<sub>2</sub> 排放恐怖增加，对环境的保护力度会明显低于破坏力度。</li>
+<li>中国太广了，地貌也不尽相同，没有各个地区的自对比很难得出哪里环境变差，哪里环境得到改善，但可以明确2016年比1960年的环境差了非常多。</li>
+</ol>
+<h2 id="Source-Code"><a href="#Source-Code" class="headerlink" title="Source Code"></a>Source Code</h2><p>Too many.</p>
+<p>Lazy to paste.</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/HTML/" rel="tag"><i class="fa fa-tag"></i> HTML</a>
+              <a href="/tags/D3/" rel="tag"><i class="fa fa-tag"></i> D3</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/10/07/Boxplot/" rel="prev" title="Boxplot">
+      <i class="fa fa-chevron-left"></i> Boxplot
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/10/14/Liang-Barsky-Algorithm/" rel="next" title="Liang-Barsky Algorithm">
+      Liang-Barsky Algorithm <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Data-Collection"><span class="nav-number">1.</span> <span class="nav-text">Data Collection</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Visual-Analysis"><span class="nav-number">2.</span> <span class="nav-text">Visual Analysis</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Adjusted-savings"><span class="nav-number">2.1.</span> <span class="nav-text">Adjusted savings</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Emissions"><span class="nav-number">2.2.</span> <span class="nav-text">Emissions</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Fisheries-Production"><span class="nav-number">2.3.</span> <span class="nav-text">Fisheries Production</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Rents"><span class="nav-number">2.4.</span> <span class="nav-text">Rents</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Area"><span class="nav-number">2.5.</span> <span class="nav-text">Area</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Comparison"><span class="nav-number">2.6.</span> <span class="nav-text">Comparison</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Area-amp-Forest"><span class="nav-number">2.6.1.</span> <span class="nav-text">Area &amp; Forest</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Fishing-Production"><span class="nav-number">2.6.2.</span> <span class="nav-text">Fishing Production</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CO2-排放量"><span class="nav-number">2.6.3.</span> <span class="nav-text">CO2 排放量</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Conclusion"><span class="nav-number">3.</span> <span class="nav-text">Conclusion</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Source-Code"><span class="nav-number">4.</span> <span class="nav-text">Source Code</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="K"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">K</p>
+  <div class="site-description" itemprop="description">You know Knowhere is nowhere, but KnowWhere.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">76</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:colivener@outlook.com" title="E-Mail → mailto:colivener@outlook.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+
+
+    <div class="links-of-blogroll motion-element links-of-blogroll-undefined">
+      <div class="links-of-blogroll-title">
+        <!-- modify icon to fire by szw -->
+        <i class="fa fa-history fa-" aria-hidden="true"></i>
+        
+      </div>
+      <ul class="links-of-blogroll-list">
+        
+        
+          <li>
+            <a href="/" title="" target="_blank"></a>
+          </li>
+        
+          <li>
+            <a href="/" title="" target="_blank"></a>
+          </li>
+        
+          <li>
+            <a href="/" title="" target="_blank"></a>
+          </li>
+        
+          <li>
+            <a href="/" title="" target="_blank"></a>
+          </li>
+        
+          <li>
+            <a href="/" title="" target="_blank"></a>
+          </li>
+        
+      </ul>
+    </div>
+
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">K</span>
+</div>
+  <div class="addthis_inline_share_toolbox">
+    <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5e9ea4a022889786" async="async"></script>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'nydWvj5q5w14PIVolKD4JOtS-MdYXbMMI',
+      appKey     : '7vFccLCEXIsFn1VxvpyQAibm',
+      placeholder: "knowhere to know here",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

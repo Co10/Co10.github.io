@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"co10.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Force Directed Graph Layout">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Force Directed Graph Layout">
+<meta property="og:url" content="co10.github.io/2020/11/20/Force-Directed-Graph-Layout/index.html">
+<meta property="og:site_name" content="荒芜知地">
+<meta property="og:description" content="Force Directed Graph Layout">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2020/11/29/3bl2ezqfxiRVnsa.png">
+<meta property="og:image" content="https://i.loli.net/2020/11/29/tiq7W18bGHkPXIa.png">
+<meta property="article:published_time" content="2020-11-20T07:30:48.000Z">
+<meta property="article:modified_time" content="2021-01-14T07:51:59.523Z">
+<meta property="article:author" content="K">
+<meta property="article:tag" content="HTML">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2020/11/29/3bl2ezqfxiRVnsa.png">
+
+<link rel="canonical" href="co10.github.io/2020/11/20/Force-Directed-Graph-Layout/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Force Directed Graph Layout | 荒芜知地</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="荒芜知地" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">荒芜知地</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Knowhere</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">41</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">76</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="co10.github.io/2020/11/20/Force-Directed-Graph-Layout/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="K">
+      <meta itemprop="description" content="You know Knowhere is nowhere, but KnowWhere.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="荒芜知地">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Force Directed Graph Layout
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-11-20 15:30:48" itemprop="dateCreated datePublished" datetime="2020-11-20T15:30:48+08:00">2020-11-20</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Visualization/" itemprop="url" rel="index"><span itemprop="name">Visualization</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/11/20/Force-Directed-Graph-Layout/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/11/20/Force-Directed-Graph-Layout/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Force-Directed-Graph-Layout"><a href="#Force-Directed-Graph-Layout" class="headerlink" title="Force Directed Graph Layout"></a>Force Directed Graph Layout</h1><a id="more"></a>
+<h2 id="Algorithm"><a href="#Algorithm" class="headerlink" title="Algorithm"></a>Algorithm</h2><h2 id="算法优化"><a href="#算法优化" class="headerlink" title="算法优化"></a>算法优化</h2><p>对于所有连接起来的相邻点，可把其当成一个整体，计算弹簧弹力的时候，可以只计算一个整体和另一个整体之间的弹簧弹力，然后再把这个力附加到每一个个体中。</p>
+<p>同理计算斥力的时候也可取一堆点的平均分布，代替计算两点间的斥力。</p>
+<p>我大概就只会这样了，不过计算斥力的时候我并没有用整体算。</p>
+<p>计算力的时候，我把引力和弹簧弹力一起算的，用 <code>if</code> 判断是否需要计算弹力。</p>
+<p>不考虑随机生成数据所用时间，算法的时间复杂度是 $O(n^2)$ 。</p>
+<h2 id="效果图"><a href="#效果图" class="headerlink" title="效果图"></a>效果图</h2><p>有两层图，颜色浅的那层是初始数据，颜色深的是计算后的数据。</p>
+<p>随机生成 200 个节点：</p>
+<p><img src="https://i.loli.net/2020/11/29/3bl2ezqfxiRVnsa.png" alt="image.png"></p>
+<p>随机生成 800 个节点：</p>
+<p><img src="https://i.loli.net/2020/11/29/tiq7W18bGHkPXIa.png" alt="image.png"></p>
+<h2 id="Play-amp-Have-Fun"><a href="#Play-amp-Have-Fun" class="headerlink" title="Play &amp; Have Fun"></a>Play &amp; Have Fun</h2><html>
+    <meta charset="utf-8">
+    <header>force directed graph</header>
+    <style>
+        #svgHolder {
+            position: relative
+        }
+        .svg2 {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+        }
+    </style>
+    <body>
+    <label for="n_cnt">Nodes Count:</label>
+    <input type="number" id="n_cnt" name="n_cnt" value="60" min="30" max="1000">
+    <button type="button" onclick="update()">Generate</button><br><br>
+    <div id="svgHolder">
+        <svg id="svgOne" width="590" height="290"/>
+        <svg id="svgTwo" class="svg2" width="590" height="290"/>
+    </div>
+    <script>
+        var margin = {top: 10, right: 10, bottom: 10, left: 10},
+          width = 600 - margin.left - margin.right,
+          height = 300 - margin.top - margin.bottom;
+        var svgns = "http://www.w3.org/2000/svg";
+        var colorset1 = ['#FFADAD', '#FFC2A9', '#FFD6A5', '#FDFFB6', '#CAFFBF', '#9BF6FF', '#A0C4FF', '#BDB2FF', '#FFC6FF', '#FFFFFC'];
+        var colorset2 = ['#F94144', '#F3722C', '#F8961E', '#F9C74F', '#90BE6D', '#52838F', '#577590', '#7209B7', '#B5179E', '#EDF2F4'];
+        let o_nodes = [], nodes = [];
+        var node_cnt = 60, maxNodeX = width - 2, maxNodeY = height - 2;
+        var connect = [], con_fsx = [], con_fsy = [], con_fs = [];
+        var L = 50, K_r = 6250, K_s = 1, delta_t = 0.04;
+        var MAX_DIS_SQR = 50;// ???
+        gen_d();
+        draw_old();
+        cal_force();
+        update_position();
+        draw_new()
+        function update() {
+            document.getElementById('svgOne').innerHTML = "";
+            document.getElementById('svgTwo').innerHTML = "";
+            o_nodes.length = 0, nodes.length = 0, node_cnt = document.getElementById("n_cnt").value;
+            connect.length = 0, con_fsx.length = 0, con_fsy.length = 0, con_fs.length = 0;
+            gen_d();
+            draw_old();
+            cal_force();
+            update_position();
+            draw_new();
+        }
+        function update2(_l, _kr, _ks, _dt, _msd) {
+            document.getElementById('svgTwo').innerHTML = "";
+            if (_l != -1)
+                L = _l;
+            if (_kr != -1)
+                K_r = _kr;
+            if (_ks != -1)
+                K_s = _ks;
+            if (_dt != -1)
+                delta_t = _dt;
+            if (_msd != -1)
+                MAX_DIS_SQR = _msd;
+            con_fs.length = 0;
+            for (var i = 0; i < con_fsx.length; i++) {
+                for (var j = 0; j < con_fsx[i].length; j++) {
+                    con_fsx[i][j] = 0;
+                    con_fsy[i][j] = 0;
+                }
+            }
+            nodes.length = 0;
+            nodes = deepClone(o_nodes);
+            cal_force();
+            update_position();
+            draw_new();
+        }
+        function deepClone (obj) {
+            if (typeof obj !== 'object')
+                return obj;
+            if (!obj) // obj null
+                return obj;
+            if (obj instanceof Date)
+                return new Date(obj);
+            if (obj instanceof RegExp)
+                return new RegExp(obj);
+            if (obj instanceof Function)
+                return obj;
+            let newObj;
+            if (obj instanceof Array) {
+                newObj = [];
+                for(let i = 0, len = obj.length; i < len; i++)
+                    newObj.push(deepClone(obj[i]));
+                return newObj;
+            }
+            newObj = {};
+            for (let key in obj) {
+                if (obj.hasOwnProperty(key)) {
+                    if (typeof obj[key] !== 'object')
+                        newObj[key] = obj[key];
+                    else
+                        newObj[key] = deepClone(obj[key]);
+                }
+            }
+            return newObj;
+        }
+        // generate data....
+        function gen_d() {
+            var temp_cnt = 0, group = 0;
+            while (temp_cnt < node_cnt) {//max-min+1 +min
+                // generate nodes
+                var x0 = Math.floor(Math.random() * (maxNodeX - 1 + 1) ) + 1;
+                var y0 = Math.floor(Math.random() * (maxNodeY - 1 + 1) ) + 1;
+                var cnt1 = Math.floor(Math.random() * (15 - 2 + 1) ) + 2;
+                if (temp_cnt + cnt1 > node_cnt)
+                    cnt1 = node_cnt - temp_cnt;
+                var range_g = 50;
+                var Fr_x = 0, Fr_y = 0, Fs_x = 0, Fs_y = 0;
+                var x = x0, y = y0;
+                o_nodes[group] = new Array;
+                nodes[group] = new Array;
+                o_nodes[group].push({x,y,Fr_x,Fr_y,Fs_x,Fs_y});
+                nodes[group].push({x,y,Fr_x,Fr_y,Fs_x,Fs_y});
+                for (var i = 1; i < cnt1; i++) { // generate group nodes
+                    var dx = Math.floor(Math.random() * (range_g - 1 + 1) ) + 1;
+                    var dy = Math.floor(Math.random() * (range_g - 1 + 1) ) + 1;
+                    var x1 = x0 + dx, y1 = y0 + dy;
+                    var x2 = x0 - dx, y2 = y0 - dy;
+                    var x, y;
+                    if (x1 > maxNodeX || x1 < 0)
+                        x = x2;
+                    else x = x1;
+                    if (y1 > maxNodeY || y1 < 0)
+                        y = y2;
+                    else y = y1;
+                    o_nodes[group].push({x,y,Fr_x,Fr_y,Fs_x,Fs_y});
+                    nodes[group].push({x,y,Fr_x,Fr_y,Fs_x,Fs_y});
+                }
+                // generate connection
+                var con0 = [];
+                for (var i = 0; i < cnt1; i++) {
+                    con0[i] = new Array(cnt1);
+                    con0[i].fill(0, 0, cnt1);
+                }
+                for (var i = 0; i < cnt1 - 1; i++) {
+                    for (var j = i + 1; j < cnt1; j++) {
+                        var isconnected = Math.floor(Math.random() * 10);
+                        if (isconnected >= 6) {
+                            con0[i][j] = 1;
+                            con0[j][i] = 1;
+                        }
+                    }
+                }
+                connect.push(con0);
+                group++;
+                temp_cnt += cnt1;
+            }
+            var con1 = [];
+            for (var i = 0; i < group; i++) {
+                con1[i] = new Array(group);
+                con1[i].fill(0, 0, group);
+                con_fsx[i] = new Array(group);
+                con_fsx[i].fill(0, 0, group);
+                con_fsy[i] = new Array(group);
+                con_fsy[i].fill(0, 0, group);
+            }
+            for (var i = 0; i < group - 1; i++) {
+                var newCon = Math.floor(Math.random() * group - i) + i;
+                con1[newCon][i] = 1;
+                con1[i][newCon] = 1;
+                for (var j = i + 1; j < group; j++) {
+                    var isconnected = Math.floor(Math.random() * 10);
+                    if (isconnected >= 6) {
+                        con1[i][j] = 1;
+                        con1[j][i] = 1;
+                    }
+                }
+            }
+            connect.push(con1);
+            console.log("connected? : ", connect);
+            console.log("now get data: ", o_nodes);
+            console.log("copy nodes: ", nodes);
+        }
+        function cal_force() {
+            // repulsion force between all pairs
+            // if they are connected, calculate spring force
+            for (var i1 = 0; i1 < nodes.length; i1++) {
+                for (var i2 = 0; i2 < nodes[i1].length - 1; i2++) {
+                    var node1 = nodes[i1][i2];
+                    for(var j1 = i1; j1 < nodes.length; j1++) {
+                        for (var j2 = 0; j2 < nodes[j1].length; j2++) {
+                            if (j1 == i1 && j2 <= i2)
+                                continue;
+                            var node2 = nodes[j1][j2];
+                            var dx = node2.x - node1.x;
+                            var dy = node2.y - node1.y;
+                            if (dx != 0 || dy != 0) {
+                                var disSqu = dx*dx + dy*dy;
+                                var dis = Math.sqrt(disSqu);
+                                var force = K_r / disSqu;
+                                var fx = force * dx / dis;
+                                var fy = force * dy / dis;
+                                node1.Fr_x = node1.Fr_x - fx;
+                                node1.Fr_y = node1.Fr_y - fy;
+                                node2.Fr_x = node2.Fr_x + fx;
+                                node2.Fr_y = node2.Fr_y + fy;
+                                if (i1 == j1 && connect[i1][i2][j2] == 1) {
+                                    var force2 = K_s * (dis - L);
+                                    var fx2 = force2 * dx / dis;
+                                    var fy2 = force2 * dy / dis;
+                                    node1.Fs_x = node1.Fs_x + fx2;
+                                    node1.Fs_y = node1.Fs_y + fy2;
+                                    node2.Fs_x = node2.Fs_x - fx2;
+                                    node2.Fs_y = node2.Fs_y - fy2;
+                                }
+                                if (i2 == 0 && j2 == 0 && i1 != j1) {
+                                    if (connect[nodes.length][i1][j1] == 1) {
+                                        var force3 = K_s * (dis - L);
+                                        var fx3 = force3 * dx / dis;
+                                        var fy3 = force3 * dy / dis;
+                                        con_fsx[i1][j1] += fx3;
+                                        con_fsy[i1][j1] += fy3;
+                                        con_fsx[j1][i1] -= fx3;
+                                        con_fsy[j1][i1] -= fy3;
+                                    }
+                                }
+                                nodes[i1][i2] = node1;
+                                nodes[j1][j2] = node2;
+                            }
+                        }
+                    }
+                }
+            }
+            for (var i = 0; i < con_fsx.length; i++) {
+                var x = 0, y = 0;
+                for (var j = 0; j < con_fsx.length; j++) {
+                    x = x + con_fsx[i][j];
+                    y = y + con_fsy[i][j];
+                }
+                con_fs.push({x,y});
+            }
+        }
+        function update_position() {
+            for (var i1 = 0; i1 < nodes.length; i1++) {
+                for (var i2  = 0; i2 < nodes[i1].length; i2++) {
+                    var _node = nodes[i1][i2];
+                    var dx = delta_t * (_node.Fr_x + _node.Fs_x + con_fs[i1].x);
+                    var dy = delta_t * (_node.Fr_y + _node.Fs_y + con_fs[i1].y);
+                    var displacement_Sqr = dx*dx + dy*dy;
+                    if (displacement_Sqr > MAX_DIS_SQR) {
+                        var disS = Math.sqrt(MAX_DIS_SQR / displacement_Sqr);
+                        dx = dx * disS;
+                        dy = dy * disS;
+                    }
+                    _node.x = _node.x + dx;
+                    _node.y = _node.y + dy;
+                    nodes[i1][i2] = _node;
+                }
+            }
+            console.log("old & new nodes are here: ", o_nodes, nodes);
+        }
+        function draw_old() {
+            // draw line
+            for (var i = 0; i < connect.length; i++) {
+                var temp_con = connect[i];
+                for (var j = 0; j < temp_con.length - 1; j++) {
+                    for (var k = j + 1; k < temp_con.length; k++) {
+                        if (temp_con[j][k] == 1) {
+                            var x1, x2, y1, y2;
+                            var lineStroke = '#ffdab9';
+                            var lineLen = 0.5;
+                            if (i == connect.length - 1) {
+                                x1 = o_nodes[j][0].x, y1 = o_nodes[j][0].y;
+                                x2 = o_nodes[k][0].x, y2 = o_nodes[k][0].y;
+                                lineStroke = '#f08080';
+                                lineLen = 1.0;
+                            }
+                            else{
+                                x1 = o_nodes[i][j].x, y1 = o_nodes[i][j].y;
+                                x2 = o_nodes[i][k].x, y2 = o_nodes[i][k].y;
+                            }
+                            var line = document.createElementNS(svgns, 'line');
+                            line.setAttributeNS(null, 'x1', x1);
+                            line.setAttributeNS(null, 'x2', x2);
+                            line.setAttributeNS(null, 'y1', y1);
+                            line.setAttributeNS(null, 'y2', y2);
+                            line.setAttributeNS(null, 'stroke', lineStroke);
+                            line.setAttributeNS(null, 'stroke-width', lineLen);
+                            document.getElementById('svgOne').appendChild(line);
+                        }
+                    }
+                }
+            }
+            // draw circle
+            for (var i = 0; i < o_nodes.length; i++) {
+                for (j = 0; j < o_nodes[i].length; j++) {
+                    var getx = o_nodes[i][j].x;
+                    var gety = o_nodes[i][j].y;
+                    var circle = document.createElementNS(svgns, 'circle');
+                    circle.setAttributeNS(null, "cx", getx);
+                    circle.setAttributeNS(null, "cy", gety);
+                    circle.setAttributeNS(null, "r", 3);
+                    circle.setAttributeNS(null, "fill", colorset1[i % colorset1.length]);
+                    circle.setAttributeNS(null, "stroke", "none");
+                    document.getElementById('svgOne').appendChild(circle);
+                }
+            }
+        }
+        function draw_new() {
+            // draw line
+            for (var i = 0; i < connect.length; i++) {
+                var temp_con = connect[i];
+                for (var j = 0; j < temp_con.length - 1; j++) {
+                    for (var k = j + 1; k < temp_con.length; k++) {
+                        if (temp_con[j][k] == 1) {
+                            var x1, x2, y1, y2;
+                            var lineStroke = '#ffcad4';
+                            var lineLen = 1.0;
+                            if (i == connect.length - 1) {
+                                x1 = nodes[j][0].x, y1 = nodes[j][0].y;
+                                x2 = nodes[k][0].x, y2 = nodes[k][0].y;
+                                lineStroke = '#9e2a2b';
+                                lineLen = 1.5;
+                            }
+                            else{
+                                x1 = nodes[i][j].x, y1 = nodes[i][j].y;
+                                x2 = nodes[i][k].x, y2 = nodes[i][k].y;
+                            }
+                            var line = document.createElementNS(svgns, 'line');
+                            line.setAttributeNS(null, 'x1', x1);
+                            line.setAttributeNS(null, 'x2', x2);
+                            line.setAttributeNS(null, 'y1', y1);
+                            line.setAttributeNS(null, 'y2', y2);
+                            line.setAttributeNS(null, 'stroke', lineStroke);
+                            line.setAttributeNS(null, 'stroke-width', lineLen);
+                            document.getElementById('svgTwo').appendChild(line);
+                        }
+                    }
+                }
+            }
+            // draw circle
+            for (var i = 0; i < nodes.length; i++) {
+                for (j = 0; j < nodes[i].length; j++) {
+                    var getx = nodes[i][j].x;
+                    var gety = nodes[i][j].y;
+                    var circle = document.createElementNS(svgns, 'circle');
+                    circle.setAttributeNS(null, "cx", getx);
+                    circle.setAttributeNS(null, "cy", gety);
+                    circle.setAttributeNS(null, "r", 4.5);
+                    circle.setAttributeNS(null, "fill", colorset2[i % colorset2.length]);
+                    circle.setAttributeNS(null, "stroke", "none");
+                    document.getElementById('svgTwo').appendChild(circle);
+                }
+            }
+        }
+    </script>
+    <div class="slidecontainer" id="slidecon">
+        <label>L: </label>
+        <input type="range" min="10" max="1000" value="50" class="slider" id="s_L" oninput="document.getElementById('l_L').innerHTML = this.value" onchange="update2(this.value, -1, -1, -1, -1)">
+        <label id="l_L">50</label>
+        <br>
+        <label>K_s: </label>
+        <input type="range" min="100" max="10000" value="6250" class="slider" id="s_S" oninput="document.getElementById('l_S').innerHTML = this.value" onchange="update2(-1, this.value, -1, -1, -1)">
+        <label id="l_S">6250</label>
+        <br>
+        <label>K_r: </label>
+        <input type="range" min="0.01" max="5" value="1" step="0.01" class="slider" id="s_R" oninput="document.getElementById('l_R').innerHTML = this.value" onchange="update2(-1, -1, this.value, -1, -1)">
+        <label id="l_R">1</label>
+        <br>
+        <label>Δt: </label>
+        <input type="range" min="0.005" max="5.000" value="0.04" step="0.001" class="slider" id="s_T" oninput="document.getElementById('l_T').innerHTML = this.value" onchange="update2(-1, -1, -1, this.value, -1)">
+        <label id="l_T">0.04</label>
+        <br>
+        <label>MAX_DIS_SQR: </label>
+        <input type="range" min="10" max="200" value="50" class="slider" id="s_M" oninput="document.getElementById('l_M').innerHTML = this.value" onchange="update2(-1, -1, -1, -1, this.value)">
+        <label id="l_M">50</label>
+        <br>
+    </div>
+    </body>
+</html>
+
+<h2 id="Source-Code"><a href="#Source-Code" class="headerlink" title="Source Code"></a>Source Code</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;html&gt;</span><br><span class="line">    &lt;meta charset=<span class="string">"utf-8"</span>&gt;</span><br><span class="line">    &lt;header&gt;force directed graph&lt;<span class="regexp">/header&gt;</span></span><br><span class="line"><span class="regexp">    &lt;style&gt;</span></span><br><span class="line"><span class="regexp">        #svgHolder &#123;</span></span><br><span class="line"><span class="regexp">            position: relative</span></span><br><span class="line"><span class="regexp">        &#125;</span></span><br><span class="line"><span class="regexp">        .svg2 &#123;</span></span><br><span class="line"><span class="regexp">            position: absolute;</span></span><br><span class="line"><span class="regexp">            top: 0px;</span></span><br><span class="line"><span class="regexp">            left: 0px;</span></span><br><span class="line"><span class="regexp">        &#125;</span></span><br><span class="line"><span class="regexp">    &lt;/</span>style&gt;</span><br><span class="line">    &lt;body&gt;</span><br><span class="line">    &lt;label <span class="keyword">for</span> = <span class="string">"n_cnt"</span>&gt;Nodes Count:&lt;<span class="regexp">/label&gt;</span></span><br><span class="line"><span class="regexp">    &lt;input type = "number" id = "n_cnt" name = "n_cnt" value = "60" min = "30" max = "1000"&gt;&lt;/i</span>nput&gt;</span><br><span class="line">    &lt;button type = <span class="string">"button"</span> onclick = <span class="string">"update()"</span>&gt;Generate&lt;<span class="regexp">/button&gt;&lt;br&gt;&lt;/</span>br&gt;</span><br><span class="line">    &lt;div id = <span class="string">"svgHolder"</span>&gt;</span><br><span class="line">        &lt;svg id = <span class="string">"svgOne"</span> width =<span class="string">"1190"</span> height = <span class="string">"590"</span>&gt;&lt;<span class="regexp">/svg&gt;</span></span><br><span class="line"><span class="regexp">        &lt;svg id = "svgTwo" class = "svg2" width ="1190" height = "590"&gt;&lt;/</span>svg&gt;</span><br><span class="line">    &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">    &lt;script&gt;</span></span><br><span class="line"><span class="regexp">        var margin = &#123;top: 10, right: 10, bottom: 10, left: 10&#125;,</span></span><br><span class="line"><span class="regexp">          width = 1200 - margin.left - margin.right,</span></span><br><span class="line"><span class="regexp">          height = 600 - margin.top - margin.bottom;</span></span><br><span class="line"><span class="regexp">        </span></span><br><span class="line"><span class="regexp">        var svgns = "http:/</span><span class="regexp">/www.w3.org/</span><span class="number">2000</span>/svg<span class="string">";</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        var colorset1 = ['#FFADAD', '#FFC2A9', '#FFD6A5', '#FDFFB6', '#CAFFBF', '#9BF6FF', '#A0C4FF', '#BDB2FF', '#FFC6FF', '#FFFFFC'];</span></span><br><span class="line"><span class="string">        var colorset2 = ['#F94144', '#F3722C', '#F8961E', '#F9C74F', '#90BE6D', '#52838F', '#577590', '#7209B7', '#B5179E', '#EDF2F4'];</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        let o_nodes = [], nodes = [];</span></span><br><span class="line"><span class="string">        var node_cnt = 60, maxNodeX = width - 2, maxNodeY = height - 2;</span></span><br><span class="line"><span class="string">        var connect = [], con_fsx = [], con_fsy = [], con_fs = [];</span></span><br><span class="line"><span class="string">        </span></span><br><span class="line"><span class="string">        var L = 50, K_r = 6250, K_s = 1, delta_t = 0.04;</span></span><br><span class="line"><span class="string">        var MAX_DIS_SQR = 50;// ???</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        gen_d();</span></span><br><span class="line"><span class="string">        draw_old();</span></span><br><span class="line"><span class="string">        cal_force();</span></span><br><span class="line"><span class="string">        update_position();</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        draw_new()</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        function update() &#123;</span></span><br><span class="line"><span class="string">            document.getElementById('svgOne').innerHTML = "</span><span class="string">";</span></span><br><span class="line"><span class="string">            document.getElementById('svgTwo').innerHTML = "</span><span class="string">";</span></span><br><span class="line"><span class="string">            o_nodes.length = 0, nodes.length = 0, node_cnt = document.getElementById("</span>n_cnt<span class="string">").value;</span></span><br><span class="line"><span class="string">            connect.length = 0, con_fsx.length = 0, con_fsy.length = 0, con_fs.length = 0;</span></span><br><span class="line"><span class="string">            gen_d();</span></span><br><span class="line"><span class="string">            draw_old();</span></span><br><span class="line"><span class="string">            cal_force();</span></span><br><span class="line"><span class="string">            update_position();</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">            draw_new();</span></span><br><span class="line"><span class="string">        &#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        function update2(_l, _kr, _ks, _dt, _msd) &#123;</span></span><br><span class="line"><span class="string">            document.getElementById('svgTwo').innerHTML = "</span><span class="string">";</span></span><br><span class="line"><span class="string">            if (_l != -1)</span></span><br><span class="line"><span class="string">                L = _l;</span></span><br><span class="line"><span class="string">            if (_kr != -1)</span></span><br><span class="line"><span class="string">                K_r = _kr;</span></span><br><span class="line"><span class="string">            if (_ks != -1)</span></span><br><span class="line"><span class="string">                K_s = _ks;</span></span><br><span class="line"><span class="string">            if (_dt != -1)</span></span><br><span class="line"><span class="string">                delta_t = _dt;</span></span><br><span class="line"><span class="string">            if (_msd != -1)</span></span><br><span class="line"><span class="string">                MAX_DIS_SQR = _msd;</span></span><br><span class="line"><span class="string">            con_fs.length = 0;</span></span><br><span class="line"><span class="string">            for (var i = 0; i &lt; con_fsx.length; i++) &#123;</span></span><br><span class="line"><span class="string">                for (var j = 0; j &lt; con_fsx[i].length; j++) &#123;</span></span><br><span class="line"><span class="string">                    con_fsx[i][j] = 0;</span></span><br><span class="line"><span class="string">                    con_fsy[i][j] = 0;</span></span><br><span class="line"><span class="string">                &#125;</span></span><br><span class="line"><span class="string">            &#125;</span></span><br><span class="line"><span class="string">            </span></span><br><span class="line"><span class="string">            nodes.length = 0;</span></span><br><span class="line"><span class="string">            nodes = deepClone(o_nodes);</span></span><br><span class="line"><span class="string">               </span></span><br><span class="line"><span class="string">            cal_force();</span></span><br><span class="line"><span class="string">            update_position();</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">            draw_new();</span></span><br><span class="line"><span class="string">        &#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        function deepClone (obj) &#123;</span></span><br><span class="line"><span class="string">            if (typeof obj !== 'object')</span></span><br><span class="line"><span class="string">                return obj;</span></span><br><span class="line"><span class="string">            if (!obj) // obj null</span></span><br><span class="line"><span class="string">                return obj;</span></span><br><span class="line"><span class="string">            if (obj instanceof Date)</span></span><br><span class="line"><span class="string">                return new Date(obj);</span></span><br><span class="line"><span class="string">            if (obj instanceof RegExp)</span></span><br><span class="line"><span class="string">                return new RegExp(obj);</span></span><br><span class="line"><span class="string">            if (obj instanceof Function)</span></span><br><span class="line"><span class="string">                return obj;</span></span><br><span class="line"><span class="string">            </span></span><br><span class="line"><span class="string">            let newObj;</span></span><br><span class="line"><span class="string">            if (obj instanceof Array) &#123;</span></span><br><span class="line"><span class="string">                newObj = [];</span></span><br><span class="line"><span class="string">                for(let i = 0, len = obj.length; i &lt; len; i++)</span></span><br><span class="line"><span class="string">                    newObj.push(deepClone(obj[i]));</span></span><br><span class="line"><span class="string">                return newObj;</span></span><br><span class="line"><span class="string">            &#125;</span></span><br><span class="line"><span class="string">            newObj = &#123;&#125;;</span></span><br><span class="line"><span class="string">            for (let key in obj) &#123;</span></span><br><span class="line"><span class="string">                if (obj.hasOwnProperty(key)) &#123;</span></span><br><span class="line"><span class="string">                    if (typeof obj[key] !== 'object')</span></span><br><span class="line"><span class="string">                        newObj[key] = obj[key];</span></span><br><span class="line"><span class="string">                    else</span></span><br><span class="line"><span class="string">                        newObj[key] = deepClone(obj[key]);</span></span><br><span class="line"><span class="string">                &#125;</span></span><br><span class="line"><span class="string">            &#125;</span></span><br><span class="line"><span class="string">            return newObj;</span></span><br><span class="line"><span class="string">        &#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        // generate data....</span></span><br><span class="line"><span class="string">        function gen_d() &#123;</span></span><br><span class="line"><span class="string">            var temp_cnt = 0, group = 0;</span></span><br><span class="line"><span class="string">            while (temp_cnt &lt; node_cnt) &#123;//max-min+1 +min</span></span><br><span class="line"><span class="string">                // generate nodes</span></span><br><span class="line"><span class="string">                var x0 = Math.floor(Math.random() * (maxNodeX - 1 + 1) ) + 1;</span></span><br><span class="line"><span class="string">                var y0 = Math.floor(Math.random() * (maxNodeY - 1 + 1) ) + 1;</span></span><br><span class="line"><span class="string">                var cnt1 = Math.floor(Math.random() * (15 - 2 + 1) ) + 2;</span></span><br><span class="line"><span class="string">                if (temp_cnt + cnt1 &gt; node_cnt)</span></span><br><span class="line"><span class="string">                    cnt1 = node_cnt - temp_cnt;</span></span><br><span class="line"><span class="string">                var range_g = 50;</span></span><br><span class="line"><span class="string">                var Fr_x = 0, Fr_y = 0, Fs_x = 0, Fs_y = 0;</span></span><br><span class="line"><span class="string">                var x = x0, y = y0;</span></span><br><span class="line"><span class="string">                o_nodes[group] = new Array;</span></span><br><span class="line"><span class="string">                nodes[group] = new Array;</span></span><br><span class="line"><span class="string">                o_nodes[group].push(&#123;x,y,Fr_x,Fr_y,Fs_x,Fs_y&#125;);</span></span><br><span class="line"><span class="string">                nodes[group].push(&#123;x,y,Fr_x,Fr_y,Fs_x,Fs_y&#125;);</span></span><br><span class="line"><span class="string">                for (var i = 1; i &lt; cnt1; i++) &#123; // generate group nodes</span></span><br><span class="line"><span class="string">                    var dx = Math.floor(Math.random() * (range_g - 1 + 1) ) + 1;</span></span><br><span class="line"><span class="string">                    var dy = Math.floor(Math.random() * (range_g - 1 + 1) ) + 1;</span></span><br><span class="line"><span class="string">                    var x1 = x0 + dx, y1 = y0 + dy;</span></span><br><span class="line"><span class="string">                    var x2 = x0 - dx, y2 = y0 - dy;</span></span><br><span class="line"><span class="string">                    var x, y;</span></span><br><span class="line"><span class="string">                    if (x1 &gt; maxNodeX || x1 &lt; 0)</span></span><br><span class="line"><span class="string">                        x = x2;</span></span><br><span class="line"><span class="string">                    else x = x1;</span></span><br><span class="line"><span class="string">                    if (y1 &gt; maxNodeY || y1 &lt; 0)</span></span><br><span class="line"><span class="string">                        y = y2;</span></span><br><span class="line"><span class="string">                    else y = y1;</span></span><br><span class="line"><span class="string">                    o_nodes[group].push(&#123;x,y,Fr_x,Fr_y,Fs_x,Fs_y&#125;);</span></span><br><span class="line"><span class="string">                    nodes[group].push(&#123;x,y,Fr_x,Fr_y,Fs_x,Fs_y&#125;);</span></span><br><span class="line"><span class="string">                &#125;</span></span><br><span class="line"><span class="string">                // generate connection</span></span><br><span class="line"><span class="string">                var con0 = [];</span></span><br><span class="line"><span class="string">                for (var i = 0; i &lt; cnt1; i++) &#123;</span></span><br><span class="line"><span class="string">                    con0[i] = new Array(cnt1);</span></span><br><span class="line"><span class="string">                    con0[i].fill(0, 0, cnt1);</span></span><br><span class="line"><span class="string">                &#125;</span></span><br><span class="line"><span class="string">                for (var i = 0; i &lt; cnt1 - 1; i++) &#123;</span></span><br><span class="line"><span class="string">                    for (var j = i + 1; j &lt; cnt1; j++) &#123;</span></span><br><span class="line"><span class="string">                        var isconnected = Math.floor(Math.random() * 10);</span></span><br><span class="line"><span class="string">                        if (isconnected &gt;= 6) &#123;</span></span><br><span class="line"><span class="string">                            con0[i][j] = 1;</span></span><br><span class="line"><span class="string">                            con0[j][i] = 1;</span></span><br><span class="line"><span class="string">                        &#125;</span></span><br><span class="line"><span class="string">                    &#125;</span></span><br><span class="line"><span class="string">                &#125;</span></span><br><span class="line"><span class="string">                connect.push(con0);</span></span><br><span class="line"><span class="string">                group++;</span></span><br><span class="line"><span class="string">                temp_cnt += cnt1;</span></span><br><span class="line"><span class="string">            &#125;</span></span><br><span class="line"><span class="string">            var con1 = [];</span></span><br><span class="line"><span class="string">            for (var i = 0; i &lt; group; i++) &#123;</span></span><br><span class="line"><span class="string">                con1[i] = new Array(group);</span></span><br><span class="line"><span class="string">                con1[i].fill(0, 0, group);</span></span><br><span class="line"><span class="string">                con_fsx[i] = new Array(group);</span></span><br><span class="line"><span class="string">                con_fsx[i].fill(0, 0, group);</span></span><br><span class="line"><span class="string">                con_fsy[i] = new Array(group);</span></span><br><span class="line"><span class="string">                con_fsy[i].fill(0, 0, group);</span></span><br><span class="line"><span class="string">            &#125;</span></span><br><span class="line"><span class="string">            for (var i = 0; i &lt; group - 1; i++) &#123;</span></span><br><span class="line"><span class="string">                var newCon = Math.floor(Math.random() * group - i) + i;</span></span><br><span class="line"><span class="string">                con1[newCon][i] = 1;</span></span><br><span class="line"><span class="string">                con1[i][newCon] = 1;</span></span><br><span class="line"><span class="string">                for (var j = i + 1; j &lt; group; j++) &#123;</span></span><br><span class="line"><span class="string">                    var isconnected = Math.floor(Math.random() * 10);</span></span><br><span class="line"><span class="string">                    if (isconnected &gt;= 6) &#123;</span></span><br><span class="line"><span class="string">                        con1[i][j] = 1;</span></span><br><span class="line"><span class="string">                        con1[j][i] = 1;</span></span><br><span class="line"><span class="string">                    &#125;</span></span><br><span class="line"><span class="string">                &#125;</span></span><br><span class="line"><span class="string">            &#125;</span></span><br><span class="line"><span class="string">            connect.push(con1);</span></span><br><span class="line"><span class="string">            console.log("</span>connected? : <span class="string">", connect);</span></span><br><span class="line"><span class="string">            console.log("</span>now <span class="keyword">get</span> data: ", o_nodes);</span><br><span class="line">            console.log("copy nodes: ", nodes);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        function cal_force() &#123;</span><br><span class="line">            <span class="comment">// repulsion force between all pairs</span></span><br><span class="line">            <span class="comment">// if they are connected, calculate spring force</span></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">var</span> i1 = <span class="number">0</span>; i1 &lt; nodes.length; i1++) &#123;</span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">var</span> i2 = <span class="number">0</span>; i2 &lt; nodes[i1].length - <span class="number">1</span>; i2++) &#123;</span><br><span class="line">                    <span class="keyword">var</span> node1 = nodes[i1][i2];</span><br><span class="line">                    <span class="keyword">for</span>(<span class="keyword">var</span> j1 = i1; j1 &lt; nodes.length; j1++) &#123;</span><br><span class="line">                        <span class="keyword">for</span> (<span class="keyword">var</span> j2 = <span class="number">0</span>; j2 &lt; nodes[j1].length; j2++) &#123;</span><br><span class="line">                            <span class="keyword">if</span> (j1 == i1 &amp;&amp; j2 &lt;= i2)</span><br><span class="line">                                <span class="keyword">continue</span>;</span><br><span class="line">                            <span class="keyword">var</span> node2 = nodes[j1][j2];</span><br><span class="line">                            <span class="keyword">var</span> dx = node2.x - node1.x;</span><br><span class="line">                            <span class="keyword">var</span> dy = node2.y - node1.y;</span><br><span class="line">                            <span class="keyword">if</span> (dx != <span class="number">0</span> || dy != <span class="number">0</span>) &#123;</span><br><span class="line">                                <span class="keyword">var</span> disSqu = dx*dx + dy*dy;</span><br><span class="line">                                <span class="keyword">var</span> dis = <span class="built_in">Math</span>.sqrt(disSqu);</span><br><span class="line">                                <span class="keyword">var</span> force = K_r / disSqu;</span><br><span class="line">                                <span class="keyword">var</span> fx = force * dx / dis;</span><br><span class="line">                                <span class="keyword">var</span> fy = force * dy / dis;</span><br><span class="line">                                node1.Fr_x = node1.Fr_x - fx;</span><br><span class="line">                                node1.Fr_y = node1.Fr_y - fy;</span><br><span class="line">                                node2.Fr_x = node2.Fr_x + fx;</span><br><span class="line">                                node2.Fr_y = node2.Fr_y + fy;</span><br><span class="line">                                <span class="keyword">if</span> (i1 == j1 &amp;&amp; connect[i1][i2][j2] == <span class="number">1</span>) &#123;</span><br><span class="line">                                    <span class="keyword">var</span> force2 = K_s * (dis - L);</span><br><span class="line">                                    <span class="keyword">var</span> fx2 = force2 * dx / dis;</span><br><span class="line">                                    <span class="keyword">var</span> fy2 = force2 * dy / dis;</span><br><span class="line">                                    node1.Fs_x = node1.Fs_x + fx2;</span><br><span class="line">                                    node1.Fs_y = node1.Fs_y + fy2;</span><br><span class="line">                                    node2.Fs_x = node2.Fs_x - fx2;</span><br><span class="line">                                    node2.Fs_y = node2.Fs_y - fy2;</span><br><span class="line">                                &#125;</span><br><span class="line">                                <span class="keyword">if</span> (i2 == <span class="number">0</span> &amp;&amp; j2 == <span class="number">0</span> &amp;&amp; i1 != j1) &#123;</span><br><span class="line">                                    <span class="keyword">if</span> (connect[nodes.length][i1][j1] == <span class="number">1</span>) &#123;</span><br><span class="line">                                        <span class="keyword">var</span> force3 = K_s * (dis - L);</span><br><span class="line">                                        <span class="keyword">var</span> fx3 = force3 * dx / dis;</span><br><span class="line">                                        <span class="keyword">var</span> fy3 = force3 * dy / dis;</span><br><span class="line">                                        con_fsx[i1][j1] += fx3;</span><br><span class="line">                                        con_fsy[i1][j1] += fy3;</span><br><span class="line">                                        con_fsx[j1][i1] -= fx3;</span><br><span class="line">                                        con_fsy[j1][i1] -= fy3;</span><br><span class="line">                                    &#125;</span><br><span class="line">                                &#125;</span><br><span class="line">                                nodes[i1][i2] = node1;</span><br><span class="line">                                nodes[j1][j2] = node2;</span><br><span class="line">                            &#125;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; con_fsx.length; i++) &#123;</span><br><span class="line">                <span class="keyword">var</span> x = <span class="number">0</span>, y = <span class="number">0</span>;</span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">var</span> j = <span class="number">0</span>; j &lt; con_fsx.length; j++) &#123;</span><br><span class="line">                    x = x + con_fsx[i][j];</span><br><span class="line">                    y = y + con_fsy[i][j];</span><br><span class="line">                &#125;</span><br><span class="line">                con_fs.push(&#123;x,y&#125;);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="function"><span class="keyword">function</span> <span class="title">update_position</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">var</span> i1 = <span class="number">0</span>; i1 &lt; nodes.length; i1++) &#123;</span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">var</span> i2  = <span class="number">0</span>; i2 &lt; nodes[i1].length; i2++) &#123;</span><br><span class="line">                    <span class="keyword">var</span> _node = nodes[i1][i2];</span><br><span class="line">                    <span class="keyword">var</span> dx = delta_t * (_node.Fr_x + _node.Fs_x + con_fs[i1].x);</span><br><span class="line">                    <span class="keyword">var</span> dy = delta_t * (_node.Fr_y + _node.Fs_y + con_fs[i1].y);</span><br><span class="line">                    <span class="keyword">var</span> displacement_Sqr = dx*dx + dy*dy;</span><br><span class="line">                    <span class="keyword">if</span> (displacement_Sqr &gt; MAX_DIS_SQR) &#123;</span><br><span class="line">                        <span class="keyword">var</span> disS = <span class="built_in">Math</span>.sqrt(MAX_DIS_SQR / displacement_Sqr);</span><br><span class="line">                        dx = dx * disS;</span><br><span class="line">                        dy = dy * disS;</span><br><span class="line">                    &#125;</span><br><span class="line">                    _node.x = _node.x + dx;</span><br><span class="line">                    _node.y = _node.y + dy;</span><br><span class="line">                    nodes[i1][i2] = _node;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">"old &amp; new nodes are here: "</span>, o_nodes, nodes);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">function</span> <span class="title">draw_old</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="comment">// draw line</span></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; connect.length; i++) &#123;</span><br><span class="line">                <span class="keyword">var</span> temp_con = connect[i];</span><br><span class="line">                </span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">var</span> j = <span class="number">0</span>; j &lt; temp_con.length - <span class="number">1</span>; j++) &#123;</span><br><span class="line">                    <span class="keyword">for</span> (<span class="keyword">var</span> k = j + <span class="number">1</span>; k &lt; temp_con.length; k++) &#123;</span><br><span class="line">                        <span class="keyword">if</span> (temp_con[j][k] == <span class="number">1</span>) &#123;</span><br><span class="line">                            <span class="keyword">var</span> x1, x2, y1, y2;</span><br><span class="line">                            <span class="keyword">var</span> lineStroke = <span class="string">'#ffdab9'</span>;</span><br><span class="line">                            <span class="keyword">var</span> lineLen = <span class="number">0.5</span>;</span><br><span class="line">                            <span class="keyword">if</span> (i == connect.length - <span class="number">1</span>) &#123;</span><br><span class="line">                                x1 = o_nodes[j][<span class="number">0</span>].x, y1 = o_nodes[j][<span class="number">0</span>].y;</span><br><span class="line">                                x2 = o_nodes[k][<span class="number">0</span>].x, y2 = o_nodes[k][<span class="number">0</span>].y;</span><br><span class="line">                                lineStroke = <span class="string">'#f08080'</span>;</span><br><span class="line">                                lineLen = <span class="number">1.0</span>;</span><br><span class="line">                            &#125;</span><br><span class="line">                            <span class="keyword">else</span>&#123;</span><br><span class="line">                                x1 = o_nodes[i][j].x, y1 = o_nodes[i][j].y;</span><br><span class="line">                                x2 = o_nodes[i][k].x, y2 = o_nodes[i][k].y;</span><br><span class="line">                            &#125;</span><br><span class="line"></span><br><span class="line">                            <span class="keyword">var</span> line = <span class="built_in">document</span>.createElementNS(svgns, <span class="string">'line'</span>);</span><br><span class="line">                            line.setAttributeNS(<span class="literal">null</span>, <span class="string">'x1'</span>, x1);</span><br><span class="line">                            line.setAttributeNS(<span class="literal">null</span>, <span class="string">'x2'</span>, x2);</span><br><span class="line">                            line.setAttributeNS(<span class="literal">null</span>, <span class="string">'y1'</span>, y1);</span><br><span class="line">                            line.setAttributeNS(<span class="literal">null</span>, <span class="string">'y2'</span>, y2);</span><br><span class="line">                            line.setAttributeNS(<span class="literal">null</span>, <span class="string">'stroke'</span>, lineStroke);</span><br><span class="line">                            line.setAttributeNS(<span class="literal">null</span>, <span class="string">'stroke-width'</span>, lineLen);</span><br><span class="line">                            <span class="built_in">document</span>.getElementById(<span class="string">'svgOne'</span>).appendChild(line);</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// draw circle</span></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; o_nodes.length; i++) &#123;</span><br><span class="line">                <span class="keyword">for</span> (j = <span class="number">0</span>; j &lt; o_nodes[i].length; j++) &#123;</span><br><span class="line">                    <span class="keyword">var</span> getx = o_nodes[i][j].x;</span><br><span class="line">                    <span class="keyword">var</span> gety = o_nodes[i][j].y;</span><br><span class="line">                    <span class="keyword">var</span> circle = <span class="built_in">document</span>.createElementNS(svgns, <span class="string">'circle'</span>);</span><br><span class="line">                    circle.setAttributeNS(<span class="literal">null</span>, <span class="string">"cx"</span>, getx);</span><br><span class="line">                    circle.setAttributeNS(<span class="literal">null</span>, <span class="string">"cy"</span>, gety);</span><br><span class="line">                    circle.setAttributeNS(<span class="literal">null</span>, <span class="string">"r"</span>, <span class="number">3</span>);</span><br><span class="line">                    circle.setAttributeNS(<span class="literal">null</span>, <span class="string">"fill"</span>, colorset1[i % colorset1.length]);</span><br><span class="line">                    circle.setAttributeNS(<span class="literal">null</span>, <span class="string">"stroke"</span>, <span class="string">"none"</span>);</span><br><span class="line">                    <span class="built_in">document</span>.getElementById(<span class="string">'svgOne'</span>).appendChild(circle);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">function</span> <span class="title">draw_new</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="comment">// draw line</span></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; connect.length; i++) &#123;</span><br><span class="line">                <span class="keyword">var</span> temp_con = connect[i];</span><br><span class="line">                </span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">var</span> j = <span class="number">0</span>; j &lt; temp_con.length - <span class="number">1</span>; j++) &#123;</span><br><span class="line">                    <span class="keyword">for</span> (<span class="keyword">var</span> k = j + <span class="number">1</span>; k &lt; temp_con.length; k++) &#123;</span><br><span class="line">                        <span class="keyword">if</span> (temp_con[j][k] == <span class="number">1</span>) &#123;</span><br><span class="line">                            <span class="keyword">var</span> x1, x2, y1, y2;</span><br><span class="line">                            <span class="keyword">var</span> lineStroke = <span class="string">'#ffcad4'</span>;</span><br><span class="line">                            <span class="keyword">var</span> lineLen = <span class="number">1.0</span>;</span><br><span class="line">                            <span class="keyword">if</span> (i == connect.length - <span class="number">1</span>) &#123;</span><br><span class="line">                                x1 = nodes[j][<span class="number">0</span>].x, y1 = nodes[j][<span class="number">0</span>].y;</span><br><span class="line">                                x2 = nodes[k][<span class="number">0</span>].x, y2 = nodes[k][<span class="number">0</span>].y;</span><br><span class="line">                                lineStroke = <span class="string">'#9e2a2b'</span>;</span><br><span class="line">                                lineLen = <span class="number">1.5</span>;</span><br><span class="line">                            &#125;</span><br><span class="line">                            <span class="keyword">else</span>&#123;</span><br><span class="line">                                x1 = nodes[i][j].x, y1 = nodes[i][j].y;</span><br><span class="line">                                x2 = nodes[i][k].x, y2 = nodes[i][k].y;</span><br><span class="line">                            &#125;</span><br><span class="line"></span><br><span class="line">                            <span class="keyword">var</span> line = <span class="built_in">document</span>.createElementNS(svgns, <span class="string">'line'</span>);</span><br><span class="line">                            line.setAttributeNS(<span class="literal">null</span>, <span class="string">'x1'</span>, x1);</span><br><span class="line">                            line.setAttributeNS(<span class="literal">null</span>, <span class="string">'x2'</span>, x2);</span><br><span class="line">                            line.setAttributeNS(<span class="literal">null</span>, <span class="string">'y1'</span>, y1);</span><br><span class="line">                            line.setAttributeNS(<span class="literal">null</span>, <span class="string">'y2'</span>, y2);</span><br><span class="line">                            line.setAttributeNS(<span class="literal">null</span>, <span class="string">'stroke'</span>, lineStroke);</span><br><span class="line">                            line.setAttributeNS(<span class="literal">null</span>, <span class="string">'stroke-width'</span>, lineLen);</span><br><span class="line">                            <span class="built_in">document</span>.getElementById(<span class="string">'svgTwo'</span>).appendChild(line);</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// draw circle</span></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; nodes.length; i++) &#123;</span><br><span class="line">                <span class="keyword">for</span> (j = <span class="number">0</span>; j &lt; nodes[i].length; j++) &#123;</span><br><span class="line">                    <span class="keyword">var</span> getx = nodes[i][j].x;</span><br><span class="line">                    <span class="keyword">var</span> gety = nodes[i][j].y;</span><br><span class="line">                    <span class="keyword">var</span> circle = <span class="built_in">document</span>.createElementNS(svgns, <span class="string">'circle'</span>);</span><br><span class="line">                    circle.setAttributeNS(<span class="literal">null</span>, <span class="string">"cx"</span>, getx);</span><br><span class="line">                    circle.setAttributeNS(<span class="literal">null</span>, <span class="string">"cy"</span>, gety);</span><br><span class="line">                    circle.setAttributeNS(<span class="literal">null</span>, <span class="string">"r"</span>, <span class="number">4.5</span>);</span><br><span class="line">                    circle.setAttributeNS(<span class="literal">null</span>, <span class="string">"fill"</span>, colorset2[i % colorset2.length]);</span><br><span class="line">                    circle.setAttributeNS(<span class="literal">null</span>, <span class="string">"stroke"</span>, <span class="string">"none"</span>);</span><br><span class="line">                    <span class="built_in">document</span>.getElementById(<span class="string">'svgTwo'</span>).appendChild(circle);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &lt;<span class="regexp">/script&gt;</span></span><br><span class="line"><span class="regexp">    &lt;div class = "slidecontainer" id = "slidecon"&gt;</span></span><br><span class="line"><span class="regexp">        &lt;label&gt;L: &lt;/</span>label&gt;</span><br><span class="line">        &lt;input type = <span class="string">"range"</span> min = <span class="string">"10"</span> max=<span class="string">"1000"</span> value = <span class="string">"50"</span> <span class="class"><span class="keyword">class</span> </span>= <span class="string">"slider"</span></span><br><span class="line">            id = <span class="string">"s_L"</span> oninput = <span class="string">"document.getElementById('l_L').innerHTML = this.value"</span></span><br><span class="line">            onchange = <span class="string">"update2(this.value, -1, -1, -1, -1)"</span> /&gt;</span><br><span class="line">        &lt;label id = <span class="string">"l_L"</span>&gt;<span class="number">50</span>&lt;<span class="regexp">/label&gt;</span></span><br><span class="line"><span class="regexp">        &lt;br&gt;</span></span><br><span class="line"><span class="regexp">        </span></span><br><span class="line"><span class="regexp">        &lt;label&gt;K_s: &lt;/</span>label&gt;</span><br><span class="line">        &lt;input type = <span class="string">"range"</span> min = <span class="string">"100"</span> max=<span class="string">"10000"</span> value = <span class="string">"6250"</span> <span class="class"><span class="keyword">class</span> </span>= <span class="string">"slider"</span></span><br><span class="line">            id = <span class="string">"s_S"</span> oninput = <span class="string">"document.getElementById('l_S').innerHTML = this.value"</span></span><br><span class="line">            onchange = <span class="string">"update2(-1, this.value, -1, -1, -1)"</span> /&gt;</span><br><span class="line">        &lt;label id = <span class="string">"l_S"</span>&gt;<span class="number">6250</span>&lt;<span class="regexp">/label&gt;</span></span><br><span class="line"><span class="regexp">        &lt;br&gt;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">        &lt;label&gt;K_r: &lt;/</span>label&gt;</span><br><span class="line">        &lt;input type = <span class="string">"range"</span> min = <span class="string">"0.01"</span> max=<span class="string">"5"</span> value = <span class="string">"1"</span> step = <span class="string">"0.01"</span> <span class="class"><span class="keyword">class</span> </span>= <span class="string">"slider"</span></span><br><span class="line">            id = <span class="string">"s_R"</span> oninput = <span class="string">"document.getElementById('l_R').innerHTML = this.value"</span></span><br><span class="line">            onchange = <span class="string">"update2(-1, -1, this.value, -1, -1)"</span> /&gt;</span><br><span class="line">        &lt;label id = <span class="string">"l_R"</span>&gt;<span class="number">1</span>&lt;<span class="regexp">/label&gt;</span></span><br><span class="line"><span class="regexp">        &lt;br&gt;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">        &lt;label&gt;Δt: &lt;/</span>label&gt;</span><br><span class="line">        &lt;input type = <span class="string">"range"</span> min = <span class="string">"0.005"</span> max=<span class="string">"5.000"</span> value = <span class="string">"0.04"</span> step = <span class="string">"0.001"</span> <span class="class"><span class="keyword">class</span> </span>= <span class="string">"slider"</span></span><br><span class="line">            id = <span class="string">"s_T"</span> oninput = <span class="string">"document.getElementById('l_T').innerHTML = this.value"</span></span><br><span class="line">            onchange = <span class="string">"update2(-1, -1, -1, this.value, -1)"</span> /&gt;</span><br><span class="line">        &lt;label id = <span class="string">"l_T"</span>&gt;<span class="number">0.04</span>&lt;<span class="regexp">/label&gt;</span></span><br><span class="line"><span class="regexp">        &lt;br&gt;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">        &lt;label&gt;MAX_DIS_SQR: &lt;/</span>label&gt;</span><br><span class="line">        &lt;input type = <span class="string">"range"</span> min = <span class="string">"10"</span> max=<span class="string">"200"</span> value = <span class="string">"50"</span> <span class="class"><span class="keyword">class</span> </span>= <span class="string">"slider"</span></span><br><span class="line">            id = <span class="string">"s_M"</span> oninput = <span class="string">"document.getElementById('l_M').innerHTML = this.value"</span></span><br><span class="line">            onchange = <span class="string">"update2(-1, -1, -1, -1, this.value)"</span> /&gt;</span><br><span class="line">        &lt;label id = <span class="string">"l_M"</span>&gt;<span class="number">50</span>&lt;<span class="regexp">/label&gt;</span></span><br><span class="line"><span class="regexp">        &lt;br&gt;</span></span><br><span class="line"><span class="regexp">    &lt;/</span>div&gt;</span><br><span class="line">    &lt;<span class="regexp">/body&gt;</span></span><br><span class="line"><span class="regexp">&lt;/</span>html&gt;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/HTML/" rel="tag"><i class="fa fa-tag"></i> HTML</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/11/13/Squarified-Treemap/" rel="prev" title="Squarified Treemap">
+      <i class="fa fa-chevron-left"></i> Squarified Treemap
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/12/11/Sparkclouds/" rel="next" title="Sparkclouds">
+      Sparkclouds <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Force-Directed-Graph-Layout"><span class="nav-number">1.</span> <span class="nav-text">Force Directed Graph Layout</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Algorithm"><span class="nav-number">1.1.</span> <span class="nav-text">Algorithm</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#算法优化"><span class="nav-number">1.2.</span> <span class="nav-text">算法优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#效果图"><span class="nav-number">1.3.</span> <span class="nav-text">效果图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Play-amp-Have-Fun"><span class="nav-number">1.4.</span> <span class="nav-text">Play &amp; Have Fun</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Source-Code"><span class="nav-number">1.5.</span> <span class="nav-text">Source Code</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="K"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">K</p>
+  <div class="site-description" itemprop="description">You know Knowhere is nowhere, but KnowWhere.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">76</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:colivener@outlook.com" title="E-Mail → mailto:colivener@outlook.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+
+
+    <div class="links-of-blogroll motion-element links-of-blogroll-undefined">
+      <div class="links-of-blogroll-title">
+        <!-- modify icon to fire by szw -->
+        <i class="fa fa-history fa-" aria-hidden="true"></i>
+        
+      </div>
+      <ul class="links-of-blogroll-list">
+        
+        
+          <li>
+            <a href="/" title="" target="_blank"></a>
+          </li>
+        
+          <li>
+            <a href="/" title="" target="_blank"></a>
+          </li>
+        
+          <li>
+            <a href="/" title="" target="_blank"></a>
+          </li>
+        
+          <li>
+            <a href="/" title="" target="_blank"></a>
+          </li>
+        
+          <li>
+            <a href="/" title="" target="_blank"></a>
+          </li>
+        
+      </ul>
+    </div>
+
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">K</span>
+</div>
+  <div class="addthis_inline_share_toolbox">
+    <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5e9ea4a022889786" async="async"></script>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'nydWvj5q5w14PIVolKD4JOtS-MdYXbMMI',
+      appKey     : '7vFccLCEXIsFn1VxvpyQAibm',
+      placeholder: "knowhere to know here",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

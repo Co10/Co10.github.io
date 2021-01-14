@@ -122,12 +122,17 @@
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">36</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">41</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">64</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">76</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -184,7 +189,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="co10.github.io/2020/03/31/%E6%89%91%E5%85%8B%E7%89%8C%E7%89%8C%E5%9E%8B/">
+    <link itemprop="mainEntityOfPage" href="co10.github.io/2020/04/17/%E6%89%91%E5%85%8B%E7%89%8Cagain/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -198,7 +203,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/03/31/%E6%89%91%E5%85%8B%E7%89%8C%E7%89%8C%E5%9E%8B/" class="post-title-link" itemprop="url">扑克牌牌型</a>
+            <a href="/2020/04/17/%E6%89%91%E5%85%8B%E7%89%8Cagain/" class="post-title-link" itemprop="url">扑克牌again</a>
         </h2>
 
         <div class="post-meta">
@@ -208,7 +213,16 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-03-31 21:47:38" itemprop="dateCreated datePublished" datetime="2020-03-31T21:47:38+08:00">2020-03-31</time>
+              <time title="创建时间：2020-04-17 11:36:22" itemprop="dateCreated datePublished" datetime="2020-04-17T11:36:22+08:00">2020-04-17</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%A8%8B%E8%AE%BE/" itemprop="url" rel="index"><span itemprop="name">程设</span></a>
+                </span>
             </span>
 
           
@@ -220,8 +234,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2020/03/31/%E6%89%91%E5%85%8B%E7%89%8C%E7%89%8C%E5%9E%8B/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/03/31/%E6%89%91%E5%85%8B%E7%89%8C%E7%89%8C%E5%9E%8B/" itemprop="commentCount"></span>
+    <a title="valine" href="/2020/04/17/%E6%89%91%E5%85%8B%E7%89%8Cagain/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/04/17/%E6%89%91%E5%85%8B%E7%89%8Cagain/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -236,10 +250,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="扑克牌牌型"><a href="#扑克牌牌型" class="headerlink" title="扑克牌牌型"></a><strong>扑克牌牌型</strong></h1><h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a><strong>问题描述</strong></h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">有 A × B 张扑克牌。每张扑克牌有一个大小(整数，记为a，范围区间是 0 到 A - 1）和一个花色（整数，记为b，范围区间是 0 到 B - 1。</span><br><span class="line">扑克牌是互异的，也就是独一无二的，也就是说没有两张牌大小和花色都相同。</span><br><span class="line">“一手牌”的意思是你手里有5张不同的牌，这 5 张牌没有谁在前谁在后的顺序之分，它们可以形成一个牌型。 我们定义了 9 种牌型，如下是 9 种牌型的规则，我们用“低序号优先”来匹配牌型，即这“一手牌”从上到下满足的第一个牌型规则就是它的“牌型编号”（一个整数，属于1到9）:</span><br><span class="line">1. 同花顺: 同时满足规则 5 和规则 4.</span><br><span class="line">2. 炸弹 : 5张牌其中有4张牌的大小相等.</span><br><span class="line">3. 三带二 : 5张牌其中有3张牌的大小相等，且另外2张牌的大小也相等.</span><br><span class="line">4. 同花 : 5张牌都是相同花色的.</span><br><span class="line">5. 顺子 : 5张牌的大小形如 x, x + 1, x + 2, x + 3, x + 4</span><br><span class="line">6. 三条: 5张牌其中有3张牌的大小相等.</span><br><span class="line">7. 两对: 5张牌其中有2张牌的大小相等，且另外3张牌中2张牌的大小相等.</span><br><span class="line">8. 一对: 5张牌其中有2张牌的大小相等.</span><br><span class="line">9. 要不起: 这手牌不满足上述的牌型中任意一个.</span><br><span class="line">现在从A × B 张扑克牌中拿走 2 张牌，分别是 (a1, b1) 和 (a2, b2). （其中a表示大小，b表示花色），现在要从剩下的扑克牌中再随机拿出 3 张，组成一手牌。</span><br><span class="line">求在所有可能的方案中，这 9 种牌型每种牌型的方案数。</span><br></pre></td></tr></table></figure>
+          <h1 id="又打牌"><a href="#又打牌" class="headerlink" title="又打牌"></a><strong>又打牌</strong></h1><h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a><strong>问题描述</strong></h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">打牌新规则：</span><br><span class="line">👉所有扑克牌只按数字来算大小，忽略花色。</span><br><span class="line">👉每张扑克牌的大小由一个值表示。A, 2, 3, 4, 5, 6, 7, 8, 9, 10, J, Q, K 分别指代 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13。</span><br><span class="line">👉每个玩家抽得 5 张扑克牌，组成一手牌。(每种扑克牌的张数是无限的)</span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/03/31/%E6%89%91%E5%85%8B%E7%89%8C%E7%89%8C%E5%9E%8B/#more" rel="contents">
+              <a class="btn" href="/2020/04/17/%E6%89%91%E5%85%8B%E7%89%8Cagain/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -263,7 +277,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="co10.github.io/2020/03/30/%E6%95%B0%E6%8D%AE%E4%B8%AD%E5%BF%83/">
+    <link itemprop="mainEntityOfPage" href="co10.github.io/2020/04/17/%E7%9B%AE%E5%BD%95%E7%AE%A1%E7%90%86%E5%99%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -277,7 +291,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/03/30/%E6%95%B0%E6%8D%AE%E4%B8%AD%E5%BF%83/" class="post-title-link" itemprop="url">数据中心</a>
+            <a href="/2020/04/17/%E7%9B%AE%E5%BD%95%E7%AE%A1%E7%90%86%E5%99%A8/" class="post-title-link" itemprop="url">目录管理器</a>
         </h2>
 
         <div class="post-meta">
@@ -287,7 +301,16 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-03-30 21:47:01" itemprop="dateCreated datePublished" datetime="2020-03-30T21:47:01+08:00">2020-03-30</time>
+              <time title="创建时间：2020-04-17 11:32:52" itemprop="dateCreated datePublished" datetime="2020-04-17T11:32:52+08:00">2020-04-17</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%A8%8B%E8%AE%BE/" itemprop="url" rel="index"><span itemprop="name">程设</span></a>
+                </span>
             </span>
 
           
@@ -299,8 +322,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2020/03/30/%E6%95%B0%E6%8D%AE%E4%B8%AD%E5%BF%83/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/03/30/%E6%95%B0%E6%8D%AE%E4%B8%AD%E5%BF%83/" itemprop="commentCount"></span>
+    <a title="valine" href="/2020/04/17/%E7%9B%AE%E5%BD%95%E7%AE%A1%E7%90%86%E5%99%A8/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/04/17/%E7%9B%AE%E5%BD%95%E7%AE%A1%E7%90%86%E5%99%A8/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -315,10 +338,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="数据中心"><a href="#数据中心" class="headerlink" title="数据中心"></a><strong>数据中心</strong></h1><h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a><strong>问题描述</strong></h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">在一个集中式网络中，存在一个根节点，需要长时间接收其余结点传输给它的反馈数据。</span><br><span class="line">存在一个 n 结点的网络图，编号从 1 到 n。该网络的传输时全双工的，所以是无向图。如果两结点 vi, ui 相连，表明 vi, ui 之间可以互相收发数据，边权是传输数据所需时间 ti。现在每个结点需要选择一条路径将数据发送到 root 号节点。希望求出一个最优的树结构传输图，使得完成这个任务所需要的时间最少。root 结点只能接收数据，其余任何一个节点可以将数据传输给另外的一个节点，但是不能将数据传输给多个节点。所有节点可以接收多个不同节点的数据。</span><br><span class="line">一个树结构传输图的传输时间为Tmax，其中Tmax &#x3D; max(Th), h为接收点在树中的深度，Th &#x3D; max(th,j), th,j表示 j 条不同的边，这 j 条边接收点的深度都为 h。</span><br></pre></td></tr></table></figure>
+          <h1 id="目录管理器"><a href="#目录管理器" class="headerlink" title="目录管理器"></a><strong>目录管理器</strong></h1><h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a><strong>问题描述</strong></h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">写一个目录管理器。</span><br><span class="line">初始时，硬盘是空的，命令行的当前目录为根目录 root。</span><br><span class="line">目录管理器可以理解为要维护一棵有根树结构，每个目录的儿子必须保持字典序。</span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/03/30/%E6%95%B0%E6%8D%AE%E4%B8%AD%E5%BF%83/#more" rel="contents">
+              <a class="btn" href="/2020/04/17/%E7%9B%AE%E5%BD%95%E7%AE%A1%E7%90%86%E5%99%A8/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -342,7 +365,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="co10.github.io/2020/03/28/%E5%86%9C%E7%94%B0%E5%BC%95%E6%B0%B4/">
+    <link itemprop="mainEntityOfPage" href="co10.github.io/2020/04/17/%E7%8F%AD%E9%95%BF%E7%AB%9E%E9%80%89/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -356,7 +379,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/03/28/%E5%86%9C%E7%94%B0%E5%BC%95%E6%B0%B4/" class="post-title-link" itemprop="url">农田引水</a>
+            <a href="/2020/04/17/%E7%8F%AD%E9%95%BF%E7%AB%9E%E9%80%89/" class="post-title-link" itemprop="url">班长竞选</a>
         </h2>
 
         <div class="post-meta">
@@ -366,7 +389,16 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-03-28 21:45:59" itemprop="dateCreated datePublished" datetime="2020-03-28T21:45:59+08:00">2020-03-28</time>
+              <time title="创建时间：2020-04-17 11:04:44" itemprop="dateCreated datePublished" datetime="2020-04-17T11:04:44+08:00">2020-04-17</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%A8%8B%E8%AE%BE/" itemprop="url" rel="index"><span itemprop="name">程设</span></a>
+                </span>
             </span>
 
           
@@ -378,8 +410,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2020/03/28/%E5%86%9C%E7%94%B0%E5%BC%95%E6%B0%B4/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/03/28/%E5%86%9C%E7%94%B0%E5%BC%95%E6%B0%B4/" itemprop="commentCount"></span>
+    <a title="valine" href="/2020/04/17/%E7%8F%AD%E9%95%BF%E7%AB%9E%E9%80%89/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/04/17/%E7%8F%AD%E9%95%BF%E7%AB%9E%E9%80%89/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -394,10 +426,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="农田引水"><a href="#农田引水" class="headerlink" title="农田引水"></a><strong>农田引水</strong></h1><h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a><strong>问题描述</strong></h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">农田有 n 块，编号从 1~n。种田要灌水。</span><br><span class="line">众所周知东东是一个魔法师，他可以消耗一定的 MP 在一块田上施展魔法，使得黄河之水天上来。他也可以消耗一定的 MP 在两块田的渠上建立传送门，使得这块田引用那块有水的田的水。(1 ≤ n ≤ 300)</span><br><span class="line">黄河之水天上来的消耗是 Wi，i 是农田编号 (1 ≤ Wi ≤ 1e5)</span><br><span class="line">建立传送门的消耗是 Pij，i、j 是农田编号 (1 ≤ Pij ≤ 1e5, Pij &#x3D; Pji, Pii &#x3D; 0)</span><br><span class="line">求为所有的田灌水的最小消耗。</span><br></pre></td></tr></table></figure>
+          <h1 id="班长竞选"><a href="#班长竞选" class="headerlink" title="班长竞选"></a><strong>班长竞选</strong></h1><h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a><strong>问题描述</strong></h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">大学班级选班长，N 个同学均可以发表意见，若意见为 A B，则表示 A 认为 B 合适。意见具有传递性，即 A 认为 B 合适，B 认为 C 合适，则 A 也认为 C 合适。共有 M 条意见，求最高票数，并给出一份候选人名单，即所有得票最多的同学。</span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/03/28/%E5%86%9C%E7%94%B0%E5%BC%95%E6%B0%B4/#more" rel="contents">
+              <a class="btn" href="/2020/04/17/%E7%8F%AD%E9%95%BF%E7%AB%9E%E9%80%89/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -421,7 +453,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="co10.github.io/2020/03/27/%E4%BC%A0%E6%9F%93%E7%97%85/">
+    <link itemprop="mainEntityOfPage" href="co10.github.io/2020/04/17/%E5%A5%87%E5%A6%99%E7%9A%84%E5%BA%8F%E5%88%97/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -435,7 +467,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/03/27/%E4%BC%A0%E6%9F%93%E7%97%85/" class="post-title-link" itemprop="url">传染病</a>
+            <a href="/2020/04/17/%E5%A5%87%E5%A6%99%E7%9A%84%E5%BA%8F%E5%88%97/" class="post-title-link" itemprop="url">奇妙的序列</a>
         </h2>
 
         <div class="post-meta">
@@ -445,7 +477,16 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-03-27 21:45:38" itemprop="dateCreated datePublished" datetime="2020-03-27T21:45:38+08:00">2020-03-27</time>
+              <time title="创建时间：2020-04-17 10:36:00" itemprop="dateCreated datePublished" datetime="2020-04-17T10:36:00+08:00">2020-04-17</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%A8%8B%E8%AE%BE/" itemprop="url" rel="index"><span itemprop="name">程设</span></a>
+                </span>
             </span>
 
           
@@ -457,8 +498,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2020/03/27/%E4%BC%A0%E6%9F%93%E7%97%85/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/03/27/%E4%BC%A0%E6%9F%93%E7%97%85/" itemprop="commentCount"></span>
+    <a title="valine" href="/2020/04/17/%E5%A5%87%E5%A6%99%E7%9A%84%E5%BA%8F%E5%88%97/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/04/17/%E5%A5%87%E5%A6%99%E7%9A%84%E5%BA%8F%E5%88%97/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -473,10 +514,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="COVID-19传染病"><a href="#COVID-19传染病" class="headerlink" title="COVID-19传染病"></a><strong>COVID-19传染病</strong></h1><h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a><strong>问题描述</strong></h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">如果一个感染者走入一个群体，那么这个群体需要被隔离。</span><br><span class="line">小A同学被确诊为新冠感染，并且没有戴口罩！</span><br><span class="line">需要尽快找到所有和小A同学直接或者间接接触过的同学，将他们隔离，防止更大范围的扩散。</span><br><span class="line">众所周知，学生的交际可能是分小团体的，一位学生可能同时参与多个小团体内。</span><br></pre></td></tr></table></figure>
+          <h1 id="奇妙的序列"><a href="#奇妙的序列" class="headerlink" title="奇妙的序列"></a><strong>奇妙的序列</strong></h1><h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a><strong>问题描述</strong></h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">有一个奇怪的无限序列: 112123123412345...... </span><br><span class="line">这个序列由连续正整数组成的若干部分构成，其中第一部分包含 1 至 1 之间的所有数字，第二部分包含 1 至 2 之间的所有数字，第三部分包含 1 至 3 之间的所有数字，第 i 部分总是包含 1 至 i 之间的所有数字。</span><br><span class="line">所以，这个序列的前 56 项会是11212312341234512345612345671234567812345678912345678910，其中第 1 项是 1，第 3 项是 2，第 20 项是 5，第 38 项是 2，第56项是 0。</span><br><span class="line">求第 k 项数字是多少。</span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/03/27/%E4%BC%A0%E6%9F%93%E7%97%85/#more" rel="contents">
+              <a class="btn" href="/2020/04/17/%E5%A5%87%E5%A6%99%E7%9A%84%E5%BA%8F%E5%88%97/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -500,7 +541,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="co10.github.io/2020/03/26/%E6%9C%80%E9%95%BF%E7%BD%91%E7%BA%BF/">
+    <link itemprop="mainEntityOfPage" href="co10.github.io/2020/04/17/%E5%B9%B3%E8%A1%A1%E5%AD%97%E7%AC%A6%E4%B8%B2Plus/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -514,7 +555,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/03/26/%E6%9C%80%E9%95%BF%E7%BD%91%E7%BA%BF/" class="post-title-link" itemprop="url">最长网线</a>
+            <a href="/2020/04/17/%E5%B9%B3%E8%A1%A1%E5%AD%97%E7%AC%A6%E4%B8%B2Plus/" class="post-title-link" itemprop="url">平衡字符串Plus</a>
         </h2>
 
         <div class="post-meta">
@@ -524,7 +565,16 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-03-26 11:06:14" itemprop="dateCreated datePublished" datetime="2020-03-26T11:06:14+08:00">2020-03-26</time>
+              <time title="创建时间：2020-04-17 10:16:17" itemprop="dateCreated datePublished" datetime="2020-04-17T10:16:17+08:00">2020-04-17</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%A8%8B%E8%AE%BE/" itemprop="url" rel="index"><span itemprop="name">程设</span></a>
+                </span>
             </span>
 
           
@@ -536,8 +586,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2020/03/26/%E6%9C%80%E9%95%BF%E7%BD%91%E7%BA%BF/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/03/26/%E6%9C%80%E9%95%BF%E7%BD%91%E7%BA%BF/" itemprop="commentCount"></span>
+    <a title="valine" href="/2020/04/17/%E5%B9%B3%E8%A1%A1%E5%AD%97%E7%AC%A6%E4%B8%B2Plus/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/04/17/%E5%B9%B3%E8%A1%A1%E5%AD%97%E7%AC%A6%E4%B8%B2Plus/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -552,10 +602,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="最长网线"><a href="#最长网线" class="headerlink" title="最长网线"></a><strong>最长网线</strong></h1><h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a><strong>问题描述</strong></h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">实验室里原先有一台电脑(编号为 1 )，最近又购置了 N - 1 台电脑，编号为 2 到 N 。每台电脑都用网线连接到一台先前安装的电脑上。求第 i 台电脑到其他电脑的最大网线长度。</span><br></pre></td></tr></table></figure>
+          <h1 id="平衡字符串Plus"><a href="#平衡字符串Plus" class="headerlink" title="平衡字符串Plus"></a><strong>平衡字符串Plus</strong></h1><h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a><strong>问题描述</strong></h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">给定一个字符串，字符串中包括26个大写字母和特殊字符&#39;?&#39;，特殊字符&#39;?&#39;可以代表任何一个大写字母。</span><br><span class="line">是否存在一个位置连续的且由26个大写字母组成的子串，在这个子串中每个字母出现且仅出现一次，如果存在，请输出从左侧算起的第一个出现的符合要求的子串，并且要求，如果有多组解同时符合位置最靠左，则输出字典序最小的那个解；如果不存在，输出-1。</span><br><span class="line"></span><br><span class="line">说明：字典序先按照第一个字母，以 A、B、C ...... Z 的顺序排列；如果第一个字母一样，那么比较第二个、第三个乃至后面的字母。如果比到最后两个单词不一样长（比如，SIGH 和 SIGHT），那么把短者排在前。例如</span><br><span class="line">AB??EFGHIJKLMNOPQRSTUVWXYZ </span><br><span class="line"> </span><br><span class="line">ABCDEFGHIJKLMNOPQRSTUVWXYZ</span><br><span class="line">ABDCEFGHIJKLMNOPQRSTUVWXYZ</span><br><span class="line">上面两种填法，都可以构成26个字母，但是我们要求字典序最小，只能取前者。</span><br><span class="line">注意，题目要求的是第一个出现的，字典序最小的！</span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/03/26/%E6%9C%80%E9%95%BF%E7%BD%91%E7%BA%BF/#more" rel="contents">
+              <a class="btn" href="/2020/04/17/%E5%B9%B3%E8%A1%A1%E5%AD%97%E7%AC%A6%E4%B8%B2Plus/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -579,7 +629,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="co10.github.io/2020/03/24/%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3/">
+    <link itemprop="mainEntityOfPage" href="co10.github.io/2020/04/15/%E9%A2%84%E6%B5%8B%E5%90%8D%E6%AC%A1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -593,7 +643,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/03/24/%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3/" class="post-title-link" itemprop="url">滑动窗口</a>
+            <a href="/2020/04/15/%E9%A2%84%E6%B5%8B%E5%90%8D%E6%AC%A1/" class="post-title-link" itemprop="url">预测名次</a>
         </h2>
 
         <div class="post-meta">
@@ -603,7 +653,16 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-03-24 16:21:47" itemprop="dateCreated datePublished" datetime="2020-03-24T16:21:47+08:00">2020-03-24</time>
+              <time title="创建时间：2020-04-15 10:57:38" itemprop="dateCreated datePublished" datetime="2020-04-15T10:57:38+08:00">2020-04-15</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%A8%8B%E8%AE%BE/" itemprop="url" rel="index"><span itemprop="name">程设</span></a>
+                </span>
             </span>
 
           
@@ -615,8 +674,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2020/03/24/%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/03/24/%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3/" itemprop="commentCount"></span>
+    <a title="valine" href="/2020/04/15/%E9%A2%84%E6%B5%8B%E5%90%8D%E6%AC%A1/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/04/15/%E9%A2%84%E6%B5%8B%E5%90%8D%E6%AC%A1/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -631,10 +690,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="滑动窗口"><a href="#滑动窗口" class="headerlink" title="滑动窗口"></a><strong>滑动窗口</strong></h1><h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a><strong>问题描述</strong></h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">有一个长度为 n 的数列和一个大小为 k 的窗口, 窗口可以在数列上来回移动。问在窗口从左往右滑的时候，每次窗口内数的最大值和最小值分别是多少？</span><br><span class="line">例如：数列是 [1 3 -1 -3 5 3 6 7], 其中 k 等于 3。</span><br></pre></td></tr></table></figure>
+          <h1 id="猫猫比赛-预测名次"><a href="#猫猫比赛-预测名次" class="headerlink" title="猫猫比赛-预测名次"></a><strong>猫猫比赛-预测名次</strong></h1><h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a><strong>问题描述</strong></h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">一共有 N 只猫猫，编号依次为1, 2, 3, …, N 进行比赛，求字典序最小的名次序列。</span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/03/24/%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3/#more" rel="contents">
+              <a class="btn" href="/2020/04/15/%E9%A2%84%E6%B5%8B%E5%90%8D%E6%AC%A1/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -658,7 +717,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="co10.github.io/2020/03/24/%E5%B9%B3%E8%A1%A1%E5%AD%97%E7%AC%A6%E4%B8%B2/">
+    <link itemprop="mainEntityOfPage" href="co10.github.io/2020/04/14/%E5%8C%BA%E9%97%B4%E9%80%89%E7%82%B9Plus/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -672,7 +731,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/03/24/%E5%B9%B3%E8%A1%A1%E5%AD%97%E7%AC%A6%E4%B8%B2/" class="post-title-link" itemprop="url">平衡字符串</a>
+            <a href="/2020/04/14/%E5%8C%BA%E9%97%B4%E9%80%89%E7%82%B9Plus/" class="post-title-link" itemprop="url">区间选点Plus</a>
         </h2>
 
         <div class="post-meta">
@@ -682,7 +741,16 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-03-24 16:21:21" itemprop="dateCreated datePublished" datetime="2020-03-24T16:21:21+08:00">2020-03-24</time>
+              <time title="创建时间：2020-04-14 10:54:18" itemprop="dateCreated datePublished" datetime="2020-04-14T10:54:18+08:00">2020-04-14</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%A8%8B%E8%AE%BE/" itemprop="url" rel="index"><span itemprop="name">程设</span></a>
+                </span>
             </span>
 
           
@@ -694,8 +762,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2020/03/24/%E5%B9%B3%E8%A1%A1%E5%AD%97%E7%AC%A6%E4%B8%B2/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/03/24/%E5%B9%B3%E8%A1%A1%E5%AD%97%E7%AC%A6%E4%B8%B2/" itemprop="commentCount"></span>
+    <a title="valine" href="/2020/04/14/%E5%8C%BA%E9%97%B4%E9%80%89%E7%82%B9Plus/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/04/14/%E5%8C%BA%E9%97%B4%E9%80%89%E7%82%B9Plus/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -710,10 +778,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="平衡字符串"><a href="#平衡字符串" class="headerlink" title="平衡字符串"></a><strong>平衡字符串</strong></h1><h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a><strong>问题描述</strong></h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">一个长度为 n 的字符串 s，其中仅包含 &#39;Q&#39;, &#39;W&#39;, &#39;E&#39;, &#39;R&#39; 四种字符。</span><br><span class="line">如果四种字符在字符串中出现次数均为 n&#x2F;4，则其为一个平衡字符串。</span><br><span class="line">现可以将 s 中连续的一段子串替换成相同长度的只包含那四个字符的任意字符串，使其变为一个平衡字符串，问替换子串的最小长度?</span><br><span class="line">如果 s 已经平衡则输出0。</span><br></pre></td></tr></table></figure>
+          <h1 id="区间选点Plus"><a href="#区间选点Plus" class="headerlink" title="区间选点Plus"></a><strong>区间选点Plus</strong></h1><h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a><strong>问题描述</strong></h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">给定一个数轴上的 n 个区间，要求在数轴上选取最少的点使得第 i 个区间 [ai, bi] 里至少有 ci 个点。</span><br><span class="line">使用差分约束系统的解法解决这道题。</span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/03/24/%E5%B9%B3%E8%A1%A1%E5%AD%97%E7%AC%A6%E4%B8%B2/#more" rel="contents">
+              <a class="btn" href="/2020/04/14/%E5%8C%BA%E9%97%B4%E9%80%89%E7%82%B9Plus/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -737,7 +805,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="co10.github.io/2020/03/24/%E5%8C%BA%E9%97%B4%E8%B5%8B%E5%80%BC/">
+    <link itemprop="mainEntityOfPage" href="co10.github.io/2020/04/11/%E5%BA%8F%E5%88%97%E6%93%8D%E4%BD%9C/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -751,7 +819,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/03/24/%E5%8C%BA%E9%97%B4%E8%B5%8B%E5%80%BC/" class="post-title-link" itemprop="url">区间赋值</a>
+            <a href="/2020/04/11/%E5%BA%8F%E5%88%97%E6%93%8D%E4%BD%9C/" class="post-title-link" itemprop="url">序列操作</a>
         </h2>
 
         <div class="post-meta">
@@ -761,7 +829,16 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-03-24 11:41:41" itemprop="dateCreated datePublished" datetime="2020-03-24T11:41:41+08:00">2020-03-24</time>
+              <time title="创建时间：2020-04-11 10:15:29" itemprop="dateCreated datePublished" datetime="2020-04-11T10:15:29+08:00">2020-04-11</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%A8%8B%E8%AE%BE/" itemprop="url" rel="index"><span itemprop="name">程设</span></a>
+                </span>
             </span>
 
           
@@ -773,8 +850,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2020/03/24/%E5%8C%BA%E9%97%B4%E8%B5%8B%E5%80%BC/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/03/24/%E5%8C%BA%E9%97%B4%E8%B5%8B%E5%80%BC/" itemprop="commentCount"></span>
+    <a title="valine" href="/2020/04/11/%E5%BA%8F%E5%88%97%E6%93%8D%E4%BD%9C/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/04/11/%E5%BA%8F%E5%88%97%E6%93%8D%E4%BD%9C/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -789,10 +866,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="区间赋值"><a href="#区间赋值" class="headerlink" title="区间赋值"></a><strong>区间赋值</strong></h1><h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a><strong>问题描述</strong></h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Select n cities from the world map, and a[i] represents the asset value owned by the i-th city.</span><br><span class="line">Then there will be several operations. Each turn is to choose the city in the interval [l, r] and increase their asset value by c. And finally, it is required to give the asset value of each city after q operations. </span><br><span class="line">------------------------------------------------------</span><br><span class="line">从世界地图从选出 n 个城市，a[i]表示选出的第 i 个城市的值。</span><br><span class="line">接下来会有 q 个操作。每一次从区间[l, r]中选出城市，并把它们的值提高 c。</span><br><span class="line">最终求得各个城市的值。</span><br></pre></td></tr></table></figure>
+          <h1 id="序列操作"><a href="#序列操作" class="headerlink" title="序列操作"></a><strong>序列操作</strong></h1><h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a><strong>问题描述</strong></h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">存在一个序列 a, 是否存在一个数 K, 使得一些数加上 K，一些数减去 K，一些数不变，使得整个序列中所有的数相等。</span><br><span class="line">其中对于序列中的每个位置上的数字，至多只能执行一次加运算或减运算或是对该位置不进行任何操作。</span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/03/24/%E5%8C%BA%E9%97%B4%E8%B5%8B%E5%80%BC/#more" rel="contents">
+              <a class="btn" href="/2020/04/11/%E5%BA%8F%E5%88%97%E6%93%8D%E4%BD%9C/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -816,7 +893,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="co10.github.io/2020/03/21/%E6%9C%80%E5%A4%A7%E7%9F%A9%E5%BD%A2/">
+    <link itemprop="mainEntityOfPage" href="co10.github.io/2020/04/09/%E5%9F%8E%E5%B8%82%E7%A9%BF%E6%A2%AD/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -830,7 +907,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/03/21/%E6%9C%80%E5%A4%A7%E7%9F%A9%E5%BD%A2/" class="post-title-link" itemprop="url">最大矩形</a>
+            <a href="/2020/04/09/%E5%9F%8E%E5%B8%82%E7%A9%BF%E6%A2%AD/" class="post-title-link" itemprop="url">城市穿梭</a>
         </h2>
 
         <div class="post-meta">
@@ -840,7 +917,16 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-03-21 09:55:58" itemprop="dateCreated datePublished" datetime="2020-03-21T09:55:58+08:00">2020-03-21</time>
+              <time title="创建时间：2020-04-09 10:46:03" itemprop="dateCreated datePublished" datetime="2020-04-09T10:46:03+08:00">2020-04-09</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%A8%8B%E8%AE%BE/" itemprop="url" rel="index"><span itemprop="name">程设</span></a>
+                </span>
             </span>
 
           
@@ -852,8 +938,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2020/03/21/%E6%9C%80%E5%A4%A7%E7%9F%A9%E5%BD%A2/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/03/21/%E6%9C%80%E5%A4%A7%E7%9F%A9%E5%BD%A2/" itemprop="commentCount"></span>
+    <a title="valine" href="/2020/04/09/%E5%9F%8E%E5%B8%82%E7%A9%BF%E6%A2%AD/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/04/09/%E5%9F%8E%E5%B8%82%E7%A9%BF%E6%A2%AD/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -868,10 +954,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="最大矩形"><a href="#最大矩形" class="headerlink" title="最大矩形"></a><strong>最大矩形</strong></h1><h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a><strong>问题描述</strong></h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">给一个直方图，求直方图中的最大矩形的面积。</span><br><span class="line">例如，下面这个图片中直方图的高度从左到右分别是2, 1, 4, 5, 1, 3, 3, 他们的宽都是1，其中最大的矩形是阴影部分。</span><br></pre></td></tr></table></figure>
+          <h1 id="序列操作"><a href="#序列操作" class="headerlink" title="序列操作"></a><strong>序列操作</strong></h1><h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a><strong>问题描述</strong></h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">有 N 个商业城市，编号 1 ～ N，其中 1 号城市是首都。</span><br><span class="line">共有 M 条有向道路供商业城市相互往来。</span><br><span class="line">对每一个商业城市标记一个正整数，表示其繁荣程度，当有人沿道路从一个商业城市走到另一个商业城市时，会被收取 (目的地繁荣程度 – 出发地繁荣程度)^3 的税。</span><br><span class="line">求从首都出发，走到其他城市至少要交多少的税，如果总金额小于 3 或者无法到达请打出 &#39;?&#39;。</span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/03/21/%E6%9C%80%E5%A4%A7%E7%9F%A9%E5%BD%A2/#more" rel="contents">
+              <a class="btn" href="/2020/04/09/%E5%9F%8E%E5%B8%82%E7%A9%BF%E6%A2%AD/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -895,7 +981,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="co10.github.io/2020/03/20/2015-12-03CSP-%E7%94%BB%E5%9B%BE/">
+    <link itemprop="mainEntityOfPage" href="co10.github.io/2020/04/07/%E5%BF%AB%E7%BA%BF%E6%8D%A2%E4%B9%98-%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -909,7 +995,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/03/20/2015-12-03CSP-%E7%94%BB%E5%9B%BE/" class="post-title-link" itemprop="url">2015-12-03CSP-画图</a>
+            <a href="/2020/04/07/%E5%BF%AB%E7%BA%BF%E6%8D%A2%E4%B9%98-%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/" class="post-title-link" itemprop="url">快线换乘-最短路径</a>
         </h2>
 
         <div class="post-meta">
@@ -919,7 +1005,16 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-03-20 08:15:06" itemprop="dateCreated datePublished" datetime="2020-03-20T08:15:06+08:00">2020-03-20</time>
+              <time title="创建时间：2020-04-07 11:41:37" itemprop="dateCreated datePublished" datetime="2020-04-07T11:41:37+08:00">2020-04-07</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%A8%8B%E8%AE%BE/" itemprop="url" rel="index"><span itemprop="name">程设</span></a>
+                </span>
             </span>
 
           
@@ -931,8 +1026,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2020/03/20/2015-12-03CSP-%E7%94%BB%E5%9B%BE/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/03/20/2015-12-03CSP-%E7%94%BB%E5%9B%BE/" itemprop="commentCount"></span>
+    <a title="valine" href="/2020/04/07/%E5%BF%AB%E7%BA%BF%E6%8D%A2%E4%B9%98-%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/04/07/%E5%BF%AB%E7%BA%BF%E6%8D%A2%E4%B9%98-%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -947,10 +1042,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="画图"><a href="#画图" class="headerlink" title="画图"></a><strong>画图</strong></h1><h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a><strong>问题描述</strong></h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">　　用 ASCII 字符来画图是一件有趣的事情，并形成了一门被称为 ASCII Art 的艺术。例如，下图是用 ASCII 字符画出来的 CSPRO 字样。</span><br><span class="line">　　..____.____..____..____...___..</span><br><span class="line">　　.&#x2F;.___&#x2F;.___||.._.\|.._.\.&#x2F;._.\.</span><br><span class="line">　　|.|...\___.\|.|_).|.|_).|.|.|.|</span><br><span class="line">　　|.|___.___).|..__&#x2F;|.._.&lt;|.|_|.|</span><br><span class="line">　　.\____|____&#x2F;|_|...|_|.\_\\___&#x2F;.</span><br><span class="line">　　本题要求编程实现一个用 ASCII 字符来画图的程序，支持以下两种操作：</span><br><span class="line">　　 画线：给出两个端点的坐标，画一条连接这两个端点的线段。简便起见题目保证要画的每条线段都是水平或者竖直的。水平线段用字符 - 来画，竖直线段用字符 | 来画。如果一条水平线段和一条竖直线段在某个位置相交，则相交位置用字符 + 代替。</span><br><span class="line">　　 填充：给出填充的起始位置坐标和需要填充的字符，从起始位置开始，用该字符填充相邻位置，直到遇到画布边缘或已经画好的线段。注意这里的相邻位置只需要考虑上下左右 4 个方向，如下图所示，字符 @ 只和 4 个字符 * 相邻。</span><br><span class="line">　　.*.</span><br><span class="line">　　*@*</span><br><span class="line">　　.*.</span><br></pre></td></tr></table></figure>
+          <h1 id="最短路径"><a href="#最短路径" class="headerlink" title="最短路径"></a><strong>最短路径</strong></h1><h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a><strong>问题描述</strong></h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">猫猫快线是市民从市内去喵星机场的首选交通工具。猫猫快线分为经济线和商业线两种，线路、速度和价钱都不同。TT 有一张商业线车票，可以坐一站商业线，而其他时候只能乘坐经济线。假设换乘时间忽略不计，你的任务是找一条去喵星机场最快的线路。</span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/03/20/2015-12-03CSP-%E7%94%BB%E5%9B%BE/#more" rel="contents">
+              <a class="btn" href="/2020/04/07/%E5%BF%AB%E7%BA%BF%E6%8D%A2%E4%B9%98-%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -973,7 +1068,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1041,14 +1136,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">64</span>
+          <span class="site-state-item-count">76</span>
           <span class="site-state-item-name">日志</span>
         </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">36</span>
+        <span class="site-state-item-count">41</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -1115,7 +1216,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2020</span>
+  <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -1219,6 +1320,61 @@ document.querySelectorAll('.pdfobject-container').forEach(element => {
   
 
   
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
 
   
 
