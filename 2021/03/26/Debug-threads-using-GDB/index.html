@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"co10.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Instructionsgdb .&#x2F;program_name . Start the debugger. disass Function . Show the disassemble code of Function. b x . Set a breakpoint at line x. b Function . Set a breakpoint at the beginning of funct">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Debug threads using GDB">
+<meta property="og:url" content="co10.github.io/2021/03/26/Debug-threads-using-GDB/index.html">
+<meta property="og:site_name" content="荒芜知地">
+<meta property="og:description" content="Instructionsgdb .&#x2F;program_name . Start the debugger. disass Function . Show the disassemble code of Function. b x . Set a breakpoint at line x. b Function . Set a breakpoint at the beginning of funct">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-03-25T23:59:45.000Z">
+<meta property="article:modified_time" content="2021-03-31T11:19:48.747Z">
+<meta property="article:author" content="K">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="co10.github.io/2021/03/26/Debug-threads-using-GDB/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Debug threads using GDB | 荒芜知地</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="荒芜知地" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">荒芜知地</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Knowhere</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">44</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">84</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="co10.github.io/2021/03/26/Debug-threads-using-GDB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="K">
+      <meta itemprop="description" content="You know Knowhere is nowhere, but KnowWhere.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="荒芜知地">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Debug threads using GDB
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-03-26 07:59:45" itemprop="dateCreated datePublished" datetime="2021-03-26T07:59:45+08:00">2021-03-26</time>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/03/26/Debug-threads-using-GDB/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/03/26/Debug-threads-using-GDB/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <a id="more"></a>
+<h2 id="Instructions"><a href="#Instructions" class="headerlink" title="Instructions"></a>Instructions</h2><p><code>gdb ./program_name</code> . Start the debugger.</p>
+<p><code>disass Function</code> . Show the disassemble code of Function.</p>
+<p><code>b x</code> . Set a breakpoint at line x.</p>
+<p><code>b Function</code> . Set a breakpoint at the beginning of function.</p>
+<p><code>info b</code> . List the information of breakpoints.</p>
+<p><code>info r</code> . List all values of registers.</p>
+<p><code>list Function</code> . Show the source code of function.</p>
+<p><code>p currentThread</code> . Show the address of the main thread.</p>
+<p><code>run</code> . Run from the beginning.</p>
+<p><code>c</code> . Continue running.</p>
+<p><code>ni/si</code> . Run a step. </p>
+<p><code>x *address</code> . Show the function in address.</p>
+<h2 id="Get-started"><a href="#Get-started" class="headerlink" title="Get started"></a>Get started</h2><p>In threads directory: </p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">gdb ./nachos</span><br></pre></td></tr></table></figure>
+<p>Then, show the disassemble code of main function: </p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">disass main</span><br></pre></td></tr></table></figure>
+<p>We can see a few addresses of functions: </p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">0x00001404 &lt;+23&gt;:    call   0x12f0 &lt;__x86.get_pc_thunk.bx&gt;</span><br><span class="line">0x0000142d &lt;+64&gt;:    call   0x2727 &lt;Initialize(int, char**)&gt;</span><br><span class="line">0x00001435 &lt;+72&gt;:    call   0x32ce &lt;ThreadTest()&gt;</span><br><span class="line">0x0000143a &lt;+77&gt;:    call   0x3730 &lt;SynchTest()&gt;</span><br><span class="line">0x00001449 &lt;+92&gt;:    jle    0x1490 &lt;main(int, char**)+163&gt;</span><br><span class="line">0x00001462 &lt;+117&gt;:   call   0x10e0 &lt;strcmp@plt&gt;</span><br><span class="line">0x0000146c &lt;+127&gt;:   jne    0x1480 &lt;main(int, char**)+147&gt;</span><br><span class="line">0x00001478 &lt;+139&gt;:   call   0x11c0 &lt;printf@plt&gt;</span><br><span class="line">0x0000148e &lt;+161&gt;:   jmp    0x1446 &lt;main(int, char**)+89&gt;</span><br><span class="line">0x0000149c &lt;+175&gt;:   call   0x2cfc &lt;Thread::Finish()&gt;</span><br></pre></td></tr></table></figure>
+<p>Start from initialize . <code>disass Initialize</code> but nothing we are looking for.</p>
+<p>In <code>ThreadTest()</code> :</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">0x00003343 &lt;+117&gt;:   call   0x3273 &lt;SimpleThread(int)&gt;</span><br></pre></td></tr></table></figure>
+<p>The address of <code>SimpleThread(int)</code> is <code>0x3273</code> .</p>
+<p>In <code>SynchTest()</code> , nothing. </p>
+<p>Oh, just get started… Now dig into the questions.</p>
+<h2 id="Find-the-address-of-Funtion"><a href="#Find-the-address-of-Funtion" class="headerlink" title="Find the address of Funtion"></a>Find the address of Funtion</h2><p>Use <code>b function</code> to set breakpoint, then it returns the address.</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">(gdb) b InterruptEnable</span><br><span class="line">Breakpoint 4 at 0x56558025: file thread.cc, line 242.</span><br><span class="line">(gdb) b SimpleThread</span><br><span class="line">Breakpoint 5 at 0x56558273: file threadtest.cc, line 26.</span><br><span class="line">(gdb) b ThreadFinish</span><br><span class="line">Breakpoint 6 at 0x56557ffa: file thread.cc, line 241.</span><br><span class="line">(gdb) b ThreadRoot</span><br><span class="line">Breakpoint 7 at 0x56559e7a</span><br></pre></td></tr></table></figure>
+<h2 id="Find-the-address-of-threads-both-main-and-forked"><a href="#Find-the-address-of-threads-both-main-and-forked" class="headerlink" title="Find the address of threads (both main and forked)"></a>Find the address of threads (both main and forked)</h2><p>Let’s look into the main function, in the first few lines, we can see there is a Initialize function call. Look into it, there seems to be nothing major. Then look down, we see <code>ThreadTest()</code>, then look into it. It calls <code>SimpleThread()</code> in <code>threadtest.cc</code> :</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">SimpleThread</span><span class="params">(_int which)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> num;</span><br><span class="line">    <span class="keyword">for</span> (num = <span class="number">0</span>; num &lt; <span class="number">5</span>; num++) &#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"*** thread %d looped %d times\n"</span>, (<span class="keyword">int</span>) which, num);</span><br><span class="line">        currentThread-&gt;Yield();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>We can see a <code>Yield()</code> function, which makes the current thread to give up CPU to another thread, so we make a breakpoint here. When it yields, it’s obviously another thread running, so we can see the address of thread.</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">(gdb) list SimpleThread</span><br><span class="line">(gdb) b 31</span><br><span class="line">Breakpoint 1 at 0x32ae: file threadtest.cc, line 31.</span><br><span class="line">run</span><br><span class="line">Starting program: /root/OS/threads/nachos </span><br><span class="line">*** thread 0 looped 0 times</span><br><span class="line"></span><br><span class="line">Breakpoint 1, SimpleThread (which=0) at threadtest.cc:31</span><br><span class="line">31              currentThread-&gt;Yield();</span><br><span class="line">(gdb) p currentThread</span><br><span class="line"><span class="meta">$</span><span class="bash">1 = (Thread *) 0x56563ca0</span></span><br><span class="line">(gdb) c</span><br><span class="line">Continuing.</span><br><span class="line">*** thread 1 looped 0 times</span><br><span class="line"></span><br><span class="line">Breakpoint 1, SimpleThread (which=1) at threadtest.cc:31</span><br><span class="line">31              currentThread-&gt;Yield();</span><br><span class="line">(gdb) p currentThread</span><br><span class="line"><span class="meta">$</span><span class="bash">2 = (Thread *) 0x56563d00</span></span><br></pre></td></tr></table></figure>
+<p>We can see the thread switch and also the address of threads using <code>p currentThread</code></p>
+<p>So the main thread of the Nachos is <code>0x56563ca0</code> , and the forked thread created by the main thread is <code>0x56563d00</code> .</p>
+<h2 id="Digging-into-SWITCH"><a href="#Digging-into-SWITCH" class="headerlink" title="Digging into SWITCH()"></a>Digging into <code>SWITCH()</code></h2><blockquote>
+<p>When the main thread executes <code>SWITCH()</code> function for the first time, to what address  the CPU returns when it executes the last instruction <code>ret</code> of <code>SWITCH()</code>? What location in the  program that address is referred to? </p>
+<p>When the forked thread executes <code>SWITCH()</code> function for the first time, to what  address the CPU returns when it executes the last instruction <code>ret</code> of <code>SWITCH()</code>? What  location in the program that address is referred to?</p>
+</blockquote>
+<p>Looking through all files in the directory, one thing is sure that the <code>SWITCH()</code> function is written in disassemble language.</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">(gdb) disass SWITCH</span><br><span class="line">Dump of assembler code for function SWITCH:</span><br><span class="line">   0x56559e84 &lt;+0&gt;:     mov    %eax,0x5655e054</span><br><span class="line">   0x56559e89 &lt;+5&gt;:     mov    0x4(%esp),%eax</span><br><span class="line">   0x56559e8d &lt;+9&gt;:     mov    %ebx,0x8(%eax)</span><br><span class="line">   0x56559e90 &lt;+12&gt;:    mov    %ecx,0xc(%eax)</span><br><span class="line">   0x56559e93 &lt;+15&gt;:    mov    %edx,0x10(%eax)</span><br><span class="line">   0x56559e96 &lt;+18&gt;:    mov    %esi,0x18(%eax)</span><br><span class="line">   0x56559e99 &lt;+21&gt;:    mov    %edi,0x1c(%eax)</span><br><span class="line">   0x56559e9c &lt;+24&gt;:    mov    %ebp,0x14(%eax)</span><br><span class="line">   0x56559e9f &lt;+27&gt;:    mov    %esp,(%eax)</span><br><span class="line">   0x56559ea1 &lt;+29&gt;:    mov    0x5655e054,%ebx</span><br><span class="line">   0x56559ea7 &lt;+35&gt;:    mov    %ebx,0x4(%eax)</span><br><span class="line">   0x56559eaa &lt;+38&gt;:    mov    (%esp),%ebx</span><br><span class="line">   0x56559ead &lt;+41&gt;:    mov    %ebx,0x20(%eax)</span><br><span class="line">   0x56559eb0 &lt;+44&gt;:    mov    0x8(%esp),%eax</span><br><span class="line">   0x56559eb4 &lt;+48&gt;:    mov    0x4(%eax),%ebx</span><br><span class="line">   0x56559eb7 &lt;+51&gt;:    mov    %ebx,0x5655e054</span><br><span class="line">   0x56559ebd &lt;+57&gt;:    mov    0x8(%eax),%ebx</span><br><span class="line">   0x56559ec0 &lt;+60&gt;:    mov    0xc(%eax),%ecx</span><br><span class="line">   0x56559ec3 &lt;+63&gt;:    mov    0x10(%eax),%edx</span><br><span class="line">   0x56559ec6 &lt;+66&gt;:    mov    0x18(%eax),%esi</span><br><span class="line">   0x56559ec9 &lt;+69&gt;:    mov    0x1c(%eax),%edi</span><br><span class="line">   0x56559ecc &lt;+72&gt;:    mov    0x14(%eax),%ebp</span><br><span class="line">   0x56559ecf &lt;+75&gt;:    mov    (%eax),%esp</span><br><span class="line">   0x56559ed1 &lt;+77&gt;:    mov    0x20(%eax),%eax</span><br><span class="line">   0x56559ed4 &lt;+80&gt;:    mov    %eax,(%esp)</span><br><span class="line">   0x56559ed7 &lt;+83&gt;:    mov    0x5655e054,%eax</span><br><span class="line">   0x56559edc &lt;+88&gt;:    ret    </span><br><span class="line">   0x56559edd &lt;+89&gt;:    xchg   %ax,%ax</span><br><span class="line">   0x56559edf &lt;+91&gt;:    nop</span><br></pre></td></tr></table></figure>
+<p>In line &lt;+80&gt;, make a breakpoint, <code>run</code>, and look into registers using <code>info r</code> , then show the location by <code>x address</code> .</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">(gdb) b *0x56559ed4</span><br><span class="line">Breakpoint 2 at 0x56559ed4</span><br><span class="line">(gdb) run</span><br><span class="line">Starting program: /root/OS/threads/nachos </span><br><span class="line">*** thread 0 looped 0 times</span><br><span class="line"></span><br><span class="line">Breakpoint 2, 0x56559ed4 in SWITCH ()</span><br><span class="line"></span><br><span class="line">(gdb) info r</span><br><span class="line">eax            0x56559e76          1448451702</span><br><span class="line">.............................................</span><br><span class="line">(gdb) x 0x56559e76</span><br><span class="line">0x56559e76 &lt;ThreadRoot&gt;:        0x52e58955</span><br><span class="line">(gdb) c</span><br><span class="line">Continuing.</span><br><span class="line">*** thread 1 looped 0 times</span><br><span class="line"></span><br><span class="line">Breakpoint 2, 0x56559ed4 in SWITCH ()</span><br><span class="line">(gdb) info r</span><br><span class="line">eax            0x56556a24          1448438308</span><br><span class="line">.............................................</span><br><span class="line">(gdb) x 0x56556a24</span><br><span class="line">0x56556a24 &lt;Scheduler::Run(Thread*)+144&gt;:       0x8d10c483</span><br></pre></td></tr></table></figure>
+<p>The CPU returns to address <code>0x56559e76</code> , which located to <code>&lt;ThreadRoot&gt;</code> when it executes the last instruction <code>ret</code> of <code>SWITCH()</code> for the first time when the main thread executes <code>SWITCH()</code> function, and the second time it returns to <code>0x56556a24</code> locating to <code>&lt;Scheduler::Run(Thread*)+144&gt;</code> .</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Linux/" rel="tag"><i class="fa fa-tag"></i> Linux</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/03/14/%E5%B0%8F%E6%B5%8B%E8%AF%95/" rel="prev" title="小测试">
+      <i class="fa fa-chevron-left"></i> 小测试
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/03/31/Makefile-in-Nachos/" rel="next" title="Makefile in Nachos">
+      Makefile in Nachos <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Instructions"><span class="nav-number">1.</span> <span class="nav-text">Instructions</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Get-started"><span class="nav-number">2.</span> <span class="nav-text">Get started</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Find-the-address-of-Funtion"><span class="nav-number">3.</span> <span class="nav-text">Find the address of Funtion</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Find-the-address-of-threads-both-main-and-forked"><span class="nav-number">4.</span> <span class="nav-text">Find the address of threads (both main and forked)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Digging-into-SWITCH"><span class="nav-number">5.</span> <span class="nav-text">Digging into SWITCH()</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="K"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">K</p>
+  <div class="site-description" itemprop="description">You know Knowhere is nowhere, but KnowWhere.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">84</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">44</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:colivener@outlook.com" title="E-Mail → mailto:colivener@outlook.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+
+
+    <div class="links-of-blogroll motion-element links-of-blogroll-undefined">
+      <div class="links-of-blogroll-title">
+        <!-- modify icon to fire by szw -->
+        <i class="fa fa-history fa-" aria-hidden="true"></i>
+        
+      </div>
+      <ul class="links-of-blogroll-list">
+        
+        
+          <li>
+            <a href="/" title="" target="_blank"></a>
+          </li>
+        
+          <li>
+            <a href="/" title="" target="_blank"></a>
+          </li>
+        
+          <li>
+            <a href="/" title="" target="_blank"></a>
+          </li>
+        
+          <li>
+            <a href="/" title="" target="_blank"></a>
+          </li>
+        
+          <li>
+            <a href="/" title="" target="_blank"></a>
+          </li>
+        
+      </ul>
+    </div>
+
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">K</span>
+</div>
+  <div class="addthis_inline_share_toolbox">
+    <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5e9ea4a022889786" async="async"></script>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'nydWvj5q5w14PIVolKD4JOtS-MdYXbMMI',
+      appKey     : '7vFccLCEXIsFn1VxvpyQAibm',
+      placeholder: "knowhere to know here",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

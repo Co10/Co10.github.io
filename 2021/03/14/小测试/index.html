@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"co10.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="前言发现了游戏里一个有意思的机制：  血量低于80%时，减伤（80%-当前血量%）  无聊就打算建模一下，看看残血减伤有多可怕。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="小测试">
+<meta property="og:url" content="co10.github.io/2021/03/14/%E5%B0%8F%E6%B5%8B%E8%AF%95/index.html">
+<meta property="og:site_name" content="荒芜知地">
+<meta property="og:description" content="前言发现了游戏里一个有意思的机制：  血量低于80%时，减伤（80%-当前血量%）  无聊就打算建模一下，看看残血减伤有多可怕。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-03-14T15:38:38.000Z">
+<meta property="article:modified_time" content="2021-03-17T01:10:04.774Z">
+<meta property="article:author" content="K">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="co10.github.io/2021/03/14/%E5%B0%8F%E6%B5%8B%E8%AF%95/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>小测试 | 荒芜知地</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="荒芜知地" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">荒芜知地</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Knowhere</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">44</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">84</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="co10.github.io/2021/03/14/%E5%B0%8F%E6%B5%8B%E8%AF%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="K">
+      <meta itemprop="description" content="You know Knowhere is nowhere, but KnowWhere.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="荒芜知地">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          小测试
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-03-14 23:38:38" itemprop="dateCreated datePublished" datetime="2021-03-14T23:38:38+08:00">2021-03-14</time>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/03/14/%E5%B0%8F%E6%B5%8B%E8%AF%95/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/03/14/%E5%B0%8F%E6%B5%8B%E8%AF%95/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>发现了游戏里一个有意思的机制：</p>
+<blockquote>
+<p>血量低于80%时，减伤（80%-当前血量%）</p>
+</blockquote>
+<p>无聊就打算建模一下，看看残血减伤有多可怕。</p>
+<a id="more"></a>
+<h2 id="数学分析"><a href="#数学分析" class="headerlink" title="数学分析"></a>数学分析</h2><p>假设对方每次伤害都打你 $x\%$ 的血量，且 $x\ge20$ （因为如果打没有20%，绝对是刮痧，不用分析了）</p>
+<p>那么：</p>
+<h3 id="第一回合"><a href="#第一回合" class="headerlink" title="第一回合"></a>第一回合</h3><p>当前血量 $(1-x\%)$</p>
+<h3 id="第二回合"><a href="#第二回合" class="headerlink" title="第二回合"></a>第二回合</h3><p>当前血量 $(1-x\%-(80\%-(1-x\%))\times x\%) = 1-0.8x\%-(x\%)^2$</p>
+<p>​     即    上回合剩的血  -     减伤比例            × 伤害  </p>
+<hr>
+<p>看起来有点难看，设 $y = x\%$ ，则 第二回合当前血量 = $1-0.8y-y^2, (0.2\le y &lt;1 )$<br>要想活下来，上式结果大于零，解得：</p>
+<script type="math/tex; mode=display">
+0.2 \le y < 0.677 = \frac{2}{3}</script><p>也就是说，第二下不死，且对面伤害不太刮痧，第一下打的血在以上区间内。</p>
+<h3 id="第-n-回合"><a href="#第-n-回合" class="headerlink" title="第 $n$ 回合"></a>第 $n$ 回合</h3><p>归纳可得每回合的血量百分比：</p>
+<script type="math/tex; mode=display">
+f(1)=1-y \\ f(2) = f(1)-(0.8-f(1)) \times y \\ ... \\
+f(n) = f(n-1) - (0.8-f(n-1)) \times y = (1+y) \times f(n-1) - 0.8y</script><hr>
+<p>好像……不是很好算，那就，跑个代码算吧。</p>
+<h2 id="暴力求解"><a href="#暴力求解" class="headerlink" title="暴力求解"></a>暴力求解</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">current_hp</span>(<span class="params">n, y</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> cur_hp = [<span class="number">1</span>];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">1</span>; i&lt;=n;i++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (cur_hp[i<span class="number">-1</span>] &gt;= <span class="number">0.8</span>) &#123;</span><br><span class="line">        	cur_hp.push(cur_hp[i<span class="number">-1</span>] - y);</span><br><span class="line">    	&#125;</span><br><span class="line">    	<span class="keyword">else</span> &#123;</span><br><span class="line">        	cur_hp.push((<span class="number">1</span>+y) * cur_hp[i<span class="number">-1</span>] - <span class="number">0.8</span> * y);</span><br><span class="line">    	&#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> cur_hp[n];</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* 二分法暴力解方程区间 */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">solve_y</span>(<span class="params">n</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> l, r, y;</span><br><span class="line">    l = <span class="number">0.2</span>, r = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">var</span> pre = <span class="number">0.01</span>;</span><br><span class="line">    <span class="keyword">while</span> (r - l &gt; pre) &#123;</span><br><span class="line">        y = (l+r)/<span class="number">2</span>;</span><br><span class="line">        <span class="keyword">if</span> (current_hp(n, y) &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            l = y;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            r = y;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> y;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* 算5个回合的好了 */</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">1</span>; i &lt; <span class="number">6</span>; i++) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"[round "</span>+i+<span class="string">"] :"</span> + <span class="string">"0.2&lt;=y&lt;"</span>+solve_y(i));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>结果如下：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[round 1] :0.2&lt;=y&lt;0.99375</span><br><span class="line">[round 2] :0.2&lt;=y&lt;0.6812499999999999</span><br><span class="line">[round 3] :0.2&lt;=y&lt;0.5437500000000001</span><br><span class="line">[round 4] :0.2&lt;=y&lt;0.45625000000000004</span><br><span class="line">[round 5] :0.2&lt;=y&lt;0.40625</span><br></pre></td></tr></table></figure>
+<p>所以，如果，对面第一下打你 40%，你可以撑到第五回合且不回血（不考虑伤害浮动和暴击）</p>
+<p>更极端一点，比如第 8 回合？</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">[round 1] :0.2&lt;=y&lt;0.99375</span><br><span class="line">[round 2] :0.2&lt;=y&lt;0.6812499999999999</span><br><span class="line">[round 3] :0.2&lt;=y&lt;0.5437500000000001</span><br><span class="line">[round 4] :0.2&lt;=y&lt;0.45625000000000004</span><br><span class="line">[round 5] :0.2&lt;=y&lt;0.40625</span><br><span class="line">[round 6] :0.2&lt;=y&lt;0.36875</span><br><span class="line">[round 7] :0.2&lt;=y&lt;0.34375</span><br><span class="line">[round 8] :0.2&lt;=y&lt;0.3187500000000001</span><br></pre></td></tr></table></figure>
+<p>31% ！ 生命力非常顽强啊，第一下被打1/3，不回血可以撑 7、8 个回合</p>
+<p>假设第一下打 50%，也就是不回血能撑 3 回合，设总血量 22000 ，看看每回合的血量？</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">1</span>; i &lt; <span class="number">100000</span>; i++) &#123;</span><br><span class="line">    <span class="keyword">var</span> res = current_hp(i,<span class="number">0.5</span>);</span><br><span class="line">    <span class="keyword">if</span> (res &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"[round"</span>+i+<span class="string">"]: "</span>+<span class="built_in">Math</span>.floor(current_hp(i,<span class="number">0.5</span>)*<span class="number">22000</span>)+<span class="string">"/22000"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"[round"</span>+i+<span class="string">"]: "</span>+<span class="string">"0"</span>+<span class="string">"/22000"</span>);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>结果如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[round1]: 11000&#x2F;22000</span><br><span class="line">[round2]: 7699&#x2F;22000</span><br><span class="line">[round3]: 2749&#x2F;22000</span><br><span class="line">[round4]: 0&#x2F;22000</span><br></pre></td></tr></table></figure>
+<p>好像不够明显，看看 40%？</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[round1]: 13200&#x2F;22000</span><br><span class="line">[round2]: 11439&#x2F;22000</span><br><span class="line">[round3]: 8975&#x2F;22000</span><br><span class="line">[round4]: 5526&#x2F;22000</span><br><span class="line">[round5]: 696&#x2F;22000</span><br><span class="line">[round6]: 0&#x2F;22000</span><br></pre></td></tr></table></figure>
+<h2 id="图像"><a href="#图像" class="headerlink" title="图像"></a>图像</h2><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"utf-8"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://d3js.org/d3.v4.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"input_group"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span> = <span class="string">"maxhp"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span>&gt;</span>血量上限：<span class="tag">&lt;<span class="name">a</span> <span class="attr">id</span> = <span class="string">"maxhp_text"</span>&gt;</span>22000<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">id</span> = <span class="string">"maxhp_slider"</span> <span class="attr">type</span>=<span class="string">"range"</span> <span class="attr">min</span>=<span class="string">"12000"</span> <span class="attr">max</span>=<span class="string">"25000"</span> <span class="attr">value</span>=<span class="string">"22000"</span> <span class="attr">onchange</span>=<span class="string">"onChange()"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span> = <span class="string">"bhp"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span>&gt;</span>初始血量：<span class="tag">&lt;<span class="name">a</span> <span class="attr">id</span> = <span class="string">"bhp_text"</span>&gt;</span>22000<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">id</span> = <span class="string">"bhp_slider"</span> <span class="attr">type</span>=<span class="string">"range"</span> <span class="attr">min</span>=<span class="string">"1"</span> <span class="attr">max</span>=<span class="string">"25000"</span> <span class="attr">value</span>=<span class="string">"22000"</span> <span class="attr">onchange</span>=<span class="string">"onChange()"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span> = <span class="string">"damage"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span>&gt;</span>对手伤害：<span class="tag">&lt;<span class="name">a</span> <span class="attr">id</span> = <span class="string">"damage_text"</span>&gt;</span>11000<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">id</span> = <span class="string">"damage_slider"</span> <span class="attr">type</span>=<span class="string">"range"</span> <span class="attr">min</span>=<span class="string">"1000"</span> <span class="attr">max</span>=<span class="string">"25000"</span> <span class="attr">value</span>=<span class="string">"11000"</span> <span class="attr">onchange</span>=<span class="string">"onChange()"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span> = <span class="string">"ro"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span>&gt;</span>预览回合：<span class="tag">&lt;<span class="name">a</span> <span class="attr">id</span> = <span class="string">"ro_text"</span>&gt;</span>5<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">id</span> = <span class="string">"ro_slider"</span> <span class="attr">type</span>=<span class="string">"range"</span> <span class="attr">min</span>=<span class="string">"1"</span> <span class="attr">max</span>=<span class="string">"15"</span> <span class="attr">value</span>=<span class="string">"5"</span> <span class="attr">onchange</span>=<span class="string">"onChange()"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"bar_hp"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript"><span class="keyword">var</span> t_r = <span class="built_in">document</span>.getElementById(<span class="string">"ro_text"</span>);</span></span><br><span class="line"><span class="javascript"><span class="keyword">var</span> t_m = <span class="built_in">document</span>.getElementById(<span class="string">"maxhp_text"</span>);</span></span><br><span class="line"><span class="javascript"><span class="keyword">var</span> t_b = <span class="built_in">document</span>.getElementById(<span class="string">"bhp_text"</span>);</span></span><br><span class="line"><span class="javascript"><span class="keyword">var</span> t_d = <span class="built_in">document</span>.getElementById(<span class="string">"damage_text"</span>);</span></span><br><span class="line"><span class="javascript"><span class="keyword">var</span> round = +<span class="built_in">document</span>.getElementById(<span class="string">"ro_slider"</span>).value;</span></span><br><span class="line"><span class="javascript"><span class="keyword">var</span> max_hp = +<span class="built_in">document</span>.getElementById(<span class="string">"maxhp_slider"</span>).value;</span></span><br><span class="line"><span class="javascript"><span class="keyword">var</span> damage0 = +<span class="built_in">document</span>.getElementById(<span class="string">"damage_slider"</span>).value;</span></span><br><span class="line">if (damage0 &gt; max_hp) &#123;</span><br><span class="line">    damage0 = max_hp;</span><br><span class="line">&#125;</span><br><span class="line"><span class="actionscript"><span class="keyword">var</span> damage = damage0/max_hp;</span></span><br><span class="line"><span class="javascript"><span class="keyword">var</span> begin_hp = +<span class="built_in">document</span>.getElementById(<span class="string">"bhp_slider"</span>).value;</span></span><br><span class="line">t_r.innerText = round;</span><br><span class="line">t_m.innerText = max_hp;</span><br><span class="line">t_b.innerText = begin_hp;</span><br><span class="line">t_d.innerText = damage0;</span><br><span class="line"></span><br><span class="line"><span class="actionscript"><span class="function"><span class="keyword">function</span> <span class="title">onChange</span><span class="params">()</span></span>&#123;</span></span><br><span class="line"><span class="javascript">    round = +<span class="built_in">document</span>.getElementById(<span class="string">"ro_slider"</span>).value;</span></span><br><span class="line"><span class="javascript">    max_hp = +<span class="built_in">document</span>.getElementById(<span class="string">"maxhp_slider"</span>).value;</span></span><br><span class="line"><span class="javascript">    damage0 = +<span class="built_in">document</span>.getElementById(<span class="string">"damage_slider"</span>).value;</span></span><br><span class="line">    if (damage0 &gt; max_hp) &#123;</span><br><span class="line">        damage0 = max_hp;</span><br><span class="line"><span class="javascript">        <span class="built_in">document</span>.getElementById(<span class="string">"damage_slider"</span>).value = max_hp;</span></span><br><span class="line">    &#125;</span><br><span class="line">    damage = damage0/max_hp;</span><br><span class="line"><span class="javascript">    begin_hp = +<span class="built_in">document</span>.getElementById(<span class="string">"bhp_slider"</span>).value;</span></span><br><span class="line">    t_r.innerText = round;</span><br><span class="line">    t_m.innerText = max_hp;</span><br><span class="line">    t_b.innerText = begin_hp;</span><br><span class="line">    t_d.innerText = damage0;</span><br><span class="line"><span class="actionscript">    d3.select(<span class="string">"svg"</span>).remove();</span></span><br><span class="line">    applyAll();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="actionscript"><span class="keyword">var</span> margin = &#123;top: <span class="number">20</span>, right: <span class="number">30</span>, bottom: <span class="number">40</span>, left: <span class="number">90</span>&#125;,</span></span><br><span class="line">    width = 460 - margin.left - margin.right,</span><br><span class="line">    height = 400 - margin.top - margin.bottom;</span><br><span class="line"></span><br><span class="line"><span class="actionscript"><span class="function"><span class="keyword">function</span> <span class="title">applyAll</span><span class="params">()</span> </span>&#123;</span></span><br><span class="line"><span class="actionscript">    <span class="function"><span class="keyword">function</span> <span class="title">current_hp</span><span class="params">(n, y)</span> </span>&#123;</span></span><br><span class="line"><span class="actionscript">    <span class="keyword">var</span> cur_hp = [begin_hp/max_hp];</span></span><br><span class="line"><span class="actionscript">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">1</span>; i&lt;=n;i++) &#123;</span></span><br><span class="line">        if (cur_hp[i-1] &gt;= 0.8) &#123;</span><br><span class="line">        	cur_hp.push(cur_hp[i-1] - y);</span><br><span class="line">    	&#125;</span><br><span class="line"><span class="actionscript">    	<span class="keyword">else</span> &#123;</span></span><br><span class="line">        	cur_hp.push((1+y) * cur_hp[i-1] - 0.8 * y);</span><br><span class="line">    	&#125;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="actionscript">    <span class="keyword">return</span> cur_hp;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="actionscript"><span class="comment">/* if you want to survive to round n, y max is */</span></span></span><br><span class="line"><span class="actionscript"><span class="function"><span class="keyword">function</span> <span class="title">survive_y</span><span class="params">(n)</span> </span>&#123;</span></span><br><span class="line"><span class="actionscript">    <span class="keyword">var</span> l, r, y;</span></span><br><span class="line">    l = 0.2, r = 1;</span><br><span class="line"><span class="actionscript">    <span class="keyword">var</span> pre = <span class="number">0.01</span>;</span></span><br><span class="line"><span class="actionscript">    <span class="keyword">while</span> (r - l &gt; pre) &#123;</span></span><br><span class="line">        y = (l+r)/2;</span><br><span class="line">        if (current_hp(n, y)[n] &gt; 0) &#123;</span><br><span class="line">            l = y;</span><br><span class="line">        &#125;</span><br><span class="line"><span class="actionscript">        <span class="keyword">else</span> &#123;</span></span><br><span class="line">            r = y;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="actionscript">    <span class="keyword">return</span> y;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="actionscript"><span class="comment">/* the survive of maximum hp data */</span></span></span><br><span class="line"><span class="actionscript"><span class="keyword">var</span> data1 = [];</span></span><br><span class="line"><span class="actionscript"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">1</span>; i &lt;= round; i++)&#123;</span></span><br><span class="line"><span class="actionscript">    <span class="keyword">var</span> temp = &#123;<span class="string">"round"</span>: i, <span class="string">"hp"</span>: survive_y(i)&#125;;</span></span><br><span class="line">    data1.push(temp);</span><br><span class="line">&#125;</span><br><span class="line"><span class="actionscript"><span class="comment">/* for damage, survive to when? */</span></span></span><br><span class="line"><span class="actionscript"><span class="keyword">var</span> data2 = [];</span></span><br><span class="line"><span class="actionscript"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">1</span>; i &lt; <span class="number">10000000</span>; i++) &#123;</span></span><br><span class="line"><span class="actionscript">    <span class="keyword">var</span> res = current_hp(i, damage)[i];</span></span><br><span class="line">    if (res &gt;= 0) &#123;</span><br><span class="line"><span class="actionscript">        data2.push(&#123;<span class="string">"round"</span>: i, <span class="string">"hp"</span>: res&#125;);</span></span><br><span class="line">    &#125;</span><br><span class="line"><span class="actionscript">    <span class="keyword">else</span> &#123;</span></span><br><span class="line"><span class="actionscript">        data2.push(&#123;<span class="string">"round"</span>: i, <span class="string">"hp"</span>: <span class="number">0</span>&#125;);</span></span><br><span class="line"><span class="actionscript">        <span class="keyword">break</span>;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="actionscript"><span class="keyword">var</span> svg = d3.select(<span class="string">"#bar_hp"</span>)</span></span><br><span class="line"><span class="actionscript">  .append(<span class="string">"svg"</span>)</span></span><br><span class="line"><span class="actionscript">    .attr(<span class="string">"width"</span>, width + margin.left + margin.right)</span></span><br><span class="line"><span class="actionscript">    .attr(<span class="string">"height"</span>, height + margin.top + margin.bottom)</span></span><br><span class="line"><span class="actionscript">  .append(<span class="string">"g"</span>)</span></span><br><span class="line"><span class="actionscript">    .attr(<span class="string">"transform"</span>, <span class="string">"translate("</span> + margin.left + <span class="string">","</span> + margin.top + <span class="string">")"</span>);</span></span><br><span class="line"></span><br><span class="line"><span class="actionscript"><span class="comment">// Add X axis</span></span></span><br><span class="line"><span class="actionscript">  <span class="keyword">var</span> x = d3.scaleLinear()</span></span><br><span class="line">    .domain([0, max_hp])</span><br><span class="line">    .range([ 0, width]);</span><br><span class="line"><span class="actionscript">  svg.append(<span class="string">"g"</span>)</span></span><br><span class="line"><span class="actionscript">    .attr(<span class="string">"transform"</span>, <span class="string">"translate(0,"</span> + height + <span class="string">")"</span>)</span></span><br><span class="line">    .call(d3.axisBottom(x))</span><br><span class="line"><span class="actionscript">    .selectAll(<span class="string">"text"</span>)</span></span><br><span class="line"><span class="actionscript">      .attr(<span class="string">"transform"</span>, <span class="string">"translate(-10,0)rotate(-45)"</span>)</span></span><br><span class="line"><span class="actionscript">      .style(<span class="string">"text-anchor"</span>, <span class="string">"end"</span>);</span></span><br><span class="line"></span><br><span class="line"><span class="actionscript">  <span class="comment">// Y axis</span></span></span><br><span class="line"><span class="actionscript">  <span class="keyword">var</span> y = d3.scaleBand()</span></span><br><span class="line">    .range([ 0, height])</span><br><span class="line"><span class="actionscript">    .domain(data1.map(<span class="function"><span class="keyword">function</span><span class="params">(d)</span> </span>&#123; <span class="keyword">return</span> d.round; &#125;))</span></span><br><span class="line">    .padding(.1);</span><br><span class="line"><span class="actionscript">  svg.append(<span class="string">"g"</span>)</span></span><br><span class="line">    .call(d3.axisLeft(y))</span><br><span class="line"></span><br><span class="line"><span class="actionscript">  <span class="comment">//Bars</span></span></span><br><span class="line"><span class="actionscript">  <span class="function"><span class="keyword">function</span> <span class="title">update</span><span class="params">()</span> </span>&#123;</span></span><br><span class="line"><span class="actionscript">    <span class="keyword">var</span> u = svg.selectAll(<span class="string">"myRect"</span>)</span></span><br><span class="line">    .data(data1);</span><br><span class="line">    u.enter()</span><br><span class="line"><span class="actionscript">    .append(<span class="string">"rect"</span>)</span></span><br><span class="line"><span class="actionscript">    .attr(<span class="string">"x"</span>, x(<span class="number">0</span>) )</span></span><br><span class="line"><span class="actionscript">    .attr(<span class="string">"y"</span>, <span class="function"><span class="keyword">function</span><span class="params">(d)</span> </span>&#123; <span class="keyword">return</span> y(d.round); &#125;)</span></span><br><span class="line"><span class="actionscript">    .attr(<span class="string">"width"</span>, <span class="function"><span class="keyword">function</span><span class="params">(d)</span> </span>&#123; <span class="keyword">return</span> x(d.hp)*max_hp; &#125;)</span></span><br><span class="line"><span class="actionscript">    .attr(<span class="string">"height"</span>, y.bandwidth() )</span></span><br><span class="line"><span class="actionscript">    .attr(<span class="string">"fill"</span>, <span class="string">"#69b3a2"</span>)</span></span><br><span class="line">  &#125;</span><br><span class="line">  update();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">applyAll();</span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/03/13/Connecting-to-VPS-in-VS-Code/" rel="prev" title="Connecting to VPS in VS Code">
+      <i class="fa fa-chevron-left"></i> Connecting to VPS in VS Code
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/03/26/Debug-threads-using-GDB/" rel="next" title="Debug threads using GDB">
+      Debug threads using GDB <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数学分析"><span class="nav-number">2.</span> <span class="nav-text">数学分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#第一回合"><span class="nav-number">2.1.</span> <span class="nav-text">第一回合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第二回合"><span class="nav-number">2.2.</span> <span class="nav-text">第二回合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第-n-回合"><span class="nav-number">2.3.</span> <span class="nav-text">第 $n$ 回合</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#暴力求解"><span class="nav-number">3.</span> <span class="nav-text">暴力求解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#图像"><span class="nav-number">4.</span> <span class="nav-text">图像</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="K"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">K</p>
+  <div class="site-description" itemprop="description">You know Knowhere is nowhere, but KnowWhere.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">84</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">44</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:colivener@outlook.com" title="E-Mail → mailto:colivener@outlook.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+
+
+    <div class="links-of-blogroll motion-element links-of-blogroll-undefined">
+      <div class="links-of-blogroll-title">
+        <!-- modify icon to fire by szw -->
+        <i class="fa fa-history fa-" aria-hidden="true"></i>
+        
+      </div>
+      <ul class="links-of-blogroll-list">
+        
+        
+          <li>
+            <a href="/" title="" target="_blank"></a>
+          </li>
+        
+          <li>
+            <a href="/" title="" target="_blank"></a>
+          </li>
+        
+          <li>
+            <a href="/" title="" target="_blank"></a>
+          </li>
+        
+          <li>
+            <a href="/" title="" target="_blank"></a>
+          </li>
+        
+          <li>
+            <a href="/" title="" target="_blank"></a>
+          </li>
+        
+      </ul>
+    </div>
+
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">K</span>
+</div>
+  <div class="addthis_inline_share_toolbox">
+    <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5e9ea4a022889786" async="async"></script>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'nydWvj5q5w14PIVolKD4JOtS-MdYXbMMI',
+      appKey     : '7vFccLCEXIsFn1VxvpyQAibm',
+      placeholder: "knowhere to know here",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

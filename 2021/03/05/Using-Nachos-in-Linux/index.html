@@ -22,15 +22,15 @@
     var CONFIG = {"hostname":"co10.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="InstallationMake sure the Linux is 32-bit! Go to https:&#x2F;&#x2F;homes.cs.washington.edu&#x2F;~tom&#x2F;nachos&#x2F;, download nachos-4.0.tar, and download mips-x86.linux-xgcc . wget http:&#x2F;&#x2F;www.cs.washington.edu&#x2F;homes&#x2F;tom&#x2F;n">
+  <meta name="description" content="InstallationMake sure the Linux is 32-bit! Go to https:&#x2F;&#x2F;homes.cs.washington.edu&#x2F;~tom&#x2F;nachos&#x2F;, download nachos-4.0.tar, and download mips-x86.linux-xgcc . wget http:&#x2F;&#x2F;www.cs.washington.edu&#x2F;homes&#x2F;tom&#x2F;">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Using Nachos in Linux">
 <meta property="og:url" content="co10.github.io/2021/03/05/Using-Nachos-in-Linux/index.html">
 <meta property="og:site_name" content="荒芜知地">
-<meta property="og:description" content="InstallationMake sure the Linux is 32-bit! Go to https:&#x2F;&#x2F;homes.cs.washington.edu&#x2F;~tom&#x2F;nachos&#x2F;, download nachos-4.0.tar, and download mips-x86.linux-xgcc . wget http:&#x2F;&#x2F;www.cs.washington.edu&#x2F;homes&#x2F;tom&#x2F;n">
+<meta property="og:description" content="InstallationMake sure the Linux is 32-bit! Go to https:&#x2F;&#x2F;homes.cs.washington.edu&#x2F;~tom&#x2F;nachos&#x2F;, download nachos-4.0.tar, and download mips-x86.linux-xgcc . wget http:&#x2F;&#x2F;www.cs.washington.edu&#x2F;homes&#x2F;tom&#x2F;">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-03-05T02:08:37.000Z">
-<meta property="article:modified_time" content="2021-03-13T06:01:41.137Z">
+<meta property="article:modified_time" content="2021-03-31T11:19:36.608Z">
 <meta property="article:author" content="K">
 <meta property="article:tag" content="Linux">
 <meta name="twitter:card" content="summary">
@@ -125,7 +125,7 @@
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">42</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">44</span></a>
 
   </li>
         <li class="menu-item menu-item-categories">
@@ -135,7 +135,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">80</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">84</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -251,7 +251,8 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="Installation"><a href="#Installation" class="headerlink" title="Installation"></a>Installation</h2><p>Make sure the Linux is 32-bit!</p>
+        <a id="more"></a>
+<h2 id="Installation"><a href="#Installation" class="headerlink" title="Installation"></a>Installation</h2><p>Make sure the Linux is 32-bit!</p>
 <p>Go to <a href="https://homes.cs.washington.edu/~tom/nachos/" target="_blank" rel="noopener">https://homes.cs.washington.edu/~tom/nachos/</a>, download <code>nachos-4.0.tar</code>, and download <code>mips-x86.linux-xgcc</code> .</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">wget http://www.cs.washington.edu/homes/tom/nachos/nachos-4.0.tar</span><br><span class="line">wget https://inst.eecs.berkeley.edu//~cs162/fa13/Nachos/xgcc/mips-x86_64.linux-xgcc.tar.gz</span><br></pre></td></tr></table></figure>
 <p>Place it to somewhere.</p>
@@ -273,7 +274,7 @@
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">arch    halt.flat  Makefile       matmult.c     matmult.noff  shell.c     shell.noff  sort.flat  start.s halt.c  halt.noff  Makefile.orig  matmult.flat  script        shell.flat  sort.c      sort.noff</span><br></pre></td></tr></table></figure>
 <p>And something like:</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; Converting to flat file: arch/unknown-i386-linux/bin/sort.flat &lt;&lt;&lt;</span></span><br><span class="line">../bin/arch/unknown-i386-linux/bin/coff2flat arch/unknown-i386-linux/objects/sort.coff arch/unknown-i386-linux/bin/sort.flat</span><br><span class="line">Loading 3 sections:</span><br><span class="line">        ".text", filepos 0xd0, mempos 0x0, size 0x2c0</span><br><span class="line">        ".data", filepos 0x390, mempos 0x2c0, size 0x0</span><br><span class="line">        ".bss", filepos 0x0, mempos 0x2c0, size 0x1000</span><br><span class="line">Adding stack of size: 1024</span><br></pre></td></tr></table></figure>
-<h3 id="Test-threats"><a href="#Test-threats" class="headerlink" title="Test threats"></a>Test threats</h3><p>Make. Ignore Warnings. Then we get something like this: </p>
+<h3 id="Test-threads"><a href="#Test-threads" class="headerlink" title="Test threads"></a>Test threads</h3><p>Make. Ignore Warnings. Then we get something like this: </p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; Assembling switch-linux.s &lt;&lt;&lt;</span></span><br><span class="line">/lib/cpp  -D HOST_i386 -D HOST_LINUX switch-linux.s &gt; arch/unknown-i386-linux/objects/tmp.s</span><br><span class="line">as -o arch/unknown-i386-linux/objects/switch-linux.o arch/unknown-i386-linux/objects/tmp.s</span><br><span class="line">switch-linux.s: Assembler messages:</span><br><span class="line">switch-linux.s:61: Warning: indirect call without `*'</span><br><span class="line">switch-linux.s:62: Warning: indirect call without `*'</span><br><span class="line">switch-linux.s:63: Warning: indirect call without `*'</span><br><span class="line">rm arch/unknown-i386-linux/objects/tmp.s</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; Linking arch/unknown-i386-linux/bin/nachos &lt;&lt;&lt;</span></span><br><span class="line">g++ arch/unknown-i386-linux/objects/main.o arch/unknown-i386-linux/objects/list.o arch/unknown-i386-linux/objects/scheduler.o arch/unknown-i386-linux/objects/synch.o arch/unknown-i386-linux/objects/synchlist.o arch/unknown-i386-linux/objects/system.o arch/unknown-i386-linux/objects/thread.o arch/unknown-i386-linux/objects/utility.o arch/unknown-i386-linux/objects/threadtest.o arch/unknown-i386-linux/objects/synchtest.o arch/unknown-i386-linux/objects/interrupt.o arch/unknown-i386-linux/objects/sysdep.o arch/unknown-i386-linux/objects/stats.o arch/unknown-i386-linux/objects/timer.o arch/unknown-i386-linux/objects/switch-linux.o  -o arch/unknown-i386-linux/bin/nachos</span><br><span class="line">ln -sf arch/unknown-i386-linux/bin/nachos nachos</span><br></pre></td></tr></table></figure>
 <p>If successful, a link-file named <code>nachos</code> will be generated.</p>
 <figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">arch         dump     main.cc         nachos        switch.h        synch.cc      synchlist.h   system.h   threadtest.cc</span><br><span class="line">bool.h       list.cc  Makefile        scheduler.cc  switch-linux.s  synch.h       synchtest.cc  thread.cc  utility.cc</span><br><span class="line">copyright.h  list.h   Makefile.local  scheduler.h   switch.s        synchlist.cc  system.cc     thread.h   utility.h</span><br></pre></td></tr></table></figure>
@@ -291,7 +292,19 @@
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">*** thread 0 looped 0 times</span><br><span class="line">*** thread 1 looped 0 times</span><br><span class="line">*** thread 0 looped 1 times</span><br><span class="line">*** thread 1 looped 1 times</span><br><span class="line">*** thread 0 looped 2 times</span><br><span class="line">*** thread 1 looped 2 times</span><br><span class="line">*** thread 0 looped 3 times</span><br><span class="line">*** thread 1 looped 3 times</span><br><span class="line">*** thread 0 looped 4 times</span><br><span class="line">*** thread 1 looped 4 times</span><br></pre></td></tr></table></figure>
 <h3 id="Test-userprog"><a href="#Test-userprog" class="headerlink" title="Test userprog"></a>Test userprog</h3><p>Make but I got: </p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">../Makefile.common:92: recipe for target 'arch/unknown-i386-linux/bin/nachos' failed</span><br><span class="line">make: *** [arch/unknown-i386-linux/bin/nachos] Error 1</span><br></pre></td></tr></table></figure>
-<h2 id="If-using-x64-Ubuntu"><a href="#If-using-x64-Ubuntu" class="headerlink" title="If using x64 Ubuntu"></a>If using x64 Ubuntu</h2><p>Install libc6-dev-i386: </p>
+<p>Well, forget it.</p>
+<h3 id="Test-lab3"><a href="#Test-lab3" class="headerlink" title="Test lab3"></a>Test lab3</h3><p>In <code>prodcons++.cc</code>, add below to use <code>create</code> and <code>write</code> system call</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdlib&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/types.h&gt; /* create */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/stat.h&gt;  /* create */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;fcntl.h&gt;     /* create */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;    /* write */</span></span></span><br></pre></td></tr></table></figure>
+<p>Then make, it should be OK: </p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; Linking arch/unknown-i386-linux/bin/nachos &lt;&lt;&lt;</span></span><br><span class="line">g++ -m32 arch/unknown-i386-linux/objects/main.o arch/unknown-i386-linux/objects/list.o arch/unknown-i386-linux/objects/scheduler.o arch/unknown-i386-linux/objects/synch.o arch/unknown-i386-linux/objects/synchlist.o arch/unknown-i386-linux/objects/system.o arch/unknown-i386-linux/objects/thread.o arch/unknown-i386-linux/objects/utility.o arch/unknown-i386-linux/objects/threadtest.o arch/unknown-i386-linux/objects/synchtest.o arch/unknown-i386-linux/objects/interrupt.o arch/unknown-i386-linux/objects/sysdep.o arch/unknown-i386-linux/objects/stats.o arch/unknown-i386-linux/objects/timer.o arch/unknown-i386-linux/objects/prodcons++.o arch/unknown-i386-linux/objects/ring.o arch/unknown-i386-linux/objects/switch-linux.o  -o arch/unknown-i386-linux/bin/nachos</span><br><span class="line">ln -sf arch/unknown-i386-linux/bin/nachos nachos</span><br></pre></td></tr></table></figure>
+<p>Run <code>./nachos</code> .</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">No threads ready or runnable, and no pending interrupts.</span><br><span class="line">Assuming the program completed.</span><br><span class="line">Machine halting!</span><br><span class="line"></span><br><span class="line">Ticks: total 10, idle 0, system 10, user 0</span><br><span class="line">Disk I/O: reads 0, writes 0</span><br><span class="line">Console I/O: reads 0, writes 0</span><br><span class="line">Paging: faults 0</span><br><span class="line">Network I/O: packets received 0, sent 0</span><br><span class="line"></span><br><span class="line">Cleaning up...</span><br></pre></td></tr></table></figure>
+<h3 id="Test-lab5"><a href="#Test-lab5" class="headerlink" title="Test lab5"></a>Test lab5</h3><p>First add a <code>Makefile</code> (copied from lab3), well, forget it…</p>
+<h3 id="Test-lab7-8"><a href="#Test-lab7-8" class="headerlink" title="Test lab7-8"></a>Test lab7-8</h3><p>Edit <code>Makefile.local</code> :</p>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="comment"># include ../ass2/Makefile.local</span></span><br></pre></td></tr></table></figure>
+<p>Then Make and Run: </p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">*** thread 0 looped 0 times</span><br><span class="line">*** thread 1 looped 0 times</span><br><span class="line">*** thread 0 looped 1 times</span><br><span class="line">*** thread 1 looped 1 times</span><br><span class="line">*** thread 0 looped 2 times</span><br><span class="line">*** thread 1 looped 2 times</span><br><span class="line">*** thread 0 looped 3 times</span><br><span class="line">*** thread 1 looped 3 times</span><br><span class="line">*** thread 0 looped 4 times</span><br><span class="line">*** thread 1 looped 4 times</span><br><span class="line">No threads ready or runnable, and no pending interrupts.</span><br><span class="line">Assuming the program completed.</span><br><span class="line">Machine halting!</span><br><span class="line"></span><br><span class="line">Ticks: total 130, idle 0, system 130, user 0</span><br><span class="line">Disk I/O: reads 0, writes 0</span><br><span class="line">Console I/O: reads 0, writes 0</span><br><span class="line">Paging: faults 0</span><br><span class="line">Network I/O: packets received 0, sent 0</span><br><span class="line"></span><br><span class="line">Cleaning up...</span><br></pre></td></tr></table></figure>
+<h2 id="If-using-x64-Ubuntu"><a href="#If-using-x64-Ubuntu" class="headerlink" title="If using x64 Ubuntu"></a>If using x64 Ubuntu</h2><p>Install <code>libc6-dev-i386</code>: </p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo apt-get install libc6-dev-i386</span><br></pre></td></tr></table></figure>
 <p>In <code>code</code> directory, edit <code>Makefile.common</code> :</p>
 <figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="comment"># CFLAGS = -g -Wall -Wshadow $(INCPATH) $(DEFINES) $(HOST) -DCHANGED</span></span><br><span class="line">CFLAGS = -g -Wall -Wshadow -m32 <span class="variable">$(INCPATH)</span> <span class="variable">$(DEFINES)</span> <span class="variable">$(HOST)</span> -DCHANGED</span><br></pre></td></tr></table></figure>
@@ -382,7 +395,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Installation"><span class="nav-number">1.</span> <span class="nav-text">Installation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Test"><span class="nav-number">2.</span> <span class="nav-text">Test</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Test-test"><span class="nav-number">2.1.</span> <span class="nav-text">Test test</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Test-threats"><span class="nav-number">2.2.</span> <span class="nav-text">Test threats</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Test-filesys"><span class="nav-number">2.3.</span> <span class="nav-text">Test filesys</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Test-vm"><span class="nav-number">2.4.</span> <span class="nav-text">Test vm</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Test-monitor"><span class="nav-number">2.5.</span> <span class="nav-text">Test monitor</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Test-network"><span class="nav-number">2.6.</span> <span class="nav-text">Test network</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Test-userprog"><span class="nav-number">2.7.</span> <span class="nav-text">Test userprog</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#If-using-x64-Ubuntu"><span class="nav-number">3.</span> <span class="nav-text">If using x64 Ubuntu</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Installation"><span class="nav-number">1.</span> <span class="nav-text">Installation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Test"><span class="nav-number">2.</span> <span class="nav-text">Test</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Test-test"><span class="nav-number">2.1.</span> <span class="nav-text">Test test</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Test-threads"><span class="nav-number">2.2.</span> <span class="nav-text">Test threads</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Test-filesys"><span class="nav-number">2.3.</span> <span class="nav-text">Test filesys</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Test-vm"><span class="nav-number">2.4.</span> <span class="nav-text">Test vm</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Test-monitor"><span class="nav-number">2.5.</span> <span class="nav-text">Test monitor</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Test-network"><span class="nav-number">2.6.</span> <span class="nav-text">Test network</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Test-userprog"><span class="nav-number">2.7.</span> <span class="nav-text">Test userprog</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Test-lab3"><span class="nav-number">2.8.</span> <span class="nav-text">Test lab3</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Test-lab5"><span class="nav-number">2.9.</span> <span class="nav-text">Test lab5</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Test-lab7-8"><span class="nav-number">2.10.</span> <span class="nav-text">Test lab7-8</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#If-using-x64-Ubuntu"><span class="nav-number">3.</span> <span class="nav-text">If using x64 Ubuntu</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -398,7 +411,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">80</span>
+          <span class="site-state-item-count">84</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -411,7 +424,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-count">44</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
