@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"co10.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="One of the flaws in Nachos is that you cannot expand a file in the Nachos File System. So this is what experiment 5 does.  We need to do the append and half append, both from UNIX file to Nachos file">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Append() in Nachos FIle System">
+<meta property="og:url" content="co10.github.io/2021/05/02/Append-in-Nachos-FIle-System/index.html">
+<meta property="og:site_name" content="荒芜知地">
+<meta property="og:description" content="One of the flaws in Nachos is that you cannot expand a file in the Nachos File System. So this is what experiment 5 does.  We need to do the append and half append, both from UNIX file to Nachos file">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-05-02T06:06:42.000Z">
+<meta property="article:modified_time" content="2021-05-02T08:18:48.170Z">
+<meta property="article:author" content="K">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="co10.github.io/2021/05/02/Append-in-Nachos-FIle-System/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Append() in Nachos FIle System | 荒芜知地</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="荒芜知地" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">荒芜知地</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Knowhere</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">45</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">89</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="co10.github.io/2021/05/02/Append-in-Nachos-FIle-System/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="K">
+      <meta itemprop="description" content="You know Knowhere is nowhere, but KnowWhere.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="荒芜知地">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Append() in Nachos FIle System
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-05-02 14:06:42" itemprop="dateCreated datePublished" datetime="2021-05-02T14:06:42+08:00">2021-05-02</time>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/05/02/Append-in-Nachos-FIle-System/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/05/02/Append-in-Nachos-FIle-System/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>One of the flaws in Nachos is that you cannot expand a file in the Nachos File System. So this is what experiment 5 does. </p>
+<p>We need to do the append and half append, both from UNIX file to Nachos file and from Nachos file to Nachos file. </p>
+<a id="more"></a>
+<h2 id="Preparation"><a href="#Preparation" class="headerlink" title="Preparation"></a>Preparation</h2><p>Copy <code>filehdr</code> , <code>directory</code> , <code>filesys</code> , <code>Makefile</code> , <code>Makefile.local</code> , <code>openfile</code> and <code>synchdisk</code> from <code>filesys</code> directory, and copy the <code>arch</code> directory of course, and did the same thing as experiment 2 : remove object files and bin files.  </p>
+<h3 id="Makefile"><a href="#Makefile" class="headerlink" title="Makefile"></a><code>Makefile</code></h3><p>Now we need to change the <code>Makefile</code> , only three lines : </p>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ifndef</span> MAKEFILE_LAB5</span><br><span class="line"><span class="keyword">define</span> MAKEFILE_LAB5</span><br><span class="line"><span class="comment">## ...........................</span></span><br><span class="line"><span class="keyword">include</span> ../lab5/Makefile.local</span><br></pre></td></tr></table></figure>
+<p>And the <code>Makefile.local</code> : </p>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ifndef</span> MAKEFILE_LAB5_LOCAL</span><br><span class="line"><span class="keyword">define</span> MAKEFILE_LAB5_LOCAL</span><br><span class="line">yes</span><br><span class="line"><span class="keyword">endef</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Add new sourcefiles here.</span></span><br><span class="line"></span><br><span class="line">CCFILES +=main.cc\</span><br><span class="line">	bitmap.cc\</span><br><span class="line">    directory.cc\</span><br><span class="line">	filehdr.cc\</span><br><span class="line">	filesys.cc\</span><br><span class="line">	fstest.cc\</span><br><span class="line">	openfile.cc\</span><br><span class="line">	synchdisk.cc\</span><br><span class="line">	disk.cc</span><br><span class="line"></span><br><span class="line"><span class="keyword">ifdef</span> MAKEFILE_USERPROG_LOCAL</span><br><span class="line">DEFINES := $(DEFINES:FILESYS_STUB=FILESYS)</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">INCPATH += -I../lab5 -I../userprog</span><br><span class="line">DEFINES += -DFILESYS_NEEDED -DFILESYS</span><br><span class="line"><span class="keyword">endif</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">endif</span> <span class="comment"># MAKEFILE_LAB5_LOCAL</span></span><br></pre></td></tr></table></figure>
+<p>Now we could make file correctly, but there are also a few things to change: </p>
+<h3 id="main-cc"><a href="#main-cc" class="headerlink" title="main.cc"></a><code>main.cc</code></h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">extern</span> <span class="keyword">void</span> <span class="title">NAppend</span><span class="params">(<span class="keyword">char</span> *nachosFileFrom, <span class="keyword">char</span> *nachosFileTo, <span class="keyword">int</span> half)</span></span>;</span><br><span class="line"><span class="comment">// ....................................................................</span></span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (!<span class="built_in">strcmp</span>(*argv, <span class="string">"-hnap"</span>)) &#123;  <span class="comment">// cut half and append from Nachos to Nachos</span></span><br><span class="line">	    ASSERT(argc &gt; <span class="number">2</span>);</span><br><span class="line">	    NAppend(*(argv + <span class="number">1</span>), *(argv + <span class="number">2</span>), <span class="number">1</span>);</span><br><span class="line">	    argCount = <span class="number">3</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>So that we can use half append from Nachos file to Nachos file.</p>
+<h2 id="Read-and-modify-Codes"><a href="#Read-and-modify-Codes" class="headerlink" title="Read and modify Codes"></a>Read and modify Codes</h2><p>We only need to focus on the append operation, so directly go to the major code part.</p>
+<h3 id="fstest-cc"><a href="#fstest-cc" class="headerlink" title="fstest.cc"></a><code>fstest.cc</code></h3><blockquote>
+<p><code>Append</code></p>
+<p>Append the contents of the UNIX file “<code>from</code>“ to the Nachos file “<code>to</code>“.</p>
+<p>If “<code>half</code>“ is non-zero, start at the middle of file “<code>to</code>“ to appending the contents of “from”; Otherwise, do real appending after the end of file “to”.</p>
+<p>If Nachos file “to” does not exist, create the nachos file “to” with length 0, then append the contents of UNIX file  “from” to the end of it.</p>
+<p><code>NAppend</code></p>
+<p><code>NAppend</code> is the same as <code>Append</code> except that the “<code>from</code>“ file is a Nachos file instead of a UNIX file. It appends the contents of Nachos file “<code>from</code>“ to the end of Nachos file “<code>to</code>“.</p>
+<p>If Nachos file “<code>to</code>“ does not exist, create the nachos file “<code>to</code>“ with length 0, then append the contents of UNIX file “<code>from</code>“ to the end of it.</p>
+</blockquote>
+<p><code>Append</code> and <code>NAppend</code> are majorly the same, so we only need to compare the different part and also change parts of the same codes. The start position is defined by half : 0 to tail append, 1 to half append. And the data is collected in a buffer: <code>buffer = new char[TransferSize];</code> . <code>TransferSize</code> is 10, the reading speed. And we see the reading process use <code>openFile-&gt;Write(buffer, amountRead);</code> . This is how it works. so dig into that.</p>
+<h3 id="Write-amp-WriteAt"><a href="#Write-amp-WriteAt" class="headerlink" title="Write() &amp; WriteAt()"></a><code>Write()</code> &amp; <code>WriteAt()</code></h3><p><code>Write()</code> is in <code>openfile.cc</code> , and it uses <code>WriteAt()</code>, so just focus on <code>WriteAt()</code> . </p>
+<p>We see </p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> ((numBytes &lt;= <span class="number">0</span>) || (<span class="built_in">position</span> &gt;= fileLength))</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br></pre></td></tr></table></figure>
+<p>This is a restriction from appending files, so change it to :</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> ((numBytes &lt;= <span class="number">0</span>) || (<span class="built_in">position</span> &gt; fileLength)) <span class="comment">// change here to make its end appendable</span></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br></pre></td></tr></table></figure>
+<p>And </p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> ((<span class="built_in">position</span> + numBytes) &gt; fileLength)</span><br><span class="line">	numBytes = fileLength - <span class="built_in">position</span>;</span><br></pre></td></tr></table></figure>
+<p>The original code just cut the file length, instead of finding a new sector for the exceeded part, so change it:</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> ((<span class="built_in">position</span> + numBytes) &gt; fileLength) &#123; <span class="comment">// which means it needs to be expanded</span></span><br><span class="line">    <span class="keyword">int</span> increaseBytes = <span class="built_in">position</span> + numBytes - fileLength; <span class="comment">// how long to increase</span></span><br><span class="line">    BitMap *freeBitMap = fileSystem-&gt;getBitMap(); <span class="comment">// fetch bitmap</span></span><br><span class="line">    <span class="keyword">bool</span> hdrResult;</span><br><span class="line">    hdrResult = hdr-&gt;Allocate(freeBitMap, fileLength, increaseBytes); <span class="comment">// modify header, bitmap</span></span><br><span class="line">    <span class="keyword">if</span> (!hdrResult)</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	fileSystem-&gt;setBitMap(freeBitMap); <span class="comment">// update bitmap</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>In order to get BitMap and set BitMap, we should add a few things to filesys :</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function">BitMap* <span class="title">FileSystem::getBitMap</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    BitMap *freeBitMap = <span class="keyword">new</span> BitMap(NumSectors);</span><br><span class="line">    freeBitMap-&gt;FetchFrom(freeMapFile);</span><br><span class="line">    <span class="keyword">return</span> freeBitMap;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">FileSystem::setBitMap</span><span class="params">(BitMap* freeMap)</span> </span>&#123;</span><br><span class="line">    freeMap-&gt;WriteBack(freeMapFile);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Don’t forget to declare that in <code>filesys.h</code> .</p>
+<h3 id="filehdr-cc"><a href="#filehdr-cc" class="headerlink" title="filehdr.cc"></a><code>filehdr.cc</code></h3><p>Also, in the last step we changed file header by using <code>Allocate</code> , which is in <code>filehdr.cc</code> : </p>
+<blockquote>
+<p><code>FileHeader::Allocate</code></p>
+<p>Initialize a fresh file header for a newly created file. Allocate data blocks for the file out of the map of free disk blocks. Return FALSE if there are not enough free blocks to accommodate the new file.</p>
+<p>“<code>freeMap</code>“ is the bit map of free disk sectors<br>“<code>fileSize</code>“ is the bit map of free disk sectors</p>
+</blockquote>
+<p>The original Allocate is only made for creating a new file, so we need to change it to make it available for appending files. Below is the code:</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">FileHeader::Allocate</span><span class="params">(BitMap *freeMap, <span class="keyword">int</span> fileSize, <span class="keyword">int</span> incrementBytes)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (numSectors &gt; NumDirect) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="comment">// append in a blank file</span></span><br><span class="line">    <span class="keyword">if</span> ((fileSize == <span class="number">0</span>) &amp;&amp; (incrementBytes &gt; <span class="number">0</span>)) &#123;</span><br><span class="line">        <span class="keyword">if</span> (freeMap-&gt;NumClear() &lt; <span class="number">1</span>) &#123; <span class="comment">// no enough space</span></span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"Insufficient Disk Space.\n"</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        dataSectors[<span class="number">0</span>] = freeMap-&gt;Find(); <span class="comment">// find a free space</span></span><br><span class="line">        numSectors = <span class="number">1</span>;</span><br><span class="line">        numBytes = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    numBytes = fileSize;</span><br><span class="line">    <span class="keyword">int</span> offset = numSectors * SectorSize - numBytes; <span class="comment">// the last sector offset to full in the original file</span></span><br><span class="line">    <span class="keyword">int</span> newSectorBytes = incrementBytes - offset; <span class="comment">// new sector takes</span></span><br><span class="line">    <span class="keyword">if</span> (newSectorBytes &lt;= <span class="number">0</span>) &#123; <span class="comment">// just put in the original sector (enough)</span></span><br><span class="line">        numBytes = numBytes + incrementBytes;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// original sector not enough, need to expand</span></span><br><span class="line">    <span class="keyword">int</span> moreSectors = divRoundUp(newSectorBytes, SectorSize);</span><br><span class="line">    <span class="keyword">if</span> (numSectors + moreSectors &gt; NumDirect)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>; </span><br><span class="line">    <span class="keyword">if</span> (freeMap-&gt;NumClear() &lt; moreSectors) &#123; <span class="comment">// no enough space to use</span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"Insufficient Disk Space.\n"</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = numSectors; i &lt; numSectors + moreSectors; i++)</span><br><span class="line">        dataSectors[i] = freeMap-&gt;Find();</span><br><span class="line">    numBytes = numBytes + incrementBytes;</span><br><span class="line">    numSectors = numSectors + moreSectors;</span><br><span class="line">    <span class="keyword">return</span> TRUE;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>The <code>NumDirect</code> is the number of free sector in the whole file system: </p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> NumDirect 	((SectorSize - 2 * sizeof(int)) / sizeof(int))</span></span><br></pre></td></tr></table></figure>
+<p>The <code>SectorSize</code> is 128 , Think of the structure of the file header, the first 2 is used for 2 integers, so the left is </p>
+<p>$(128-2\times4)\div4=30$ . Only 30 sectors available at most.</p>
+<p>So if it asks too much, there is no space for it, return FALSE.</p>
+<p>The following lines calculate how many sectors it should take: </p>
+<p>If the last sector of the original file is big enough to contain the increasement, no extra sectors are needed. If not, find sectors for them.</p>
+<h3 id="openfile-cc"><a href="#openfile-cc" class="headerlink" title="openfile.cc"></a><code>openfile.cc</code></h3><p>The last thing is write back. so enable the codes in <code>fstest.cc</code> :</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">openFile-&gt;WriteBack();</span><br><span class="line">DEBUG(<span class="string">'f'</span>,<span class="string">"inodes have been written back\n"</span>);</span><br></pre></td></tr></table></figure>
+<p>And modify <code>openfile.cc</code> :</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">OpenFile::OpenFile(<span class="keyword">int</span> sector) &#123; </span><br><span class="line">    hdr = <span class="keyword">new</span> FileHeader;</span><br><span class="line">    hdr-&gt;FetchFrom(sector);</span><br><span class="line">    seekPosition = <span class="number">0</span>;</span><br><span class="line">    hdrSector = sector;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// .............................</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">OpenFile::WriteBack</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    hdr-&gt;WriteBack(hdrSector);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>All is done.</p>
+<h2 id="Run-and-Test"><a href="#Run-and-Test" class="headerlink" title="Run and Test"></a>Run and Test</h2><p>There are too many things to do, so I write 4 shell files:</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">############ 1.sh #############</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># test append</span></span></span><br><span class="line">rm DISK</span><br><span class="line">./nachos -f</span><br><span class="line">./nachos -cp test/small small</span><br><span class="line">hexdump -C DISK</span><br><span class="line">./nachos -ap test/small small</span><br><span class="line">hexdump -C DISK</span><br><span class="line">./nachos -cp test/empty empty</span><br><span class="line">hexdump -C DISK</span><br><span class="line">./nachos -ap test/medium empty</span><br><span class="line">hexdump -C DISK</span><br><span class="line">./nachos -D</span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">############ 2.sh #############</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># test half append</span></span></span><br><span class="line">rm DISK</span><br><span class="line">./nachos -f</span><br><span class="line">./nachos -cp test/small small</span><br><span class="line">./nachos -cp test/big big</span><br><span class="line">hexdump -C DISK</span><br><span class="line">./nachos -hap test/small big</span><br><span class="line">./nachos -hap test/big small</span><br><span class="line">hexdump -C DISK</span><br><span class="line">./nachos -D</span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">############ 3.sh #############</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># test nachos append</span></span></span><br><span class="line">rm DISK</span><br><span class="line">./nachos -f</span><br><span class="line">./nachos -cp test/medium medium</span><br><span class="line">./nachos -cp test/big big</span><br><span class="line">hexdump -C DISK</span><br><span class="line">./nachos -nap medium big</span><br><span class="line">hexdump -C DISK</span><br><span class="line">./nachos -D</span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">############ 4.sh #############</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># test half N-append</span></span></span><br><span class="line">rm DISK</span><br><span class="line">./nachos -f</span><br><span class="line">./nachos -cp test/medium medium</span><br><span class="line">./nachos -cp test/big big</span><br><span class="line">hexdump -C DISK</span><br><span class="line">./nachos -hnap medium big</span><br><span class="line">hexdump -C DISK</span><br><span class="line">./nachos -D</span><br></pre></td></tr></table></figure>
+<p>Testing <code>append</code>, <code>half-append</code>, <code>nachos-append</code>, <code>half-nachos-append</code>.</p>
+<p>Below is the result:</p>
+<h3 id="append"><a href="#append" class="headerlink" title="append"></a><code>append</code></h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">root@iZbp1iqmvkj69470qn1vpvZ:~/OS/lab5# ./001.sh</span><br><span class="line">No threads ready or runnable, and no pending interrupts.</span><br><span class="line">....................................</span><br><span class="line">Cleaning up...</span><br><span class="line">00000000  ab 89 67 45 80 00 00 00  01 00 00 00 02 00 00 00  |..gE............|</span><br><span class="line">00000010  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00000080  00 00 00 00 c8 00 00 00  02 00 00 00 03 00 00 00  |................|</span><br><span class="line">00000090  04 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">000000a0  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00000100  00 00 00 00 7f 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">00000110  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00000180  00 00 00 00 01 00 00 00  05 00 00 00 73 6d 61 6c  |............smal|</span><br><span class="line">00000190  6c 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |l...............|</span><br><span class="line">000001a0  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00000280  00 00 00 00 28 00 00 00  01 00 00 00 06 00 00 00  |....(...........|</span><br><span class="line">00000290  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00000300  00 00 00 00 54 68 69 73  20 69 73 20 61 20 73 6d  |....This is a sm|</span><br><span class="line">00000310  61 6c 6c 20 66 69 6c 65  2e 0a 2a 2a 2a 65 6e 64  |all file..***end|</span><br><span class="line">00000320  20 6f 66 20 66 69 6c 65  2a 2a 2a 0a 00 00 00 00  | of file***.....|</span><br><span class="line">00000330  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00020004</span><br><span class="line">No threads ready or runnable, and no pending interrupts.</span><br><span class="line">Assuming the program completed.</span><br><span class="line">Machine halting!</span><br><span class="line"></span><br><span class="line">Ticks: total 83020, idle 82350, system 670, user 0</span><br><span class="line">Disk I/O: reads 13, writes 9</span><br><span class="line">Console I/O: reads 0, writes 0</span><br><span class="line">Paging: faults 0</span><br><span class="line">Network I/O: packets received 0, sent 0</span><br><span class="line"></span><br><span class="line">Cleaning up...</span><br><span class="line">00000000  ab 89 67 45 80 00 00 00  01 00 00 00 02 00 00 00  |..gE............|</span><br><span class="line">00000010  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00000080  00 00 00 00 c8 00 00 00  02 00 00 00 03 00 00 00  |................|</span><br><span class="line">00000090  04 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">000000a0  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00000100  00 00 00 00 7f 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">00000110  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00000180  00 00 00 00 01 00 00 00  05 00 00 00 73 6d 61 6c  |............smal|</span><br><span class="line">00000190  6c 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |l...............|</span><br><span class="line">000001a0  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00000280  00 00 00 00 50 00 00 00  01 00 00 00 06 00 00 00  |....P...........|</span><br><span class="line">00000290  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00000300  00 00 00 00 54 68 69 73  20 69 73 20 61 20 73 6d  |....This is a sm|</span><br><span class="line">00000310  61 6c 6c 20 66 69 6c 65  2e 0a 2a 2a 2a 65 6e 64  |all file..***end|</span><br><span class="line">00000320  20 6f 66 20 66 69 6c 65  2a 2a 2a 0a 54 68 69 73  | of file***.This|</span><br><span class="line">00000330  20 69 73 20 61 20 73 6d  61 6c 6c 20 66 69 6c 65  | is a small file|</span><br><span class="line">00000340  2e 0a 2a 2a 2a 65 6e 64  20 6f 66 20 66 69 6c 65  |..***end of file|</span><br><span class="line">00000350  2a 2a 2a 0a 00 00 00 00  00 00 00 00 00 00 00 00  |***.............|</span><br><span class="line">00000360  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00020004</span><br><span class="line">No threads ready or runnable, and no pending interrupts.</span><br><span class="line">Assuming the program completed.</span><br><span class="line">Machine halting!</span><br><span class="line"></span><br><span class="line">Ticks: total 51110, idle 50710, system 400, user 0</span><br><span class="line">Disk I/O: reads 9, writes 4</span><br><span class="line">Console I/O: reads 0, writes 0</span><br><span class="line">Paging: faults 0</span><br><span class="line">Network I/O: packets received 0, sent 0</span><br><span class="line"></span><br><span class="line">Cleaning up...</span><br><span class="line">00000000  ab 89 67 45 80 00 00 00  01 00 00 00 02 00 00 00  |..gE............|</span><br><span class="line">00000010  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00000080  00 00 00 00 c8 00 00 00  02 00 00 00 03 00 00 00  |................|</span><br><span class="line">00000090  04 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">000000a0  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00000100  00 00 00 00 ff 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">00000110  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00000180  00 00 00 00 01 00 00 00  05 00 00 00 73 6d 61 6c  |............smal|</span><br><span class="line">00000190  6c 00 00 00 00 00 00 00  01 00 00 00 07 00 00 00  |l...............|</span><br><span class="line">000001a0  65 6d 70 74 79 00 00 00  00 00 00 00 00 00 00 00  |empty...........|</span><br><span class="line">000001b0  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00000280  00 00 00 00 50 00 00 00  01 00 00 00 06 00 00 00  |....P...........|</span><br><span class="line">00000290  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00000300  00 00 00 00 54 68 69 73  20 69 73 20 61 20 73 6d  |....This is a sm|</span><br><span class="line">00000310  61 6c 6c 20 66 69 6c 65  2e 0a 2a 2a 2a 65 6e 64  |all file..***end|</span><br><span class="line">00000320  20 6f 66 20 66 69 6c 65  2a 2a 2a 0a 54 68 69 73  | of file***.This|</span><br><span class="line">00000330  20 69 73 20 61 20 73 6d  61 6c 6c 20 66 69 6c 65  | is a small file|</span><br><span class="line">00000340  2e 0a 2a 2a 2a 65 6e 64  20 6f 66 20 66 69 6c 65  |..***end of file|</span><br><span class="line">00000350  2a 2a 2a 0a 00 00 00 00  00 00 00 00 00 00 00 00  |***.............|</span><br><span class="line">00000360  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00020004</span><br><span class="line">No threads ready or runnable, and no pending interrupts.</span><br><span class="line">Assuming the program completed.</span><br><span class="line">Machine halting!</span><br><span class="line"></span><br><span class="line">Ticks: total 228020, idle 226270, system 1750, user 0</span><br><span class="line">Disk I/O: reads 31, writes 27</span><br><span class="line">Console I/O: reads 0, writes 0</span><br><span class="line">Paging: faults 0</span><br><span class="line">Network I/O: packets received 0, sent 0</span><br><span class="line"></span><br><span class="line">Cleaning up...</span><br><span class="line">00000000  ab 89 67 45 80 00 00 00  01 00 00 00 02 00 00 00  |..gE............|</span><br><span class="line">00000010  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00000080  00 00 00 00 c8 00 00 00  02 00 00 00 03 00 00 00  |................|</span><br><span class="line">00000090  04 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">000000a0  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00000100  00 00 00 00 ff 01 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">00000110  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00000180  00 00 00 00 01 00 00 00  05 00 00 00 73 6d 61 6c  |............smal|</span><br><span class="line">00000190  6c 00 00 00 00 00 00 00  01 00 00 00 07 00 00 00  |l...............|</span><br><span class="line">000001a0  65 6d 70 74 79 00 00 00  00 00 00 00 00 00 00 00  |empty...........|</span><br><span class="line">000001b0  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00000280  00 00 00 00 50 00 00 00  01 00 00 00 06 00 00 00  |....P...........|</span><br><span class="line">00000290  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00000300  00 00 00 00 54 68 69 73  20 69 73 20 61 20 73 6d  |....This is a sm|</span><br><span class="line">00000310  61 6c 6c 20 66 69 6c 65  2e 0a 2a 2a 2a 65 6e 64  |all file..***end|</span><br><span class="line">00000320  20 6f 66 20 66 69 6c 65  2a 2a 2a 0a 54 68 69 73  | of file***.This|</span><br><span class="line">00000330  20 69 73 20 61 20 73 6d  61 6c 6c 20 66 69 6c 65  | is a small file|</span><br><span class="line">00000340  2e 0a 2a 2a 2a 65 6e 64  20 6f 66 20 66 69 6c 65  |..***end of file|</span><br><span class="line">00000350  2a 2a 2a 0a 00 00 00 00  00 00 00 00 00 00 00 00  |***.............|</span><br><span class="line">00000360  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00000380  00 00 00 00 80 00 00 00  01 00 00 00 08 00 00 00  |................|</span><br><span class="line">00000390  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00000400  00 00 00 00 54 68 69 73  20 69 73 20 61 20 6d 65  |....This is a me|</span><br><span class="line">00000410  64 69 75 6d 20 66 69 6c  65 0a 54 68 69 73 20 69  |dium file.This i|</span><br><span class="line">00000420  73 20 61 20 6d 65 64 69  75 6d 20 66 69 6c 65 0a  |s a medium file.|</span><br><span class="line">00000430  54 68 69 73 20 69 73 20  61 20 6d 65 64 69 75 6d  |This is a medium|</span><br><span class="line">00000440  20 66 69 6c 65 0a 54 68  69 73 20 69 73 20 61 20  | file.This is a |</span><br><span class="line">00000450  6d 65 64 69 75 6d 20 66  69 6c 65 0a 54 68 69 73  |medium file.This|</span><br><span class="line">00000460  20 69 73 20 61 20 6d 65  64 69 75 6d 20 66 69 6c  | is a medium fil|</span><br><span class="line">00000470  65 0a 2a 2a 2a 65 6e 64  20 6f 66 20 66 69 6c 65  |e.***end of file|</span><br><span class="line">00000480  2a 2a 2a 0a 00 00 00 00  00 00 00 00 00 00 00 00  |***.............|</span><br><span class="line">00000490  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00020004</span><br><span class="line">Bit map file header:</span><br><span class="line">FileHeader contents.  File size: 128.  File blocks:</span><br><span class="line">2 </span><br><span class="line">File contents:</span><br><span class="line">\ff\1\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0</span><br><span class="line">Directory file header:</span><br><span class="line">FileHeader contents.  File size: 200.  File blocks:</span><br><span class="line">3 4 </span><br><span class="line">File contents:</span><br><span class="line">\1\0\0\0\5\0\0\0small\0\0\0\0\0\0\0\1\0\0\0\7\0\0\0empty\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0</span><br><span class="line">\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0</span><br><span class="line">Bitmap set:</span><br><span class="line">0, 1, 2, 3, 4, 5, 6, 7, 8, </span><br><span class="line">Directory contents:</span><br><span class="line">Name: small, Sector: 5</span><br><span class="line">FileHeader contents.  File size: 80.  File blocks:</span><br><span class="line">6 </span><br><span class="line">File contents:</span><br><span class="line">This is a small file.\a***end of file***\aThis is a small file.\a***end of file***\a</span><br><span class="line">Name: empty, Sector: 7</span><br><span class="line">FileHeader contents.  File size: 128.  File blocks:</span><br><span class="line">8 </span><br><span class="line">File contents:</span><br><span class="line">This is a medium file\aThis is a medium file\aThis is a medium file\aThis is a medium file\aThis is a medium file\a***end of file***\a</span><br><span class="line"></span><br><span class="line">No threads ready or runnable, and no pending interrupts.</span><br><span class="line">Assuming the program completed.</span><br><span class="line">Machine halting!</span><br><span class="line"></span><br><span class="line">Ticks: total 7430, idle 7000, system 430, user 0</span><br><span class="line">Disk I/O: reads 14, writes 0</span><br><span class="line">Console I/O: reads 0, writes 0</span><br><span class="line">Paging: faults 0</span><br><span class="line">Network I/O: packets received 0, sent 0</span><br><span class="line"></span><br><span class="line">Cleaning up...</span><br></pre></td></tr></table></figure>
+<p>Copy empty, append small to small and append medium to empty works fine.</p>
+<h3 id="half-append"><a href="#half-append" class="headerlink" title="half-append"></a><code>half-append</code></h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">root@iZbp1iqmvkj69470qn1vpvZ:~/OS/lab5# ./002.sh</span><br><span class="line">No threads ready or runnable, and no pending interrupts.</span><br><span class="line">...........................................</span><br><span class="line">Cleaning up...</span><br><span class="line">No threads ready or runnable, and no pending interrupts.</span><br><span class="line">Assuming the program completed.</span><br><span class="line">Machine halting!</span><br><span class="line"></span><br><span class="line">Ticks: total 597520, idle 595020, system 2500, user 0</span><br><span class="line">Disk I/O: reads 44, writes 39</span><br><span class="line">Console I/O: reads 0, writes 0</span><br><span class="line">Paging: faults 0</span><br><span class="line">Network I/O: packets received 0, sent 0</span><br><span class="line"></span><br><span class="line">Cleaning up...</span><br><span class="line">00000000  ab 89 67 45 80 00 00 00  01 00 00 00 02 00 00 00  |..gE............|</span><br><span class="line">00000010  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00000080  00 00 00 00 c8 00 00 00  02 00 00 00 03 00 00 00  |................|</span><br><span class="line">00000090  04 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">000000a0  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00000100  00 00 00 00 ff 07 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">00000110  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00000180  00 00 00 00 01 00 00 00  05 00 00 00 73 6d 61 6c  |............smal|</span><br><span class="line">00000190  6c 00 00 00 00 00 00 00  01 00 00 00 07 00 00 00  |l...............|</span><br><span class="line">000001a0  62 69 67 00 00 00 00 00  00 00 00 00 00 00 00 00  |big.............|</span><br><span class="line">000001b0  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00000280  00 00 00 00 28 00 00 00  01 00 00 00 06 00 00 00  |....(...........|</span><br><span class="line">00000290  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00000300  00 00 00 00 54 68 69 73  20 69 73 20 61 20 73 6d  |....This is a sm|</span><br><span class="line">00000310  61 6c 6c 20 66 69 6c 65  2e 0a 2a 2a 2a 65 6e 64  |all file..***end|</span><br><span class="line">00000320  20 6f 66 20 66 69 6c 65  2a 2a 2a 0a 00 00 00 00  | of file***.....|</span><br><span class="line">00000330  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00000380  00 00 00 00 42 01 00 00  03 00 00 00 08 00 00 00  |....B...........|</span><br><span class="line">00000390  09 00 00 00 0a 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">000003a0  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00000400  00 00 00 00 54 68 69 73  20 69 73 20 61 20 62 69  |....This is a bi|</span><br><span class="line">00000410  67 20 66 69 6c 65 0a 54  68 69 73 20 69 73 20 61  |g file.This is a|</span><br><span class="line">00000420  20 62 69 67 20 66 69 6c  65 0a 54 68 69 73 20 69  | big file.This i|</span><br><span class="line">00000430  73 20 61 20 62 69 67 20  66 69 6c 65 0a 54 68 69  |s a big file.Thi|</span><br><span class="line">00000440  73 20 69 73 20 61 20 62  69 67 20 66 69 6c 65 0a  |s is a big file.|</span><br><span class="line">00000450  54 68 69 73 20 69 73 20  61 20 62 69 67 20 66 69  |This is a big fi|</span><br><span class="line">00000460  6c 65 0a 54 68 69 73 20  69 73 20 61 20 62 69 67  |le.This is a big|</span><br><span class="line">00000470  20 66 69 6c 65 0a 54 68  69 73 20 69 73 20 61 20  | file.This is a |</span><br><span class="line">00000480  62 69 67 20 66 69 6c 65  0a 54 68 69 73 20 69 73  |big file.This is|</span><br><span class="line">00000490  20 61 20 62 69 67 20 66  69 6c 65 0a 54 68 69 73  | a big file.This|</span><br><span class="line">000004a0  20 69 73 20 61 20 62 69  67 20 66 69 6c 65 0a 54  | is a big file.T|</span><br><span class="line">000004b0  68 69 73 20 69 73 20 61  20 62 69 67 20 66 69 6c  |his is a big fil|</span><br><span class="line">000004c0  65 0a 54 68 69 73 20 69  73 20 61 20 62 69 67 20  |e.This is a big |</span><br><span class="line">000004d0  66 69 6c 65 0a 54 68 69  73 20 69 73 20 61 20 62  |file.This is a b|</span><br><span class="line">000004e0  69 67 20 66 69 6c 65 0a  54 68 69 73 20 69 73 20  |ig file.This is |</span><br><span class="line">000004f0  61 20 62 69 67 20 66 69  6c 65 0a 54 68 69 73 20  |a big file.This |</span><br><span class="line">00000500  69 73 20 61 20 62 69 67  20 66 69 6c 65 0a 54 68  |is a big file.Th|</span><br><span class="line">00000510  69 73 20 69 73 20 61 20  62 69 67 20 66 69 6c 65  |is is a big file|</span><br><span class="line">00000520  0a 54 68 69 73 20 69 73  20 61 20 62 69 67 20 66  |.This is a big f|</span><br><span class="line">00000530  69 6c 65 0a 2a 2a 2a 65  6e 64 20 6f 66 20 66 69  |ile.***end of fi|</span><br><span class="line">00000540  6c 65 2a 2a 2a 0a 00 00  00 00 00 00 00 00 00 00  |le***...........|</span><br><span class="line">00000550  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00020004</span><br><span class="line">No threads ready or runnable, and no pending interrupts.</span><br><span class="line">Assuming the program completed.</span><br><span class="line">Machine halting!</span><br><span class="line"></span><br><span class="line">Ticks: total 84020, idle 83590, system 430, user 0</span><br><span class="line">Disk I/O: reads 9, writes 5</span><br><span class="line">Console I/O: reads 0, writes 0</span><br><span class="line">Paging: faults 0</span><br><span class="line">Network I/O: packets received 0, sent 0</span><br><span class="line"></span><br><span class="line">Cleaning up...</span><br><span class="line">No threads ready or runnable, and no pending interrupts.</span><br><span class="line">Assuming the program completed.</span><br><span class="line">Machine halting!</span><br><span class="line"></span><br><span class="line">Ticks: total 563020, idle 558870, system 4150, user 0</span><br><span class="line">Disk I/O: reads 71, writes 67</span><br><span class="line">Console I/O: reads 0, writes 0</span><br><span class="line">Paging: faults 0</span><br><span class="line">Network I/O: packets received 0, sent 0</span><br><span class="line"></span><br><span class="line">Cleaning up...</span><br><span class="line">00000000  ab 89 67 45 80 00 00 00  01 00 00 00 02 00 00 00  |..gE............|</span><br><span class="line">00000010  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00000080  00 00 00 00 c8 00 00 00  02 00 00 00 03 00 00 00  |................|</span><br><span class="line">00000090  04 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">000000a0  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00000100  00 00 00 00 ff 1f 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">00000110  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00000180  00 00 00 00 01 00 00 00  05 00 00 00 73 6d 61 6c  |............smal|</span><br><span class="line">00000190  6c 00 00 00 00 00 00 00  01 00 00 00 07 00 00 00  |l...............|</span><br><span class="line">000001a0  62 69 67 00 00 00 00 00  00 00 00 00 00 00 00 00  |big.............|</span><br><span class="line">000001b0  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00000280  00 00 00 00 56 01 00 00  03 00 00 00 06 00 00 00  |....V...........|</span><br><span class="line">00000290  0b 00 00 00 0c 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">000002a0  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00000300  00 00 00 00 54 68 69 73  20 69 73 20 61 20 73 6d  |....This is a sm|</span><br><span class="line">00000310  61 6c 6c 20 66 69 6c 65  54 68 69 73 20 69 73 20  |all fileThis is |</span><br><span class="line">00000320  61 20 62 69 67 20 66 69  6c 65 0a 54 68 69 73 20  |a big file.This |</span><br><span class="line">00000330  69 73 20 61 20 62 69 67  20 66 69 6c 65 0a 54 68  |is a big file.Th|</span><br><span class="line">00000340  69 73 20 69 73 20 61 20  62 69 67 20 66 69 6c 65  |is is a big file|</span><br><span class="line">00000350  0a 54 68 69 73 20 69 73  20 61 20 62 69 67 20 66  |.This is a big f|</span><br><span class="line">00000360  69 6c 65 0a 54 68 69 73  20 69 73 20 61 20 62 69  |ile.This is a bi|</span><br><span class="line">00000370  67 20 66 69 6c 65 0a 54  68 69 73 20 69 73 20 61  |g file.This is a|</span><br><span class="line">00000380  20 62 69 67 42 01 00 00  03 00 00 00 08 00 00 00  | bigB...........|</span><br><span class="line">00000390  09 00 00 00 0a 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">000003a0  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00000400  00 00 00 00 54 68 69 73  20 69 73 20 61 20 62 69  |....This is a bi|</span><br><span class="line">00000410  67 20 66 69 6c 65 0a 54  68 69 73 20 69 73 20 61  |g file.This is a|</span><br><span class="line">00000420  20 62 69 67 20 66 69 6c  65 0a 54 68 69 73 20 69  | big file.This i|</span><br><span class="line">00000430  73 20 61 20 62 69 67 20  66 69 6c 65 0a 54 68 69  |s a big file.Thi|</span><br><span class="line">00000440  73 20 69 73 20 61 20 62  69 67 20 66 69 6c 65 0a  |s is a big file.|</span><br><span class="line">00000450  54 68 69 73 20 69 73 20  61 20 62 69 67 20 66 69  |This is a big fi|</span><br><span class="line">00000460  6c 65 0a 54 68 69 73 20  69 73 20 61 20 62 69 67  |le.This is a big|</span><br><span class="line">00000470  20 66 69 6c 65 0a 54 68  69 73 20 69 73 20 61 20  | file.This is a |</span><br><span class="line">00000480  62 69 67 20 66 69 6c 65  0a 54 68 69 73 20 69 73  |big file.This is|</span><br><span class="line">00000490  20 61 20 62 69 67 20 66  69 6c 65 0a 54 68 69 73  | a big file.This|</span><br><span class="line">000004a0  20 69 73 20 61 54 68 69  73 20 69 73 20 61 20 73  | is aThis is a s|</span><br><span class="line">000004b0  6d 61 6c 6c 20 66 69 6c  65 2e 0a 2a 2a 2a 65 6e  |mall file..***en|</span><br><span class="line">000004c0  64 20 6f 66 20 66 69 6c  65 2a 2a 2a 0a 69 67 20  |d of file***.ig |</span><br><span class="line">000004d0  66 69 6c 65 0a 54 68 69  73 20 69 73 20 61 20 62  |file.This is a b|</span><br><span class="line">000004e0  69 67 20 66 69 6c 65 0a  54 68 69 73 20 69 73 20  |ig file.This is |</span><br><span class="line">000004f0  61 20 62 69 67 20 66 69  6c 65 0a 54 68 69 73 20  |a big file.This |</span><br><span class="line">00000500  69 73 20 61 20 62 69 67  20 66 69 6c 65 0a 54 68  |is a big file.Th|</span><br><span class="line">00000510  69 73 20 69 73 20 61 20  62 69 67 20 66 69 6c 65  |is is a big file|</span><br><span class="line">00000520  0a 54 68 69 73 20 69 73  20 61 20 62 69 67 20 66  |.This is a big f|</span><br><span class="line">00000530  69 6c 65 0a 2a 2a 2a 65  6e 64 20 6f 66 20 66 69  |ile.***end of fi|</span><br><span class="line">00000540  6c 65 2a 2a 2a 0a 00 00  00 00 00 00 00 00 00 00  |le***...........|</span><br><span class="line">00000550  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00000580  00 00 00 00 20 66 69 6c  65 0a 54 68 69 73 20 69  |.... file.This i|</span><br><span class="line">00000590  73 20 61 20 62 69 67 20  66 69 6c 65 0a 54 68 69  |s a big file.Thi|</span><br><span class="line">000005a0  73 20 69 73 20 61 20 62  69 67 20 66 69 6c 65 0a  |s is a big file.|</span><br><span class="line">000005b0  54 68 69 73 20 69 73 20  61 20 62 69 67 20 66 69  |This is a big fi|</span><br><span class="line">000005c0  6c 65 0a 54 68 69 73 20  69 73 20 61 20 62 69 67  |le.This is a big|</span><br><span class="line">000005d0  20 66 69 6c 65 0a 54 68  69 73 20 69 73 20 61 20  | file.This is a |</span><br><span class="line">000005e0  62 69 67 20 66 69 6c 65  0a 54 68 69 73 20 69 73  |big file.This is|</span><br><span class="line">000005f0  20 61 20 62 69 67 20 66  69 6c 65 0a 54 68 69 73  | a big file.This|</span><br><span class="line">00000600  20 69 73 20 61 20 62 69  67 20 66 69 6c 65 0a 54  | is a big file.T|</span><br><span class="line">00000610  68 69 73 20 69 73 20 61  20 62 69 67 20 66 69 6c  |his is a big fil|</span><br><span class="line">00000620  65 0a 54 68 69 73 20 69  73 20 61 20 62 69 67 20  |e.This is a big |</span><br><span class="line">00000630  66 69 6c 65 0a 54 68 69  73 20 69 73 20 61 20 62  |file.This is a b|</span><br><span class="line">00000640  69 67 20 66 69 6c 65 0a  2a 2a 2a 65 6e 64 20 6f  |ig file.***end o|</span><br><span class="line">00000650  66 20 66 69 6c 65 2a 2a  2a 0a 00 00 00 00 00 00  |f file***.......|</span><br><span class="line">00000660  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00020004</span><br><span class="line">Bit map file header:</span><br><span class="line">FileHeader contents.  File size: 128.  File blocks:</span><br><span class="line">2 </span><br><span class="line">File contents:</span><br><span class="line">\ff\1f\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0</span><br><span class="line">Directory file header:</span><br><span class="line">FileHeader contents.  File size: 200.  File blocks:</span><br><span class="line">3 4 </span><br><span class="line">File contents:</span><br><span class="line">\1\0\0\0\5\0\0\0small\0\0\0\0\0\0\0\1\0\0\0\7\0\0\0big\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0</span><br><span class="line">\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0</span><br><span class="line">Bitmap set:</span><br><span class="line">0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, </span><br><span class="line">Directory contents:</span><br><span class="line">Name: small, Sector: 5</span><br><span class="line">FileHeader contents.  File size: 342.  File blocks:</span><br><span class="line">6 11 12 </span><br><span class="line">File contents:</span><br><span class="line">This is a small fileThis is a big file\aThis is a big file\aThis is a big file\aThis is a big file\aThis is a big file\aThis is a big</span><br><span class="line"> file\aThis is a big file\aThis is a big file\aThis is a big file\aThis is a big file\aThis is a big file\aThis is a big file\aThis is </span><br><span class="line">a big file\aThis is a big file\aThis is a big file\aThis is a big file\a***end of file***\a</span><br><span class="line">Name: big, Sector: 7</span><br><span class="line">FileHeader contents.  File size: 322.  File blocks:</span><br><span class="line">8 9 10 </span><br><span class="line">File contents:</span><br><span class="line">This is a big file\aThis is a big file\aThis is a big file\aThis is a big file\aThis is a big file\aThis is a big file\aThis is a big </span><br><span class="line">file\aThis is a big file\aThis is aThis is a small file.\a***end of file***\aig file\aThis is a big file\aThis is a big file\aThis is a</span><br><span class="line"> big file\aThis is a big file\aThis is a big file\a***end of file***\a</span><br><span class="line"></span><br><span class="line">No threads ready or runnable, and no pending interrupts.</span><br><span class="line">Assuming the program completed.</span><br><span class="line">Machine halting!</span><br><span class="line"></span><br><span class="line">Ticks: total 9550, idle 9000, system 550, user 0</span><br><span class="line">Disk I/O: reads 18, writes 0</span><br><span class="line">Console I/O: reads 0, writes 0</span><br><span class="line">Paging: faults 0</span><br><span class="line">Network I/O: packets received 0, sent 0</span><br><span class="line"></span><br><span class="line">Cleaning up...</span><br></pre></td></tr></table></figure>
+<p>Half append big to small and small to big works fine.</p>
+<h3 id="nachos-append"><a href="#nachos-append" class="headerlink" title="nachos-append"></a><code>nachos-append</code></h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">root@iZbp1iqmvkj69470qn1vpvZ:~/OS/lab5# ./003.sh</span><br><span class="line">No threads ready or runnable, and no pending interrupts.</span><br><span class="line">....................................</span><br><span class="line">Cleaning up...</span><br><span class="line">No threads ready or runnable, and no pending interrupts.</span><br><span class="line">Assuming the program completed.</span><br><span class="line">Machine halting!</span><br><span class="line"></span><br><span class="line">Ticks: total 597520, idle 595020, system 2500, user 0</span><br><span class="line">Disk I/O: reads 44, writes 39</span><br><span class="line">Console I/O: reads 0, writes 0</span><br><span class="line">Paging: faults 0</span><br><span class="line">Network I/O: packets received 0, sent 0</span><br><span class="line"></span><br><span class="line">Cleaning up...</span><br><span class="line">00000000  ab 89 67 45 80 00 00 00  01 00 00 00 02 00 00 00  |..gE............|</span><br><span class="line">00000010  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00000080  00 00 00 00 c8 00 00 00  02 00 00 00 03 00 00 00  |................|</span><br><span class="line">00000090  04 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">000000a0  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00000100  00 00 00 00 ff 07 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">00000110  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00000180  00 00 00 00 01 00 00 00  05 00 00 00 6d 65 64 69  |............medi|</span><br><span class="line">00000190  75 6d 00 00 00 00 00 00  01 00 00 00 07 00 00 00  |um..............|</span><br><span class="line">000001a0  62 69 67 00 00 00 00 00  00 00 00 00 00 00 00 00  |big.............|</span><br><span class="line">000001b0  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00000280  00 00 00 00 80 00 00 00  01 00 00 00 06 00 00 00  |................|</span><br><span class="line">00000290  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00000300  00 00 00 00 54 68 69 73  20 69 73 20 61 20 6d 65  |....This is a me|</span><br><span class="line">00000310  64 69 75 6d 20 66 69 6c  65 0a 54 68 69 73 20 69  |dium file.This i|</span><br><span class="line">00000320  73 20 61 20 6d 65 64 69  75 6d 20 66 69 6c 65 0a  |s a medium file.|</span><br><span class="line">00000330  54 68 69 73 20 69 73 20  61 20 6d 65 64 69 75 6d  |This is a medium|</span><br><span class="line">00000340  20 66 69 6c 65 0a 54 68  69 73 20 69 73 20 61 20  | file.This is a |</span><br><span class="line">00000350  6d 65 64 69 75 6d 20 66  69 6c 65 0a 54 68 69 73  |medium file.This|</span><br><span class="line">00000360  20 69 73 20 61 20 6d 65  64 69 75 6d 20 66 69 6c  | is a medium fil|</span><br><span class="line">00000370  65 0a 2a 2a 2a 65 6e 64  20 6f 66 20 66 69 6c 65  |e.***end of file|</span><br><span class="line">00000380  2a 2a 2a 0a 42 01 00 00  03 00 00 00 08 00 00 00  |***.B...........|</span><br><span class="line">00000390  09 00 00 00 0a 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">000003a0  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00000400  00 00 00 00 54 68 69 73  20 69 73 20 61 20 62 69  |....This is a bi|</span><br><span class="line">00000410  67 20 66 69 6c 65 0a 54  68 69 73 20 69 73 20 61  |g file.This is a|</span><br><span class="line">00000420  20 62 69 67 20 66 69 6c  65 0a 54 68 69 73 20 69  | big file.This i|</span><br><span class="line">00000430  73 20 61 20 62 69 67 20  66 69 6c 65 0a 54 68 69  |s a big file.Thi|</span><br><span class="line">00000440  73 20 69 73 20 61 20 62  69 67 20 66 69 6c 65 0a  |s is a big file.|</span><br><span class="line">00000450  54 68 69 73 20 69 73 20  61 20 62 69 67 20 66 69  |This is a big fi|</span><br><span class="line">00000460  6c 65 0a 54 68 69 73 20  69 73 20 61 20 62 69 67  |le.This is a big|</span><br><span class="line">00000470  20 66 69 6c 65 0a 54 68  69 73 20 69 73 20 61 20  | file.This is a |</span><br><span class="line">00000480  62 69 67 20 66 69 6c 65  0a 54 68 69 73 20 69 73  |big file.This is|</span><br><span class="line">00000490  20 61 20 62 69 67 20 66  69 6c 65 0a 54 68 69 73  | a big file.This|</span><br><span class="line">000004a0  20 69 73 20 61 20 62 69  67 20 66 69 6c 65 0a 54  | is a big file.T|</span><br><span class="line">000004b0  68 69 73 20 69 73 20 61  20 62 69 67 20 66 69 6c  |his is a big fil|</span><br><span class="line">000004c0  65 0a 54 68 69 73 20 69  73 20 61 20 62 69 67 20  |e.This is a big |</span><br><span class="line">000004d0  66 69 6c 65 0a 54 68 69  73 20 69 73 20 61 20 62  |file.This is a b|</span><br><span class="line">000004e0  69 67 20 66 69 6c 65 0a  54 68 69 73 20 69 73 20  |ig file.This is |</span><br><span class="line">000004f0  61 20 62 69 67 20 66 69  6c 65 0a 54 68 69 73 20  |a big file.This |</span><br><span class="line">00000500  69 73 20 61 20 62 69 67  20 66 69 6c 65 0a 54 68  |is a big file.Th|</span><br><span class="line">00000510  69 73 20 69 73 20 61 20  62 69 67 20 66 69 6c 65  |is is a big file|</span><br><span class="line">00000520  0a 54 68 69 73 20 69 73  20 61 20 62 69 67 20 66  |.This is a big f|</span><br><span class="line">00000530  69 6c 65 0a 2a 2a 2a 65  6e 64 20 6f 66 20 66 69  |ile.***end of fi|</span><br><span class="line">00000540  6c 65 2a 2a 2a 0a 00 00  00 00 00 00 00 00 00 00  |le***...........|</span><br><span class="line">00000550  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00020004</span><br><span class="line">No threads ready or runnable, and no pending interrupts.</span><br><span class="line">Assuming the program completed.</span><br><span class="line">Machine halting!</span><br><span class="line"></span><br><span class="line">Ticks: total 244020, idle 241730, system 2290, user 0</span><br><span class="line">Disk I/O: reads 48, writes 28</span><br><span class="line">Console I/O: reads 0, writes 0</span><br><span class="line">Paging: faults 0</span><br><span class="line">Network I/O: packets received 0, sent 0</span><br><span class="line"></span><br><span class="line">Cleaning up...</span><br><span class="line">00000000  ab 89 67 45 80 00 00 00  01 00 00 00 02 00 00 00  |..gE............|</span><br><span class="line">00000010  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00000080  00 00 00 00 c8 00 00 00  02 00 00 00 03 00 00 00  |................|</span><br><span class="line">00000090  04 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">000000a0  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00000100  00 00 00 00 ff 0f 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">00000110  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00000180  00 00 00 00 01 00 00 00  05 00 00 00 6d 65 64 69  |............medi|</span><br><span class="line">00000190  75 6d 00 00 00 00 00 00  01 00 00 00 07 00 00 00  |um..............|</span><br><span class="line">000001a0  62 69 67 00 00 00 00 00  00 00 00 00 00 00 00 00  |big.............|</span><br><span class="line">000001b0  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00000280  00 00 00 00 80 00 00 00  01 00 00 00 06 00 00 00  |................|</span><br><span class="line">00000290  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00000300  00 00 00 00 54 68 69 73  20 69 73 20 61 20 6d 65  |....This is a me|</span><br><span class="line">00000310  64 69 75 6d 20 66 69 6c  65 0a 54 68 69 73 20 69  |dium file.This i|</span><br><span class="line">00000320  73 20 61 20 6d 65 64 69  75 6d 20 66 69 6c 65 0a  |s a medium file.|</span><br><span class="line">00000330  54 68 69 73 20 69 73 20  61 20 6d 65 64 69 75 6d  |This is a medium|</span><br><span class="line">00000340  20 66 69 6c 65 0a 54 68  69 73 20 69 73 20 61 20  | file.This is a |</span><br><span class="line">00000350  6d 65 64 69 75 6d 20 66  69 6c 65 0a 54 68 69 73  |medium file.This|</span><br><span class="line">00000360  20 69 73 20 61 20 6d 65  64 69 75 6d 20 66 69 6c  | is a medium fil|</span><br><span class="line">00000370  65 0a 2a 2a 2a 65 6e 64  20 6f 66 20 66 69 6c 65  |e.***end of file|</span><br><span class="line">00000380  2a 2a 2a 0a c2 01 00 00  04 00 00 00 08 00 00 00  |***.............|</span><br><span class="line">00000390  09 00 00 00 0a 00 00 00  0b 00 00 00 00 00 00 00  |................|</span><br><span class="line">000003a0  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00000400  00 00 00 00 54 68 69 73  20 69 73 20 61 20 62 69  |....This is a bi|</span><br><span class="line">00000410  67 20 66 69 6c 65 0a 54  68 69 73 20 69 73 20 61  |g file.This is a|</span><br><span class="line">00000420  20 62 69 67 20 66 69 6c  65 0a 54 68 69 73 20 69  | big file.This i|</span><br><span class="line">00000430  73 20 61 20 62 69 67 20  66 69 6c 65 0a 54 68 69  |s a big file.Thi|</span><br><span class="line">00000440  73 20 69 73 20 61 20 62  69 67 20 66 69 6c 65 0a  |s is a big file.|</span><br><span class="line">00000450  54 68 69 73 20 69 73 20  61 20 62 69 67 20 66 69  |This is a big fi|</span><br><span class="line">00000460  6c 65 0a 54 68 69 73 20  69 73 20 61 20 62 69 67  |le.This is a big|</span><br><span class="line">00000470  20 66 69 6c 65 0a 54 68  69 73 20 69 73 20 61 20  | file.This is a |</span><br><span class="line">00000480  62 69 67 20 66 69 6c 65  0a 54 68 69 73 20 69 73  |big file.This is|</span><br><span class="line">00000490  20 61 20 62 69 67 20 66  69 6c 65 0a 54 68 69 73  | a big file.This|</span><br><span class="line">000004a0  20 69 73 20 61 20 62 69  67 20 66 69 6c 65 0a 54  | is a big file.T|</span><br><span class="line">000004b0  68 69 73 20 69 73 20 61  20 62 69 67 20 66 69 6c  |his is a big fil|</span><br><span class="line">000004c0  65 0a 54 68 69 73 20 69  73 20 61 20 62 69 67 20  |e.This is a big |</span><br><span class="line">000004d0  66 69 6c 65 0a 54 68 69  73 20 69 73 20 61 20 62  |file.This is a b|</span><br><span class="line">000004e0  69 67 20 66 69 6c 65 0a  54 68 69 73 20 69 73 20  |ig file.This is |</span><br><span class="line">000004f0  61 20 62 69 67 20 66 69  6c 65 0a 54 68 69 73 20  |a big file.This |</span><br><span class="line">00000500  69 73 20 61 20 62 69 67  20 66 69 6c 65 0a 54 68  |is a big file.Th|</span><br><span class="line">00000510  69 73 20 69 73 20 61 20  62 69 67 20 66 69 6c 65  |is is a big file|</span><br><span class="line">00000520  0a 54 68 69 73 20 69 73  20 61 20 62 69 67 20 66  |.This is a big f|</span><br><span class="line">00000530  69 6c 65 0a 2a 2a 2a 65  6e 64 20 6f 66 20 66 69  |ile.***end of fi|</span><br><span class="line">00000540  6c 65 2a 2a 2a 0a 54 68  69 73 20 69 73 20 61 20  |le***.This is a |</span><br><span class="line">00000550  6d 65 64 69 75 6d 20 66  69 6c 65 0a 54 68 69 73  |medium file.This|</span><br><span class="line">00000560  20 69 73 20 61 20 6d 65  64 69 75 6d 20 66 69 6c  | is a medium fil|</span><br><span class="line">00000570  65 0a 54 68 69 73 20 69  73 20 61 20 6d 65 64 69  |e.This is a medi|</span><br><span class="line">00000580  75 6d 20 66 69 6c 65 0a  54 68 69 73 20 69 73 20  |um file.This is |</span><br><span class="line">00000590  61 20 6d 65 64 69 75 6d  20 66 69 6c 65 0a 54 68  |a medium file.Th|</span><br><span class="line">000005a0  69 73 20 69 73 20 61 20  6d 65 64 69 75 6d 20 66  |is is a medium f|</span><br><span class="line">000005b0  69 6c 65 0a 2a 2a 2a 65  6e 64 20 6f 66 20 66 69  |ile.***end of fi|</span><br><span class="line">000005c0  6c 65 2a 2a 2a 0a 00 00  00 00 00 00 00 00 00 00  |le***...........|</span><br><span class="line">000005d0  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00020004</span><br><span class="line">Bit map file header:</span><br><span class="line">FileHeader contents.  File size: 128.  File blocks:</span><br><span class="line">2 </span><br><span class="line">File contents:</span><br><span class="line">\ff\f\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0</span><br><span class="line">Directory file header:</span><br><span class="line">FileHeader contents.  File size: 200.  File blocks:</span><br><span class="line">3 4 </span><br><span class="line">File contents:</span><br><span class="line">\1\0\0\0\5\0\0\0medium\0\0\0\0\0\0\1\0\0\0\7\0\0\0big\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0</span><br><span class="line">\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0</span><br><span class="line">Bitmap set:</span><br><span class="line">0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, </span><br><span class="line">Directory contents:</span><br><span class="line">Name: medium, Sector: 5</span><br><span class="line">FileHeader contents.  File size: 128.  File blocks:</span><br><span class="line">6 </span><br><span class="line">File contents:</span><br><span class="line">This is a medium file\aThis is a medium file\aThis is a medium file\aThis is a medium file\aThis is a medium file\a***end of file***\a</span><br><span class="line">Name: big, Sector: 7</span><br><span class="line">FileHeader contents.  File size: 450.  File blocks:</span><br><span class="line">8 9 10 11 </span><br><span class="line">File contents:</span><br><span class="line">This is a big file\aThis is a big file\aThis is a big file\aThis is a big file\aThis is a big file\aThis is a big file\aThis is a big </span><br><span class="line">file\aThis is a big file\aThis is a big file\aThis is a big file\aThis is a big file\aThis is a big file\aThis is a big file\aThis is a</span><br><span class="line"> big file\aThis is a big file\aThis is a big file\a***end of file***\aThis is a medium file\aThis is a medium file\aThis is a medium f</span><br><span class="line">ile\aThis is a medium file\aThis is a medium file\a***end of file***\a</span><br><span class="line"></span><br><span class="line">No threads ready or runnable, and no pending interrupts.</span><br><span class="line">Assuming the program completed.</span><br><span class="line">Machine halting!</span><br><span class="line"></span><br><span class="line">Ticks: total 9020, idle 8500, system 520, user 0</span><br><span class="line">Disk I/O: reads 17, writes 0</span><br><span class="line">Console I/O: reads 0, writes 0</span><br><span class="line">Paging: faults 0</span><br><span class="line">Network I/O: packets received 0, sent 0</span><br><span class="line"></span><br><span class="line">Cleaning up...</span><br></pre></td></tr></table></figure>
+<p>Also fine.</p>
+<h3 id="half-nachos-append"><a href="#half-nachos-append" class="headerlink" title="half-nachos-append"></a><code>half-nachos-append</code></h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">root@iZbp1iqmvkj69470qn1vpvZ:~&#x2F;OS&#x2F;lab5# .&#x2F;004.sh</span><br><span class="line">No threads ready or runnable, and no pending interrupts.</span><br><span class="line">.....................................</span><br><span class="line">Cleaning up...</span><br><span class="line">No threads ready or runnable, and no pending interrupts.</span><br><span class="line">Assuming the program completed.</span><br><span class="line">Machine halting!</span><br><span class="line"></span><br><span class="line">Ticks: total 597520, idle 595020, system 2500, user 0</span><br><span class="line">Disk I&#x2F;O: reads 44, writes 39</span><br><span class="line">Console I&#x2F;O: reads 0, writes 0</span><br><span class="line">Paging: faults 0</span><br><span class="line">Network I&#x2F;O: packets received 0, sent 0</span><br><span class="line"></span><br><span class="line">Cleaning up...</span><br><span class="line">00000000  ab 89 67 45 80 00 00 00  01 00 00 00 02 00 00 00  |..gE............|</span><br><span class="line">00000010  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00000080  00 00 00 00 c8 00 00 00  02 00 00 00 03 00 00 00  |................|</span><br><span class="line">00000090  04 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">000000a0  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00000100  00 00 00 00 ff 07 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">00000110  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00000180  00 00 00 00 01 00 00 00  05 00 00 00 6d 65 64 69  |............medi|</span><br><span class="line">00000190  75 6d 00 00 00 00 00 00  01 00 00 00 07 00 00 00  |um..............|</span><br><span class="line">000001a0  62 69 67 00 00 00 00 00  00 00 00 00 00 00 00 00  |big.............|</span><br><span class="line">000001b0  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00000280  00 00 00 00 80 00 00 00  01 00 00 00 06 00 00 00  |................|</span><br><span class="line">00000290  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00000300  00 00 00 00 54 68 69 73  20 69 73 20 61 20 6d 65  |....This is a me|</span><br><span class="line">00000310  64 69 75 6d 20 66 69 6c  65 0a 54 68 69 73 20 69  |dium file.This i|</span><br><span class="line">00000320  73 20 61 20 6d 65 64 69  75 6d 20 66 69 6c 65 0a  |s a medium file.|</span><br><span class="line">00000330  54 68 69 73 20 69 73 20  61 20 6d 65 64 69 75 6d  |This is a medium|</span><br><span class="line">00000340  20 66 69 6c 65 0a 54 68  69 73 20 69 73 20 61 20  | file.This is a |</span><br><span class="line">00000350  6d 65 64 69 75 6d 20 66  69 6c 65 0a 54 68 69 73  |medium file.This|</span><br><span class="line">00000360  20 69 73 20 61 20 6d 65  64 69 75 6d 20 66 69 6c  | is a medium fil|</span><br><span class="line">00000370  65 0a 2a 2a 2a 65 6e 64  20 6f 66 20 66 69 6c 65  |e.***end of file|</span><br><span class="line">00000380  2a 2a 2a 0a 42 01 00 00  03 00 00 00 08 00 00 00  |***.B...........|</span><br><span class="line">00000390  09 00 00 00 0a 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">000003a0  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00000400  00 00 00 00 54 68 69 73  20 69 73 20 61 20 62 69  |....This is a bi|</span><br><span class="line">00000410  67 20 66 69 6c 65 0a 54  68 69 73 20 69 73 20 61  |g file.This is a|</span><br><span class="line">00000420  20 62 69 67 20 66 69 6c  65 0a 54 68 69 73 20 69  | big file.This i|</span><br><span class="line">00000430  73 20 61 20 62 69 67 20  66 69 6c 65 0a 54 68 69  |s a big file.Thi|</span><br><span class="line">00000440  73 20 69 73 20 61 20 62  69 67 20 66 69 6c 65 0a  |s is a big file.|</span><br><span class="line">00000450  54 68 69 73 20 69 73 20  61 20 62 69 67 20 66 69  |This is a big fi|</span><br><span class="line">00000460  6c 65 0a 54 68 69 73 20  69 73 20 61 20 62 69 67  |le.This is a big|</span><br><span class="line">00000470  20 66 69 6c 65 0a 54 68  69 73 20 69 73 20 61 20  | file.This is a |</span><br><span class="line">00000480  62 69 67 20 66 69 6c 65  0a 54 68 69 73 20 69 73  |big file.This is|</span><br><span class="line">00000490  20 61 20 62 69 67 20 66  69 6c 65 0a 54 68 69 73  | a big file.This|</span><br><span class="line">000004a0  20 69 73 20 61 20 62 69  67 20 66 69 6c 65 0a 54  | is a big file.T|</span><br><span class="line">000004b0  68 69 73 20 69 73 20 61  20 62 69 67 20 66 69 6c  |his is a big fil|</span><br><span class="line">000004c0  65 0a 54 68 69 73 20 69  73 20 61 20 62 69 67 20  |e.This is a big |</span><br><span class="line">000004d0  66 69 6c 65 0a 54 68 69  73 20 69 73 20 61 20 62  |file.This is a b|</span><br><span class="line">000004e0  69 67 20 66 69 6c 65 0a  54 68 69 73 20 69 73 20  |ig file.This is |</span><br><span class="line">000004f0  61 20 62 69 67 20 66 69  6c 65 0a 54 68 69 73 20  |a big file.This |</span><br><span class="line">00000500  69 73 20 61 20 62 69 67  20 66 69 6c 65 0a 54 68  |is a big file.Th|</span><br><span class="line">00000510  69 73 20 69 73 20 61 20  62 69 67 20 66 69 6c 65  |is is a big file|</span><br><span class="line">00000520  0a 54 68 69 73 20 69 73  20 61 20 62 69 67 20 66  |.This is a big f|</span><br><span class="line">00000530  69 6c 65 0a 2a 2a 2a 65  6e 64 20 6f 66 20 66 69  |ile.***end of fi|</span><br><span class="line">00000540  6c 65 2a 2a 2a 0a 00 00  00 00 00 00 00 00 00 00  |le***...........|</span><br><span class="line">00000550  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00020004</span><br><span class="line">No threads ready or runnable, and no pending interrupts.</span><br><span class="line">Assuming the program completed.</span><br><span class="line">Machine halting!</span><br><span class="line"></span><br><span class="line">Ticks: total 244020, idle 242510, system 1510, user 0</span><br><span class="line">Disk I&#x2F;O: reads 35, writes 15</span><br><span class="line">Console I&#x2F;O: reads 0, writes 0</span><br><span class="line">Paging: faults 0</span><br><span class="line">Network I&#x2F;O: packets received 0, sent 0</span><br><span class="line"></span><br><span class="line">Cleaning up...</span><br><span class="line">00000000  ab 89 67 45 80 00 00 00  01 00 00 00 02 00 00 00  |..gE............|</span><br><span class="line">00000010  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00000080  00 00 00 00 c8 00 00 00  02 00 00 00 03 00 00 00  |................|</span><br><span class="line">00000090  04 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">000000a0  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00000100  00 00 00 00 ff 07 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">00000110  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00000180  00 00 00 00 01 00 00 00  05 00 00 00 6d 65 64 69  |............medi|</span><br><span class="line">00000190  75 6d 00 00 00 00 00 00  01 00 00 00 07 00 00 00  |um..............|</span><br><span class="line">000001a0  62 69 67 00 00 00 00 00  00 00 00 00 00 00 00 00  |big.............|</span><br><span class="line">000001b0  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00000280  00 00 00 00 80 00 00 00  01 00 00 00 06 00 00 00  |................|</span><br><span class="line">00000290  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00000300  00 00 00 00 54 68 69 73  20 69 73 20 61 20 6d 65  |....This is a me|</span><br><span class="line">00000310  64 69 75 6d 20 66 69 6c  65 0a 54 68 69 73 20 69  |dium file.This i|</span><br><span class="line">00000320  73 20 61 20 6d 65 64 69  75 6d 20 66 69 6c 65 0a  |s a medium file.|</span><br><span class="line">00000330  54 68 69 73 20 69 73 20  61 20 6d 65 64 69 75 6d  |This is a medium|</span><br><span class="line">00000340  20 66 69 6c 65 0a 54 68  69 73 20 69 73 20 61 20  | file.This is a |</span><br><span class="line">00000350  6d 65 64 69 75 6d 20 66  69 6c 65 0a 54 68 69 73  |medium file.This|</span><br><span class="line">00000360  20 69 73 20 61 20 6d 65  64 69 75 6d 20 66 69 6c  | is a medium fil|</span><br><span class="line">00000370  65 0a 2a 2a 2a 65 6e 64  20 6f 66 20 66 69 6c 65  |e.***end of file|</span><br><span class="line">00000380  2a 2a 2a 0a 42 01 00 00  03 00 00 00 08 00 00 00  |***.B...........|</span><br><span class="line">00000390  09 00 00 00 0a 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">000003a0  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00000400  00 00 00 00 54 68 69 73  20 69 73 20 61 20 62 69  |....This is a bi|</span><br><span class="line">00000410  67 20 66 69 6c 65 0a 54  68 69 73 20 69 73 20 61  |g file.This is a|</span><br><span class="line">00000420  20 62 69 67 20 66 69 6c  65 0a 54 68 69 73 20 69  | big file.This i|</span><br><span class="line">00000430  73 20 61 20 62 69 67 20  66 69 6c 65 0a 54 68 69  |s a big file.Thi|</span><br><span class="line">00000440  73 20 69 73 20 61 20 62  69 67 20 66 69 6c 65 0a  |s is a big file.|</span><br><span class="line">00000450  54 68 69 73 20 69 73 20  61 20 62 69 67 20 66 69  |This is a big fi|</span><br><span class="line">00000460  6c 65 0a 54 68 69 73 20  69 73 20 61 20 62 69 67  |le.This is a big|</span><br><span class="line">00000470  20 66 69 6c 65 0a 54 68  69 73 20 69 73 20 61 20  | file.This is a |</span><br><span class="line">00000480  62 69 67 20 66 69 6c 65  0a 54 68 69 73 20 69 73  |big file.This is|</span><br><span class="line">00000490  20 61 20 62 69 67 20 66  69 6c 65 0a 54 68 69 73  | a big file.This|</span><br><span class="line">000004a0  20 69 73 20 61 54 68 69  73 20 69 73 20 61 20 6d  | is aThis is a m|</span><br><span class="line">000004b0  65 64 69 75 6d 20 66 69  6c 65 0a 54 68 69 73 20  |edium file.This |</span><br><span class="line">000004c0  69 73 20 61 20 6d 65 64  69 75 6d 20 66 69 6c 65  |is a medium file|</span><br><span class="line">000004d0  0a 54 68 69 73 20 69 73  20 61 20 6d 65 64 69 75  |.This is a mediu|</span><br><span class="line">000004e0  6d 20 66 69 6c 65 0a 54  68 69 73 20 69 73 20 61  |m file.This is a|</span><br><span class="line">000004f0  20 6d 65 64 69 75 6d 20  66 69 6c 65 0a 54 68 69  | medium file.Thi|</span><br><span class="line">00000500  73 20 69 73 20 61 20 6d  65 64 69 75 6d 20 66 69  |s is a medium fi|</span><br><span class="line">00000510  6c 65 0a 2a 2a 2a 65 6e  64 20 6f 66 20 66 69 6c  |le.***end of fil|</span><br><span class="line">00000520  65 2a 2a 2a 0a 20 69 73  20 61 20 62 69 67 20 66  |e***. is a big f|</span><br><span class="line">00000530  69 6c 65 0a 2a 2a 2a 65  6e 64 20 6f 66 20 66 69  |ile.***end of fi|</span><br><span class="line">00000540  6c 65 2a 2a 2a 0a 54 68  69 73 20 69 73 20 61 20  |le***.This is a |</span><br><span class="line">00000550  6d 65 64 69 75 6d 20 66  69 6c 65 0a 54 68 69 73  |medium file.This|</span><br><span class="line">00000560  20 69 73 20 61 20 6d 65  64 69 75 6d 20 66 69 6c  | is a medium fil|</span><br><span class="line">00000570  65 0a 2a 2a 2a 65 6e 64  20 6f 66 20 66 69 6c 65  |e.***end of file|</span><br><span class="line">00000580  2a 2a 2a 0a 00 00 00 00  00 00 00 00 00 00 00 00  |***.............|</span><br><span class="line">00000590  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">*</span><br><span class="line">00020004</span><br><span class="line">Bit map file header:</span><br><span class="line">FileHeader contents.  File size: 128.  File blocks:</span><br><span class="line">2 </span><br><span class="line">File contents:</span><br><span class="line">\ff\7\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0</span><br><span class="line">Directory file header:</span><br><span class="line">FileHeader contents.  File size: 200.  File blocks:</span><br><span class="line">3 4 </span><br><span class="line">File contents:</span><br><span class="line">\1\0\0\0\5\0\0\0medium\0\0\0\0\0\0\1\0\0\0\7\0\0\0big\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0</span><br><span class="line">\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0</span><br><span class="line">Bitmap set:</span><br><span class="line">0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, </span><br><span class="line">Directory contents:</span><br><span class="line">Name: medium, Sector: 5</span><br><span class="line">FileHeader contents.  File size: 128.  File blocks:</span><br><span class="line">6 </span><br><span class="line">File contents:</span><br><span class="line">This is a medium file\aThis is a medium file\aThis is a medium file\aThis is a medium file\aThis is a medium file\a***end of file***\a</span><br><span class="line">Name: big, Sector: 7</span><br><span class="line">FileHeader contents.  File size: 322.  File blocks:</span><br><span class="line">8 9 10 </span><br><span class="line">File contents:</span><br><span class="line">This is a big file\aThis is a big file\aThis is a big file\aThis is a big file\aThis is a big file\aThis is a big file\aThis is a big </span><br><span class="line">file\aThis is a big file\aThis is aThis is a medium file\aThis is a medium file\aThis is a medium file\aThis is a medium file\aThis is</span><br><span class="line"> a medium file\a***end of file***\a is a big file\a***end of file***\a</span><br><span class="line"></span><br><span class="line">No threads ready or runnable, and no pending interrupts.</span><br><span class="line">Assuming the program completed.</span><br><span class="line">Machine halting!</span><br><span class="line"></span><br><span class="line">Ticks: total 8490, idle 8000, system 490, user 0</span><br><span class="line">Disk I&#x2F;O: reads 16, writes 0</span><br><span class="line">Console I&#x2F;O: reads 0, writes 0</span><br><span class="line">Paging: faults 0</span><br><span class="line">Network I&#x2F;O: packets received 0, sent 0</span><br><span class="line"></span><br><span class="line">Cleaning up...</span><br></pre></td></tr></table></figure>
+<p>Fine.</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Linux/" rel="tag"><i class="fa fa-tag"></i> Linux</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/04/16/A-simple-file-system-in-Nachos/" rel="prev" title="A simple file system in Nachos">
+      <i class="fa fa-chevron-left"></i> A simple file system in Nachos
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/05/02/%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90%E5%99%A8/" rel="next" title="语法分析器">
+      语法分析器 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Preparation"><span class="nav-number">1.</span> <span class="nav-text">Preparation</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Makefile"><span class="nav-number">1.1.</span> <span class="nav-text">Makefile</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#main-cc"><span class="nav-number">1.2.</span> <span class="nav-text">main.cc</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Read-and-modify-Codes"><span class="nav-number">2.</span> <span class="nav-text">Read and modify Codes</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#fstest-cc"><span class="nav-number">2.1.</span> <span class="nav-text">fstest.cc</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Write-amp-WriteAt"><span class="nav-number">2.2.</span> <span class="nav-text">Write() &amp; WriteAt()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#filehdr-cc"><span class="nav-number">2.3.</span> <span class="nav-text">filehdr.cc</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#openfile-cc"><span class="nav-number">2.4.</span> <span class="nav-text">openfile.cc</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Run-and-Test"><span class="nav-number">3.</span> <span class="nav-text">Run and Test</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#append"><span class="nav-number">3.1.</span> <span class="nav-text">append</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#half-append"><span class="nav-number">3.2.</span> <span class="nav-text">half-append</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nachos-append"><span class="nav-number">3.3.</span> <span class="nav-text">nachos-append</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#half-nachos-append"><span class="nav-number">3.4.</span> <span class="nav-text">half-nachos-append</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="K"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">K</p>
+  <div class="site-description" itemprop="description">You know Knowhere is nowhere, but KnowWhere.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">89</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">45</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:colivener@outlook.com" title="E-Mail → mailto:colivener@outlook.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+
+
+    <div class="links-of-blogroll motion-element links-of-blogroll-undefined">
+      <div class="links-of-blogroll-title">
+        <!-- modify icon to fire by szw -->
+        <i class="fa fa-history fa-" aria-hidden="true"></i>
+        
+      </div>
+      <ul class="links-of-blogroll-list">
+        
+        
+          <li>
+            <a href="/" title="" target="_blank"></a>
+          </li>
+        
+          <li>
+            <a href="/" title="" target="_blank"></a>
+          </li>
+        
+          <li>
+            <a href="/" title="" target="_blank"></a>
+          </li>
+        
+          <li>
+            <a href="/" title="" target="_blank"></a>
+          </li>
+        
+          <li>
+            <a href="/" title="" target="_blank"></a>
+          </li>
+        
+      </ul>
+    </div>
+
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">K</span>
+</div>
+  <div class="addthis_inline_share_toolbox">
+    <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5e9ea4a022889786" async="async"></script>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'nydWvj5q5w14PIVolKD4JOtS-MdYXbMMI',
+      appKey     : '7vFccLCEXIsFn1VxvpyQAibm',
+      placeholder: "knowhere to know here",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

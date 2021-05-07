@@ -122,7 +122,7 @@
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">44</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">45</span></a>
 
   </li>
         <li class="menu-item menu-item-categories">
@@ -132,7 +132,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">84</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">89</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -185,6 +185,473 @@
 
           <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="co10.github.io/2021/03/13/Using-FTP-in-Linux/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="K">
+      <meta itemprop="description" content="You know Knowhere is nowhere, but KnowWhere.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="荒芜知地">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/03/13/Using-FTP-in-Linux/" class="post-title-link" itemprop="url">Using FTP in Linux</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-03-13 13:33:18" itemprop="dateCreated datePublished" datetime="2021-03-13T13:33:18+08:00">2021-03-13</time>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/03/13/Using-FTP-in-Linux/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/03/13/Using-FTP-in-Linux/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Using-FTP-in-VPS"><a href="#Using-FTP-in-VPS" class="headerlink" title="Using FTP in VPS"></a>Using FTP in VPS</h1><h2 id="Install-vsftpd"><a href="#Install-vsftpd" class="headerlink" title="Install vsftpd"></a>Install vsftpd</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install vsftpd</span><br></pre></td></tr></table></figure>
+<p>check vsftpd version</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">vsftpd -v</span><br></pre></td></tr></table></figure>
+<p>Change FTP password</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo passwd ftp</span><br></pre></td></tr></table></figure>
+<h2 id="Configuration"><a href="#Configuration" class="headerlink" title="Configuration"></a>Configuration</h2><p>The configuration file locates in <code>/etc/vsftpd.conf</code> . Change Below: </p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">listen=YES</span><br><span class="line">write_enable=YES</span><br><span class="line">local_umask=<span class="number">022</span></span><br></pre></td></tr></table></figure>
+<p>Go to file <code>/etc/pam.d/vsftpd</code> , change below: </p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">auth    required        pam_shells.so</span></span><br></pre></td></tr></table></figure>
+<h2 id="Install-WinSCP"><a href="#Install-WinSCP" class="headerlink" title="Install WinSCP"></a>Install WinSCP</h2><p>In Windows, install WinSCP .</p>
+<p>Choose SFTP. Login to VPS.</p>
+<p>Done. Enjoy.</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="co10.github.io/2021/03/05/Using-Nachos-in-Linux/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="K">
+      <meta itemprop="description" content="You know Knowhere is nowhere, but KnowWhere.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="荒芜知地">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/03/05/Using-Nachos-in-Linux/" class="post-title-link" itemprop="url">Using Nachos in Linux</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-03-05 10:08:37" itemprop="dateCreated datePublished" datetime="2021-03-05T10:08:37+08:00">2021-03-05</time>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/03/05/Using-Nachos-in-Linux/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/03/05/Using-Nachos-in-Linux/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="Installation"><a href="#Installation" class="headerlink" title="Installation"></a>Installation</h2><p>Make sure the Linux is 32-bit!</p>
+<p>Go to <a href="https://homes.cs.washington.edu/~tom/nachos/" target="_blank" rel="noopener">https://homes.cs.washington.edu/~tom/nachos/</a>, download <code>nachos-4.0.tar</code>, and download <code>mips-x86.linux-xgcc</code> .</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">wget http://www.cs.washington.edu/homes/tom/nachos/nachos-4.0.tar</span><br><span class="line">wget https://inst.eecs.berkeley.edu//~cs162/fa13/Nachos/xgcc/mips-x86_64.linux-xgcc.tar.gz</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/03/05/Using-Nachos-in-Linux/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="co10.github.io/2021/03/05/Linux-Commands/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="K">
+      <meta itemprop="description" content="You know Knowhere is nowhere, but KnowWhere.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="荒芜知地">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/03/05/Linux-Commands/" class="post-title-link" itemprop="url">Linux Commands</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-03-05 08:45:19" itemprop="dateCreated datePublished" datetime="2021-03-05T08:45:19+08:00">2021-03-05</time>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/03/05/Linux-Commands/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/03/05/Linux-Commands/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="File-Commands"><a href="#File-Commands" class="headerlink" title="File Commands"></a>File Commands</h2><h3 id="pwd"><a href="#pwd" class="headerlink" title="pwd"></a><code>pwd</code></h3><p><strong>P</strong>rint <strong>W</strong>orking <strong>D</strong>irectory. Find out the <em>path</em> of the current working directory.</p>
+<h3 id="cd"><a href="#cd" class="headerlink" title="cd"></a><code>cd</code></h3><p><strong>C</strong>hange <strong>D</strong>irectory. Change the current working directory</p>
+<ul>
+<li><strong>cd <em>somewhere</em></strong> to go to that directory.</li>
+<li><strong>cd ..</strong> (with two dots) to move one directory up.</li>
+<li><strong>cd</strong> to go straight to the home folder.</li>
+<li><strong>cd-</strong> (with a hyphen) to move to your previous directory.</li>
+</ul>
+<h3 id="ls"><a href="#ls" class="headerlink" title="ls"></a><code>ls</code></h3><p>List. View the contents of a directory.</p>
+<ul>
+<li><strong>ls</strong> will list current directory.</li>
+<li><strong>ls <em>somewhere</em></strong> will list the directory named.</li>
+<li><strong>ls -R</strong> will list all the files in the sub-directories as well.</li>
+<li><strong>ls -a</strong> will show the hidden files.</li>
+<li><strong>ls -al</strong> will list the files and directories with detailed information like the permissions, size, owner, etc.</li>
+</ul>
+<h3 id="cat"><a href="#cat" class="headerlink" title="cat"></a><code>cat</code></h3><p>Concatenate. List the contents of a file on the standard output (<code>stdout</code>).</p>
+<ul>
+<li><strong>cat filename (or filename1 filename2 filename3 …)</strong> will show content of given filename(s).</li>
+<li><strong>cat -n filename</strong> will show contents with line numbers.</li>
+<li><strong>cat &gt; filename</strong> creates a new file</li>
+<li><strong>cat filename1 filename2 &gt; filename3</strong> joins two files (1 and 2) and stores the output of them in a new file (3)</li>
+<li>to convert a file to upper or lower case use, <strong>cat filename | tr a-z A-Z &gt; output.txt</strong></li>
+</ul>
+<h3 id="cp"><a href="#cp" class="headerlink" title="cp"></a><code>cp</code></h3><p>Copy. <strong>cp <em>filename</em> <em>somewhere</em></strong> will copy file to the directory.</p>
+<h3 id="mv"><a href="#mv" class="headerlink" title="mv"></a><code>mv</code></h3><p>Move files, and also can be used to rename files. </p>
+<ul>
+<li><strong>mv <em>filename</em> <em>somewhere</em></strong> will move the file to the directory.</li>
+<li><strong>mv <em>old_filename</em> <em>new_filename</em></strong> will rename the file with a new name.</li>
+</ul>
+<h3 id="mkdir"><a href="#mkdir" class="headerlink" title="mkdir"></a><code>mkdir</code></h3><p>Make Directory. </p>
+<ul>
+<li><strong>mkdir <em>somewhere</em></strong></li>
+<li><strong>mkdir <em>somewhere1/somewhere2/…/destination</em></strong></li>
+<li><strong>mkdir <em>somewhere1/destination/somewhere2</em></strong></li>
+</ul>
+<h3 id="rmdir"><a href="#rmdir" class="headerlink" title="rmdir"></a><code>rmdir</code></h3><p>Remove Directory. Only allows you to delete empty directories.</p>
+<h3 id="rm"><a href="#rm" class="headerlink" title="rm"></a><code>rm</code></h3><p>Remove Files. <code>rm -r</code> alternative to <code>rmdir</code>. </p>
+<h3 id="touch"><a href="#touch" class="headerlink" title="touch"></a><code>touch</code></h3><p>Create a blank new file.</p>
+<h3 id="locate"><a href="#locate" class="headerlink" title="locate"></a><code>locate</code></h3><p>Locate a file. Use <code>locate -i</code> to be case-insensitive. <code>locate A*B</code> search files contain <code>A</code> and <code>B</code>.</p>
+<h3 id="find"><a href="#find" class="headerlink" title="find"></a><code>find</code></h3><p>Similar to locate. But you need to give it a directory.</p>
+<h3 id="grep"><a href="#grep" class="headerlink" title="grep"></a><code>grep</code></h3><p>Search through all the text in a given file.</p>
+<h2 id="Higher"><a href="#Higher" class="headerlink" title="Higher"></a>Higher</h2><h3 id="sudo"><a href="#sudo" class="headerlink" title="sudo"></a><code>sudo</code></h3><p><strong>S</strong>uper<strong>U</strong>ser <strong>Do</strong>.</p>
+<h3 id="df"><a href="#df" class="headerlink" title="df"></a><code>df</code></h3><p>Get a report on the system’s disk space usage, shown in percentage and KBs.</p>
+<p><code>df -m</code> to show in megabytes.</p>
+<h3 id="du"><a href="#du" class="headerlink" title="du"></a><code>du</code></h3><p><strong>D</strong>isk <strong>U</strong>sage. type <code>-h</code> to get human readable statics.</p>
+<h3 id="head"><a href="#head" class="headerlink" title="head"></a><code>head</code></h3><p>View the first lines of any text file.</p>
+<p><strong>head -n somenumber filename.txt</strong>. View fist somenumber lines of file.</p>
+<h3 id="tail"><a href="#tail" class="headerlink" title="tail"></a><code>tail</code></h3><p>View last lines.</p>
+<h3 id="diff"><a href="#diff" class="headerlink" title="diff"></a><code>diff</code></h3><p>Difference. Compares the contents of two files <em>line by line</em>. After analyzing the files, it will <em>output the lines that do not match</em>.</p>
+<h3 id="tar"><a href="#tar" class="headerlink" title="tar"></a><code>tar</code></h3><p>Archive multiple files into a <strong>tarball</strong>.</p>
+<h3 id="chmod"><a href="#chmod" class="headerlink" title="chmod"></a><code>chmod</code></h3><p>Change the read, write, and execute permissions of files and directories.</p>
+<h3 id="chown"><a href="#chown" class="headerlink" title="chown"></a><code>chown</code></h3><p>Change or transfer the ownership of a file to the specified username.</p>
+<h3 id="jobs"><a href="#jobs" class="headerlink" title="jobs"></a><code>jobs</code></h3><p>Display all current jobs along with their statuses.</p>
+<h3 id="Kill"><a href="#Kill" class="headerlink" title="Kill"></a><code>Kill</code></h3><p>Send a certain signal to an app and instructs the app to terminate itself. Kill by its PID. </p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.hostinger.com/tutorials/linux-commands" target="_blank" rel="noopener">https://www.hostinger.com/tutorials/linux-commands</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="co10.github.io/2020/12/11/Sparkclouds/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="K">
+      <meta itemprop="description" content="You know Knowhere is nowhere, but KnowWhere.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="荒芜知地">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/11/Sparkclouds/" class="post-title-link" itemprop="url">Sparkclouds</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-11 15:52:23" itemprop="dateCreated datePublished" datetime="2020-12-11T15:52:23+08:00">2020-12-11</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Visualization/" itemprop="url" rel="index"><span itemprop="name">Visualization</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/12/11/Sparkclouds/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/12/11/Sparkclouds/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Sparkclouds"><a href="#Sparkclouds" class="headerlink" title="Sparkclouds"></a>Sparkclouds</h1>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/12/11/Sparkclouds/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="co10.github.io/2020/11/20/Force-Directed-Graph-Layout/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="K">
+      <meta itemprop="description" content="You know Knowhere is nowhere, but KnowWhere.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="荒芜知地">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/11/20/Force-Directed-Graph-Layout/" class="post-title-link" itemprop="url">Force Directed Graph Layout</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-11-20 15:30:48" itemprop="dateCreated datePublished" datetime="2020-11-20T15:30:48+08:00">2020-11-20</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Visualization/" itemprop="url" rel="index"><span itemprop="name">Visualization</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/11/20/Force-Directed-Graph-Layout/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/11/20/Force-Directed-Graph-Layout/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Force-Directed-Graph-Layout"><a href="#Force-Directed-Graph-Layout" class="headerlink" title="Force Directed Graph Layout"></a>Force Directed Graph Layout</h1>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/11/20/Force-Directed-Graph-Layout/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -625,450 +1092,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="co10.github.io/2020/10/07/Histogram/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="K">
-      <meta itemprop="description" content="You know Knowhere is nowhere, but KnowWhere.">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="荒芜知地">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/10/07/Histogram/" class="post-title-link" itemprop="url">Histogram</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-10-07 15:08:14" itemprop="dateCreated datePublished" datetime="2020-10-07T15:08:14+08:00">2020-10-07</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Visualization/" itemprop="url" rel="index"><span itemprop="name">Visualization</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2020/10/07/Histogram/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/10/07/Histogram/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Histogram"><a href="#Histogram" class="headerlink" title="Histogram"></a>Histogram</h1>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/10/07/Histogram/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="co10.github.io/2020/09/25/Grouped-Bar/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="K">
-      <meta itemprop="description" content="You know Knowhere is nowhere, but KnowWhere.">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="荒芜知地">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/09/25/Grouped-Bar/" class="post-title-link" itemprop="url">Grouped Bar</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-09-25 15:05:54" itemprop="dateCreated datePublished" datetime="2020-09-25T15:05:54+08:00">2020-09-25</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Visualization/" itemprop="url" rel="index"><span itemprop="name">Visualization</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2020/09/25/Grouped-Bar/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/09/25/Grouped-Bar/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p>不同地区、不同季度销售量。</p>
-</blockquote>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/09/25/Grouped-Bar/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="co10.github.io/2020/09/18/stacked-bar/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="K">
-      <meta itemprop="description" content="You know Knowhere is nowhere, but KnowWhere.">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="荒芜知地">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/09/18/stacked-bar/" class="post-title-link" itemprop="url">Stacked Bar</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-09-18 14:28:10" itemprop="dateCreated datePublished" datetime="2020-09-18T14:28:10+08:00">2020-09-18</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Visualization/" itemprop="url" rel="index"><span itemprop="name">Visualization</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2020/09/18/stacked-bar/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/09/18/stacked-bar/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p>不同发色、不同眼睛颜色学生数量。</p>
-</blockquote>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/09/18/stacked-bar/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="co10.github.io/2020/09/17/GL-glut-h/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="K">
-      <meta itemprop="description" content="You know Knowhere is nowhere, but KnowWhere.">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="荒芜知地">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/09/17/GL-glut-h/" class="post-title-link" itemprop="url">GL/glut.h</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-09-17 08:19:14" itemprop="dateCreated datePublished" datetime="2020-09-17T08:19:14+08:00">2020-09-17</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/CG/" itemprop="url" rel="index"><span itemprop="name">CG</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2020/09/17/GL-glut-h/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/09/17/GL-glut-h/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Functions"><a href="#Functions" class="headerlink" title="Functions"></a>Functions</h1>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/09/17/GL-glut-h/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="co10.github.io/2020/09/16/Setup-OpenGL-with-Visual-Studio-2019/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="K">
-      <meta itemprop="description" content="You know Knowhere is nowhere, but KnowWhere.">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="荒芜知地">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/09/16/Setup-OpenGL-with-Visual-Studio-2019/" class="post-title-link" itemprop="url">Setup OpenGL with Visual Studio 2019</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-09-16 22:20:30" itemprop="dateCreated datePublished" datetime="2020-09-16T22:20:30+08:00">2020-09-16</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/CG/" itemprop="url" rel="index"><span itemprop="name">CG</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2020/09/16/Setup-OpenGL-with-Visual-Studio-2019/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/09/16/Setup-OpenGL-with-Visual-Studio-2019/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Setup-OpenGL-with-Visual-Studio-2019"><a href="#Setup-OpenGL-with-Visual-Studio-2019" class="headerlink" title="Setup OpenGL with Visual Studio 2019"></a>Setup OpenGL with Visual Studio 2019</h1>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/09/16/Setup-OpenGL-with-Visual-Studio-2019/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1140,7 +1163,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">84</span>
+          <span class="site-state-item-count">89</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1153,7 +1176,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">44</span>
+        <span class="site-state-item-count">45</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"co10.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="PreparationBefore I begin lab3, I should read some codes.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Sync in Nachos">
+<meta property="og:url" content="co10.github.io/2021/04/06/Sync-in-Nachos/index.html">
+<meta property="og:site_name" content="荒芜知地">
+<meta property="og:description" content="PreparationBefore I begin lab3, I should read some codes.">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2021/04/08/uo1fSeTORaphFGr.png">
+<meta property="article:published_time" content="2021-04-06T00:17:16.000Z">
+<meta property="article:modified_time" content="2021-04-11T11:38:13.075Z">
+<meta property="article:author" content="K">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/04/08/uo1fSeTORaphFGr.png">
+
+<link rel="canonical" href="co10.github.io/2021/04/06/Sync-in-Nachos/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Sync in Nachos | 荒芜知地</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="荒芜知地" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">荒芜知地</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Knowhere</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">45</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">89</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="co10.github.io/2021/04/06/Sync-in-Nachos/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="K">
+      <meta itemprop="description" content="You know Knowhere is nowhere, but KnowWhere.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="荒芜知地">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Sync in Nachos
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-04-06 08:17:16" itemprop="dateCreated datePublished" datetime="2021-04-06T08:17:16+08:00">2021-04-06</time>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/04/06/Sync-in-Nachos/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/04/06/Sync-in-Nachos/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="Preparation"><a href="#Preparation" class="headerlink" title="Preparation"></a>Preparation</h2><p>Before I begin <code>lab3</code>, I should read some codes.</p>
+<a id="more"></a>
+<h3 id="synch-cc-in-threads"><a href="#synch-cc-in-threads" class="headerlink" title="synch.cc in threads"></a><code>synch.cc</code> in <code>threads</code></h3><blockquote>
+<p>Three kinds of synchronization routines are defined here: semaphores, locks and condition variables (<em>the implementation of the last two are left to the reader</em>).</p>
+</blockquote>
+<h4 id="Semaphore"><a href="#Semaphore" class="headerlink" title="Semaphore"></a>Semaphore</h4><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">Semaphore::Semaphore(<span class="keyword">char</span>* debugName, <span class="keyword">int</span> initialValue) &#123;</span><br><span class="line">    name = debugName;</span><br><span class="line">    value = initialValue;</span><br><span class="line">    <span class="built_in">queue</span> = <span class="keyword">new</span> List;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Semaphore::P</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    IntStatus oldLevel = interrupt-&gt;SetLevel(IntOff);	<span class="comment">// disable interrupts</span></span><br><span class="line">    <span class="keyword">while</span> (value == <span class="number">0</span>) &#123; 			<span class="comment">// semaphore not available</span></span><br><span class="line">		<span class="built_in">queue</span>-&gt;Append((<span class="keyword">void</span> *)currentThread);	<span class="comment">// so go to sleep</span></span><br><span class="line">		currentThread-&gt;Sleep();</span><br><span class="line">    &#125; </span><br><span class="line">    value--; 					<span class="comment">// semaphore available, consume its value</span></span><br><span class="line">    (<span class="keyword">void</span>) interrupt-&gt;SetLevel(oldLevel);	<span class="comment">// re-enable interrupts</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Semaphore::V</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Thread *thread;</span><br><span class="line">    IntStatus oldLevel = interrupt-&gt;SetLevel(IntOff);</span><br><span class="line">    thread = (Thread *)<span class="built_in">queue</span>-&gt;Remove();</span><br><span class="line">    <span class="keyword">if</span> (thread != <span class="literal">NULL</span>)	   <span class="comment">// make thread ready, consuming the V immediately</span></span><br><span class="line">		scheduler-&gt;ReadyToRun(thread);</span><br><span class="line">    value++;</span><br><span class="line">    (<span class="keyword">void</span>) interrupt-&gt;SetLevel(oldLevel);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>It uses queue to achieve Semaphore, making it in order. When <code>value = 0</code> , that is, no resource available, it’s put in the pending queue and the thread sleeps; When <code>value &gt; 0</code> , it breaks the while loop and consume the resource (<code>value--</code>), but not removed from pending queue immediately until the <code>V()</code> operates , after which it will be put in <code>ReadyToRun</code>, making <code>value++</code> .</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Scheduler::ReadyToRun</span> <span class="params">(Thread *thread)</span> </span>&#123;</span><br><span class="line">    DEBUG(<span class="string">'t'</span>, <span class="string">"Putting thread %s on ready list.\n"</span>, thread-&gt;getName());</span><br><span class="line">    thread-&gt;setStatus(READY);</span><br><span class="line">    readyList-&gt;Append((<span class="keyword">void</span> *)thread);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Scheduler::Run</span> <span class="params">(Thread *nextThread)</span> </span>&#123;</span><br><span class="line">    Thread *oldThread = currentThread;</span><br><span class="line">    <span class="comment">// ............................</span></span><br><span class="line">    oldThread-&gt;CheckOverflow();		    <span class="comment">// check if the old thread had an undetected stack overflow</span></span><br><span class="line">    currentThread = nextThread;		    <span class="comment">// switch to the next thread</span></span><br><span class="line">    currentThread-&gt;setStatus(RUNNING);      <span class="comment">// nextThread is now running</span></span><br><span class="line">    <span class="comment">//.............................</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>And in <code>ReadyToRun</code>, we see that it’s put in <code>readyList</code>, not running immediately until <code>Run()</code> by switching context .</p>
+<h4 id="Scheduler"><a href="#Scheduler" class="headerlink" title="Scheduler"></a>Scheduler</h4><p>In <code>thread.cc</code>, we see how it’s scheduled: </p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Thread::Fork</span><span class="params">(VoidFunctionPtr func, _int arg)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// ...............................</span></span><br><span class="line">    StackAllocate(func, arg);</span><br><span class="line">    IntStatus oldLevel = interrupt-&gt;SetLevel(IntOff);</span><br><span class="line">    scheduler-&gt;ReadyToRun(<span class="keyword">this</span>);	<span class="comment">// ReadyToRun assumes that interrupts are disabled!</span></span><br><span class="line">    (<span class="keyword">void</span>) interrupt-&gt;SetLevel(oldLevel);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Thread::Yield</span> <span class="params">()</span> </span>&#123;</span><br><span class="line">    Thread *nextThread;</span><br><span class="line">    IntStatus oldLevel = interrupt-&gt;SetLevel(IntOff);</span><br><span class="line">    ASSERT(<span class="keyword">this</span> == currentThread);</span><br><span class="line">    DEBUG(<span class="string">'t'</span>, <span class="string">"Yielding thread \"%s\"\n"</span>, getName());</span><br><span class="line">    nextThread = scheduler-&gt;FindNextToRun();</span><br><span class="line">    <span class="keyword">if</span> (nextThread != <span class="literal">NULL</span>) &#123;</span><br><span class="line">		scheduler-&gt;ReadyToRun(<span class="keyword">this</span>);</span><br><span class="line">		scheduler-&gt;Run(nextThread);</span><br><span class="line">    &#125;</span><br><span class="line">    (<span class="keyword">void</span>) interrupt-&gt;SetLevel(oldLevel);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Thread::Sleep</span> <span class="params">()</span> </span>&#123;</span><br><span class="line">    Thread *nextThread;</span><br><span class="line">    ASSERT(<span class="keyword">this</span> == currentThread);</span><br><span class="line">    ASSERT(interrupt-&gt;getLevel() == IntOff);</span><br><span class="line">    DEBUG(<span class="string">'t'</span>, <span class="string">"Sleeping thread \"%s\"\n"</span>, getName());</span><br><span class="line">    status = BLOCKED;</span><br><span class="line">    <span class="keyword">while</span> ((nextThread = scheduler-&gt;FindNextToRun()) == <span class="literal">NULL</span>)</span><br><span class="line">		interrupt-&gt;Idle();	<span class="comment">// no one to run, wait for an interrupt</span></span><br><span class="line">    scheduler-&gt;Run(nextThread); <span class="comment">// returns when we've been signalled</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>When <code>Fork()</code>, put in <code>ReadyToRun</code> ; When <code>Yield()</code> , find next to <code>Run()</code> and put the current thread in <code>ReadyToRun</code> ; When <code>Sleep()</code>, set its status to <code>BLOCKED</code> then find one to <code>Run()</code> . </p>
+<p>So the whole process is: </p>
+<p><img src="https://i.loli.net/2021/04/08/uo1fSeTORaphFGr.png" alt="OS_Picture1.png"></p>
+<h4 id="Locks"><a href="#Locks" class="headerlink" title="Locks"></a>Locks</h4><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Lock::Acquire</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    IntStatus oldLevel = interrupt-&gt;SetLevel(IntOff);  <span class="comment">// disable interrupts</span></span><br><span class="line">    lock-&gt;P();                            <span class="comment">// procure the semaphore</span></span><br><span class="line">    owner = currentThread;                <span class="comment">// record the new owner of the lock</span></span><br><span class="line">    (<span class="keyword">void</span>) interrupt-&gt;SetLevel(oldLevel); <span class="comment">// re-enable interrupts</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Lock::Release</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    IntStatus oldLevel = interrupt-&gt;SetLevel(IntOff);  <span class="comment">// disable interrupts</span></span><br><span class="line">    <span class="comment">// Ensure: a) lock is BUSY  b) this thread is the same one that acquired it.</span></span><br><span class="line">    ASSERT(currentThread == owner);        </span><br><span class="line">    owner = <span class="literal">NULL</span>;                          <span class="comment">// clear the owner</span></span><br><span class="line">    lock-&gt;V();                             <span class="comment">// vanquish the semaphore</span></span><br><span class="line">    (<span class="keyword">void</span>) interrupt-&gt;SetLevel(oldLevel);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>When a thread acquires a lock, the lock operates <code>P()</code> (If no resource available, it blocks). If successful, it’ll be the lock owner. When it releases the lock (it will check if the owner is the current thread at first), it removes owner property, then the lock operators <code>V()</code> , which means some resources are free currently for some threads to be ready to run.</p>
+<h4 id="Condition-Variables"><a href="#Condition-Variables" class="headerlink" title="Condition Variables"></a>Condition Variables</h4><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Condition::Wait</span><span class="params">(Lock* conditionLock)</span> </span>&#123; </span><br><span class="line">    IntStatus oldLevel = interrupt-&gt;SetLevel(IntOff);</span><br><span class="line">    ASSERT(conditionLock-&gt;isHeldByCurrentThread());  <span class="comment">// check pre-condition</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">queue</span>-&gt;IsEmpty()) &#123;</span><br><span class="line">		lock = conditionLock;  <span class="comment">// helps to enforce pre-condition</span></span><br><span class="line">    &#125; </span><br><span class="line">    ASSERT(lock == conditionLock); <span class="comment">// another pre-condition</span></span><br><span class="line">    <span class="built_in">queue</span>-&gt;Append(currentThread);  <span class="comment">// add this thread to the waiting list</span></span><br><span class="line">    conditionLock-&gt;Release();      <span class="comment">// release the lock</span></span><br><span class="line">    currentThread-&gt;Sleep();        <span class="comment">// goto sleep</span></span><br><span class="line">    conditionLock-&gt;Acquire();      <span class="comment">// awaken: re-acquire the lock</span></span><br><span class="line">    (<span class="keyword">void</span>) interrupt-&gt;SetLevel(oldLevel);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Condition::Signal</span><span class="params">(Lock* conditionLock)</span> </span>&#123; </span><br><span class="line">    Thread *nextThread;</span><br><span class="line">    IntStatus oldLevel = interrupt-&gt;SetLevel(IntOff);</span><br><span class="line">    ASSERT(conditionLock-&gt;isHeldByCurrentThread());</span><br><span class="line">    <span class="keyword">if</span> (!<span class="built_in">queue</span>-&gt;IsEmpty()) &#123;</span><br><span class="line">		ASSERT(lock == conditionLock);</span><br><span class="line">		nextThread = (Thread *)<span class="built_in">queue</span>-&gt;Remove();</span><br><span class="line">		scheduler-&gt;ReadyToRun(nextThread);      <span class="comment">// wake up the thread</span></span><br><span class="line">    &#125; </span><br><span class="line">    (<span class="keyword">void</span>) interrupt-&gt;SetLevel(oldLevel);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Condition::Broadcast</span><span class="params">(Lock* conditionLock)</span>  </span>&#123; </span><br><span class="line">    Thread *nextThread;</span><br><span class="line">    IntStatus oldLevel = interrupt-&gt;SetLevel(IntOff);</span><br><span class="line">    ASSERT(conditionLock-&gt;isHeldByCurrentThread());</span><br><span class="line">    <span class="keyword">if</span> (!<span class="built_in">queue</span>-&gt;IsEmpty()) &#123;</span><br><span class="line">		ASSERT(lock == conditionLock);</span><br><span class="line">		<span class="keyword">while</span> (nextThread = (Thread *)<span class="built_in">queue</span>-&gt;Remove()) &#123;</span><br><span class="line">	    	scheduler-&gt;ReadyToRun(nextThread);  <span class="comment">// wake up the thread</span></span><br><span class="line">		&#125;</span><br><span class="line">    &#125; </span><br><span class="line">    (<span class="keyword">void</span>) interrupt-&gt;SetLevel(oldLevel);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>It uses conditional lock to schedule threads. The <code>Wait()</code> makes the thread waiting in conditional queue, then release lock to make the lock available for others, then go to sleep. When waken up, it acquires the lock so it’s ready to run. The <code>Signal()</code> pops up a thread from the conditional queue, make it ready to run. The <code>Broadcast()</code> empties the conditional queue and make them all ready to run.</p>
+<h3 id="ring-cc-in-lab3"><a href="#ring-cc-in-lab3" class="headerlink" title="ring.cc in lab3"></a><code>ring.cc</code> in <code>lab3</code></h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Ring::Put</span><span class="params">(slot *message)</span> </span>&#123;</span><br><span class="line">    <span class="built_in">buffer</span>[in].thread_id = message-&gt;thread_id;</span><br><span class="line">    <span class="built_in">buffer</span>[in].value = message-&gt;value;</span><br><span class="line">    in = (in + <span class="number">1</span>) % <span class="built_in">size</span>;</span><br><span class="line">    current++;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Ring::Get</span><span class="params">(slot *message)</span> </span>&#123;</span><br><span class="line">    message-&gt;thread_id = <span class="built_in">buffer</span>[out].thread_id;</span><br><span class="line">    message-&gt;value = <span class="built_in">buffer</span>[out].value;</span><br><span class="line">    out = (out + <span class="number">1</span>) % <span class="built_in">size</span>;</span><br><span class="line">    current--;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>Put()</code> puts the message in ring with index <code>in</code>, which points to the current empty slot, the next one of the last non-empty slot if the ring’s not empty, then <code>in</code> goes to next. <code>Get()</code> fetches the message from ring by index <code>out</code>, which points to the first non-empty slot, then <code>out</code> goes to next for the next fetching operator. The two don’t check if the ring is empty or full. </p>
+<p>So I add a variable <code>current</code> to get the current size of the ring, to achieve <code>Full()</code> and <code>Empty()</code> function. </p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">Ring::Empty</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (current == <span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">Ring::Full</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (current == <span class="built_in">size</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="prodcons-cc-in-lab3"><a href="#prodcons-cc-in-lab3" class="headerlink" title="prodcons.cc in lab3"></a><code>prodcons.cc</code> in <code>lab3</code></h3><p>The original code requires to be implemented, so below is what I implement. </p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">Thread *producers[N_PROD]; <span class="comment">//array of pointers to the producer</span></span><br><span class="line">Thread *consumers[N_CONS];  <span class="comment">// and consumer threads;</span></span><br><span class="line"><span class="keyword">char</span> prod_names[N_PROD][MAX_NAME];  <span class="comment">//array of charater string for prod names</span></span><br><span class="line"><span class="keyword">char</span> cons_names[N_CONS][MAX_NAME];  <span class="comment">//array of charater string for cons names</span></span><br><span class="line">Semaphore *nempty, *nfull; <span class="comment">//two semaphores for empty and full slots</span></span><br><span class="line">Semaphore *mutex;          <span class="comment">//semaphore for the mutual exclusion</span></span><br><span class="line">Ring *ring;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Producer</span><span class="params">(_int which)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> num;</span><br><span class="line">    slot *message = <span class="keyword">new</span> slot(<span class="number">0</span>,<span class="number">0</span>);</span><br><span class="line">    <span class="keyword">for</span> (num = <span class="number">0</span>; num &lt; N_MESSG ; num++) &#123;</span><br><span class="line">      message-&gt;value = num;</span><br><span class="line">      message-&gt;thread_id = which;</span><br><span class="line">      nfull-&gt;P();</span><br><span class="line">      mutex-&gt;P();</span><br><span class="line">      ring-&gt;Put(message);</span><br><span class="line">      mutex-&gt;V();</span><br><span class="line">      nempty-&gt;V();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Consumer</span><span class="params">(_int which)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">char</span> str[MAXLEN];</span><br><span class="line">    <span class="keyword">char</span> fname[LINELEN];</span><br><span class="line">    <span class="keyword">int</span> fd;</span><br><span class="line">    slot *message = <span class="keyword">new</span> slot(<span class="number">0</span>,<span class="number">0</span>);</span><br><span class="line">    <span class="built_in">sprintf</span>(fname, <span class="string">"tmp_%d"</span>, which);</span><br><span class="line">    <span class="keyword">if</span> ( (fd = creat(fname, <span class="number">0600</span>) ) == <span class="number">-1</span>) &#123;</span><br><span class="line">      perror(<span class="string">"creat: file create failed"</span>);</span><br><span class="line">      <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (; ; ) &#123;</span><br><span class="line">      nempty-&gt;P();</span><br><span class="line">      mutex-&gt;P();</span><br><span class="line">      ring-&gt;Get(message);</span><br><span class="line">      mutex-&gt;V();</span><br><span class="line">      nfull-&gt;V();</span><br><span class="line">      <span class="keyword">time_t</span> my_time = time(<span class="literal">NULL</span>);</span><br><span class="line">      <span class="built_in">sprintf</span>(str,<span class="string">"### %s    producer id --&gt; %d; Message number --&gt; %d;\n"</span>, ctime(&amp;my_time), message-&gt;thread_id, message-&gt;value);</span><br><span class="line">      <span class="keyword">if</span> ( <span class="built_in">write</span>(fd, str, <span class="built_in">strlen</span>(str)) == <span class="number">-1</span> ) &#123;</span><br><span class="line">        perror(<span class="string">"write: write failed"</span>);</span><br><span class="line">        <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ProdCons</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    DEBUG(<span class="string">'t'</span>, <span class="string">"Entering ProdCons"</span>);</span><br><span class="line">    nempty = <span class="keyword">new</span> Semaphore(<span class="string">"nempty"</span>, BUFF_SIZE);</span><br><span class="line">    nfull = <span class="keyword">new</span> Semaphore(<span class="string">"nfull"</span>, <span class="number">0</span>);</span><br><span class="line">    mutex = <span class="keyword">new</span> Semaphore(<span class="string">"mutex"</span>, <span class="number">1</span>);</span><br><span class="line">    ring = <span class="keyword">new</span> Ring(BUFF_SIZE);   </span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; N_PROD; i++)  &#123;</span><br><span class="line">      <span class="built_in">sprintf</span>(prod_names[i], <span class="string">"producer_%d"</span>, i);</span><br><span class="line">      producers[i] = <span class="keyword">new</span> Thread(prod_names[i]);</span><br><span class="line">      producers[i]-&gt;Fork(Producer, i);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; N_CONS; i++)  &#123;</span><br><span class="line">      <span class="built_in">sprintf</span>(cons_names[i], <span class="string">"consumer_%d"</span>, i);</span><br><span class="line">      consumers[i] = <span class="keyword">new</span> Thread(cons_names[i]);</span><br><span class="line">      consumers[i]-&gt;Fork(Consumer, i);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="Semaphore-and-Buffer"><a href="#Semaphore-and-Buffer" class="headerlink" title="Semaphore and Buffer"></a>Semaphore and Buffer</h4><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">nempty = <span class="keyword">new</span> Semaphore(<span class="string">"nempty"</span>, BUFF_SIZE);</span><br><span class="line">nfull = <span class="keyword">new</span> Semaphore(<span class="string">"nfull"</span>, <span class="number">0</span>);</span><br><span class="line">mutex = <span class="keyword">new</span> Semaphore(<span class="string">"mutex"</span>, <span class="number">1</span>);</span><br><span class="line">ring = <span class="keyword">new</span> Ring(BUFF_SIZE);</span><br></pre></td></tr></table></figure>
+<p><code>nempty</code> and <code>nfull</code> are the semaphores for critical resources. When <code>nempty = 0</code> , it means the buffer is empty, and when a resource is generated, <code>nempty--</code> , when consumed, <code>nempty++</code> , maximum of which is <code>BUFF_SIZE</code> ; When <code>nfull = 0</code> , it’s empty. When generated, <code>nfull++</code>, and when consumed, <code>nfull--</code> . </p>
+<h4 id="The-Fork-of-producer-and-consumer-threads"><a href="#The-Fork-of-producer-and-consumer-threads" class="headerlink" title="The Fork() of producer and consumer threads"></a>The <code>Fork()</code> of producer and consumer threads</h4><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; N_PROD; i++)  &#123;</span><br><span class="line">	<span class="built_in">sprintf</span>(prod_names[i], <span class="string">"producer_%d"</span>, i);</span><br><span class="line">	producers[i] = <span class="keyword">new</span> Thread(prod_names[i]);</span><br><span class="line">	producers[i]-&gt;Fork(Producer, i);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; N_CONS; i++)  &#123;</span><br><span class="line">	<span class="built_in">sprintf</span>(cons_names[i], <span class="string">"consumer_%d"</span>, i);</span><br><span class="line">	consumers[i] = <span class="keyword">new</span> Thread(cons_names[i]);</span><br><span class="line">	consumers[i]-&gt;Fork(Consumer, i);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>N_PROD</code> producers and <code>N_CONS</code> consumers forked with name generated by <code>i</code> . It uses <code>Fork(func, arg)</code> .</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Thread::Fork</span><span class="params">(VoidFunctionPtr func, _int arg)</span> </span>&#123;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> HOST_ALPHA</span></span><br><span class="line">    DEBUG(<span class="string">'t'</span>, <span class="string">"Forking thread \"%s\" with func = 0x%lx, arg = %ld\n"</span>, name, (<span class="keyword">long</span>) func, arg);</span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line">    DEBUG(<span class="string">'t'</span>, <span class="string">"Forking thread \"%s\" with func = 0x%x, arg = %d\n"</span>, name, (<span class="keyword">int</span>) func, arg);</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">    StackAllocate(func, arg);</span><br><span class="line">    IntStatus oldLevel = interrupt-&gt;SetLevel(IntOff);</span><br><span class="line">    scheduler-&gt;ReadyToRun(<span class="keyword">this</span>);	<span class="comment">// ReadyToRun assumes that interrupts are disabled!</span></span><br><span class="line">    (<span class="keyword">void</span>) interrupt-&gt;SetLevel(oldLevel);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Different from the original <code>Fork()</code> in Linux System Call, it doesn’t copy all the variables and status from the current thread, it just create a new thread without any variables but pass it a function and an argument, and just append it to <code>ReadyToRun()</code> . </p>
+<h2 id="lab3"><a href="#lab3" class="headerlink" title="lab3"></a>lab3</h2><p>Codes changed are listed above. Then just make and run.</p>
+<p>We see it generates two files, <code>tmp_0</code> and <code>tmp_1</code> , which are generated by consumer 0 and consumer 1 . But there are 8 messages in <code>tmp_0</code>, 0 message in <code>tmp_1</code> . Only the consumer 0 get the resource.</p>
+<p>But if I run <code>./nachos -rs 5</code> , things are different:</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">------------------- tmp_0 -------------------</span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">## Sun Apr 11 10:23:53 2021</span></span></span><br><span class="line">    producer id --&gt; 0; Message number --&gt; 0;</span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">## Sun Apr 11 10:23:53 2021</span></span></span><br><span class="line">    producer id --&gt; 1; Message number --&gt; 0;</span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">## Sun Apr 11 10:23:53 2021</span></span></span><br><span class="line">    producer id --&gt; 0; Message number --&gt; 2;</span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">## Sun Apr 11 10:23:53 2021</span></span></span><br><span class="line">    producer id --&gt; 1; Message number --&gt; 1;</span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">## Sun Apr 11 10:23:53 2021</span></span></span><br><span class="line">    producer id --&gt; 0; Message number --&gt; 3;</span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">## Sun Apr 11 10:23:53 2021</span></span></span><br><span class="line">    producer id --&gt; 1; Message number --&gt; 3;</span><br><span class="line">------------------- tmp_1 -------------------</span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">## Sun Apr 11 10:23:53 2021</span></span></span><br><span class="line">    producer id --&gt; 0; Message number --&gt; 1;</span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">## Sun Apr 11 10:23:53 2021</span></span></span><br><span class="line">    producer id --&gt; 1; Message number --&gt; 2;</span><br></pre></td></tr></table></figure>
+<p>So what does <code>rs</code> do?</p>
+<p>In the <code>main.cc</code> of <code>lab3</code>, we see function <code>initialize()</code>, which located in <code>system.cc</code> in <code>threads</code> : </p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (!<span class="built_in">strcmp</span>(*argv, <span class="string">"-rs"</span>)) &#123;</span><br><span class="line">	ASSERT(argc &gt; <span class="number">1</span>);</span><br><span class="line">	RandomInit(atoi(*(argv + <span class="number">1</span>)));	<span class="comment">// initialize pseudo-random number generator</span></span><br><span class="line">	randomYield = TRUE;</span><br><span class="line">	argCount = <span class="number">2</span>;</span><br><span class="line">&#125;</span><br><span class="line">-----------------------------------------------</span><br><span class="line"><span class="keyword">if</span> (randomYield)				<span class="comment">// start the timer (if needed)</span></span><br><span class="line">	timer = <span class="keyword">new</span> Timer(TimerInterruptHandler, <span class="number">0</span>, randomYield);</span><br><span class="line">-----------------------------------------------</span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">TimerInterruptHandler</span><span class="params">(_int dummy)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (interrupt-&gt;getStatus() != IdleMode)</span><br><span class="line">		interrupt-&gt;YieldOnReturn();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>We see <code>randomYield = TRUE</code> and if true it sets a new timer with <code>TimerInterruptHandler()</code> . In <code>machine</code> , it does many things: </p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// -------- in stats.h ------------</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> UserTick 	1	<span class="comment">// advance for each user-level instruction </span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> SystemTick 	10 	<span class="comment">// advance each time interrupts are enabled</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TimerTicks 	100    	<span class="comment">// (average) time between timer interrupts</span></span></span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// ------------ timer.cc -------------</span></span><br><span class="line">Timer::Timer(VoidFunctionPtr timerHandler, _int callArg, <span class="keyword">bool</span> doRandom) &#123;</span><br><span class="line">    randomize = doRandom;</span><br><span class="line">    handler = timerHandler;</span><br><span class="line">    arg = callArg; </span><br><span class="line">    <span class="comment">// schedule the first interrupt from the timer device</span></span><br><span class="line">    interrupt-&gt;Schedule(TimerHandler, (_int) <span class="keyword">this</span>, TimeOfNextInterrupt(), TimerInt); </span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// -------------------------------------------------</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">Timer::TimeOfNextInterrupt</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (randomize)</span><br><span class="line">		<span class="keyword">return</span> <span class="number">1</span> + (Random() % (TimerTicks * <span class="number">2</span>));</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">		<span class="keyword">return</span> TimerTicks; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// ------------ interrupt.cc -------------</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Interrupt::Schedule</span><span class="params">(VoidFunctionPtr handler, _int arg, <span class="keyword">int</span> fromNow, IntType type)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> when = stats-&gt;totalTicks + fromNow;</span><br><span class="line">    PendingInterrupt *toOccur = <span class="keyword">new</span> PendingInterrupt(handler, arg, when, type);</span><br><span class="line">    DEBUG(<span class="string">'i'</span>, <span class="string">"Scheduling interrupt handler the %s at time = %d\n"</span>, intTypeNames[type], when);</span><br><span class="line">    ASSERT(fromNow &gt; <span class="number">0</span>);</span><br><span class="line">    pending-&gt;SortedInsert(toOccur, when);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// -------------- OneTick() -----------------</span></span><br><span class="line">    <span class="keyword">while</span> (CheckIfDue(FALSE))		<span class="comment">// check for pending interrupts</span></span><br><span class="line">	;</span><br><span class="line">    ChangeLevel(IntOff, IntOn);		<span class="comment">// re-enable interrupts</span></span><br><span class="line">    <span class="keyword">if</span> (yieldOnReturn) &#123;		<span class="comment">// if the timer device handler asked </span></span><br><span class="line">					<span class="comment">// for a context switch, ok to do it now</span></span><br><span class="line">	yieldOnReturn = FALSE;</span><br><span class="line"> 	status = SystemMode;		<span class="comment">// yield is a kernel routine</span></span><br><span class="line">	currentThread-&gt;Yield();</span><br><span class="line">	status = old;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>If randomized, it will generated a random number range in <code>[1, 200]</code> , which will be passed to <code>Schedule()</code> and appended in pending queue, telling system when to interrupt. So that’s why the context switch will occur when argument <code>-rs</code> is used, otherwise the consumer 0 will never yield so the consumer 1 gets nothing.</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Linux/" rel="tag"><i class="fa fa-tag"></i> Linux</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/03/31/%E5%A4%96%E9%83%A8%E6%89%93%E5%BC%80%E9%93%BE%E6%8E%A5%E9%BB%98%E8%AE%A4%E4%BD%BF%E7%94%A8Chrome-Incognito-Mode/" rel="prev" title="外部打开链接默认使用Chrome Incognito Mode">
+      <i class="fa fa-chevron-left"></i> 外部打开链接默认使用Chrome Incognito Mode
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/04/16/A-simple-file-system-in-Nachos/" rel="next" title="A simple file system in Nachos">
+      A simple file system in Nachos <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Preparation"><span class="nav-number">1.</span> <span class="nav-text">Preparation</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#synch-cc-in-threads"><span class="nav-number">1.1.</span> <span class="nav-text">synch.cc in threads</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Semaphore"><span class="nav-number">1.1.1.</span> <span class="nav-text">Semaphore</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Scheduler"><span class="nav-number">1.1.2.</span> <span class="nav-text">Scheduler</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Locks"><span class="nav-number">1.1.3.</span> <span class="nav-text">Locks</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Condition-Variables"><span class="nav-number">1.1.4.</span> <span class="nav-text">Condition Variables</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ring-cc-in-lab3"><span class="nav-number">1.2.</span> <span class="nav-text">ring.cc in lab3</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#prodcons-cc-in-lab3"><span class="nav-number">1.3.</span> <span class="nav-text">prodcons.cc in lab3</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Semaphore-and-Buffer"><span class="nav-number">1.3.1.</span> <span class="nav-text">Semaphore and Buffer</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#The-Fork-of-producer-and-consumer-threads"><span class="nav-number">1.3.2.</span> <span class="nav-text">The Fork() of producer and consumer threads</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lab3"><span class="nav-number">2.</span> <span class="nav-text">lab3</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="K"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">K</p>
+  <div class="site-description" itemprop="description">You know Knowhere is nowhere, but KnowWhere.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">89</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">45</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:colivener@outlook.com" title="E-Mail → mailto:colivener@outlook.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+
+
+    <div class="links-of-blogroll motion-element links-of-blogroll-undefined">
+      <div class="links-of-blogroll-title">
+        <!-- modify icon to fire by szw -->
+        <i class="fa fa-history fa-" aria-hidden="true"></i>
+        
+      </div>
+      <ul class="links-of-blogroll-list">
+        
+        
+          <li>
+            <a href="/" title="" target="_blank"></a>
+          </li>
+        
+          <li>
+            <a href="/" title="" target="_blank"></a>
+          </li>
+        
+          <li>
+            <a href="/" title="" target="_blank"></a>
+          </li>
+        
+          <li>
+            <a href="/" title="" target="_blank"></a>
+          </li>
+        
+          <li>
+            <a href="/" title="" target="_blank"></a>
+          </li>
+        
+      </ul>
+    </div>
+
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">K</span>
+</div>
+  <div class="addthis_inline_share_toolbox">
+    <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5e9ea4a022889786" async="async"></script>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'nydWvj5q5w14PIVolKD4JOtS-MdYXbMMI',
+      appKey     : '7vFccLCEXIsFn1VxvpyQAibm',
+      placeholder: "knowhere to know here",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

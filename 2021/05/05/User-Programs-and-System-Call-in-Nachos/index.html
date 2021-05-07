@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"co10.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="How Nachos generates a user programThe Nachos uses gcc MIPS to compile a .c file to a COFF file, then uses coff2noff to translate it to NOFF to make it recognizable by Nachos CPU.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="User Programs and System Call in Nachos">
+<meta property="og:url" content="co10.github.io/2021/05/05/User-Programs-and-System-Call-in-Nachos/index.html">
+<meta property="og:site_name" content="荒芜知地">
+<meta property="og:description" content="How Nachos generates a user programThe Nachos uses gcc MIPS to compile a .c file to a COFF file, then uses coff2noff to translate it to NOFF to make it recognizable by Nachos CPU.">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-05-05T08:40:28.000Z">
+<meta property="article:modified_time" content="2021-05-07T15:33:34.210Z">
+<meta property="article:author" content="K">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="co10.github.io/2021/05/05/User-Programs-and-System-Call-in-Nachos/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>User Programs and System Call in Nachos | 荒芜知地</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="荒芜知地" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">荒芜知地</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Knowhere</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">45</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">89</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="co10.github.io/2021/05/05/User-Programs-and-System-Call-in-Nachos/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="K">
+      <meta itemprop="description" content="You know Knowhere is nowhere, but KnowWhere.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="荒芜知地">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          User Programs and System Call in Nachos
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-05-05 16:40:28" itemprop="dateCreated datePublished" datetime="2021-05-05T16:40:28+08:00">2021-05-05</time>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/05/05/User-Programs-and-System-Call-in-Nachos/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/05/05/User-Programs-and-System-Call-in-Nachos/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="How-Nachos-generates-a-user-program"><a href="#How-Nachos-generates-a-user-program" class="headerlink" title="How Nachos generates a user program"></a>How Nachos generates a user program</h2><p>The Nachos uses <code>gcc MIPS</code> to compile a <code>.c</code> file to a <code>COFF</code> file, then uses <code>coff2noff</code> to translate it to <code>NOFF</code> to make it recognizable by Nachos CPU. </p>
+<a id="more"></a>
+<h3 id="NOFF-file"><a href="#NOFF-file" class="headerlink" title="NOFF file"></a><code>NOFF</code> file</h3><p>In <code>bin</code> directory, <code>noff.h</code> : </p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> NOFFMAGIC	0xbadfad 	<span class="comment">/* magic number denoting Nachos object code file */</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">segment</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> virtualAddr;	<span class="comment">/* location of segment in virt addr space */</span></span><br><span class="line">    <span class="keyword">int</span> inFileAddr;		<span class="comment">/* location of segment in this file */</span></span><br><span class="line">    <span class="keyword">int</span> <span class="built_in">size</span>;			<span class="comment">/* size of segment */</span></span><br><span class="line">&#125; Segment;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">noffHeader</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> noffMagic;		<span class="comment">/* should be NOFFMAGIC */</span></span><br><span class="line">    Segment code;		<span class="comment">/* executable code segment */</span> </span><br><span class="line">    Segment initData;	<span class="comment">/* initialized data segment */</span></span><br><span class="line">    Segment uninitData;	<span class="comment">/* uninitialized data segment -- should be zero'ed before use */</span></span><br><span class="line">&#125; NoffHeader;</span><br></pre></td></tr></table></figure>
+<p>There are only three kinds of segment in Nachos file header: executable code, initialized data and uninitialized data. And the <code>noffMagic</code> is a special number to be recognized as a Nachos file.</p>
+<h3 id="Start-Process"><a href="#Start-Process" class="headerlink" title="Start Process"></a>Start Process</h3><p>In <code>main.cc</code> in <code>threads</code> directory, we see:</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (!<span class="built_in">strcmp</span>(*argv, <span class="string">"-x"</span>)) &#123;        	<span class="comment">// run a user program</span></span><br><span class="line">    ASSERT(argc &gt; <span class="number">1</span>);</span><br><span class="line">    StartProcess(*(argv + <span class="number">1</span>));</span><br><span class="line">    argCount = <span class="number">2</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>StartProcess</code> is in <code>progtest.cc</code> in <code>userprog</code> directory: </p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">StartProcess</span><span class="params">(<span class="keyword">char</span> *filename)</span> </span>&#123;</span><br><span class="line">    OpenFile *executable = fileSystem-&gt;Open(filename);</span><br><span class="line">    AddrSpace *space;</span><br><span class="line">    <span class="keyword">if</span> (executable == <span class="literal">NULL</span>) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"Unable to open file %s\n"</span>, filename);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    space = <span class="keyword">new</span> AddrSpace(executable);    </span><br><span class="line">    currentThread-&gt;space = space;</span><br><span class="line">    space-&gt;<span class="built_in">print</span>();</span><br><span class="line">    <span class="keyword">delete</span> executable;			<span class="comment">// close file</span></span><br><span class="line">    space-&gt;InitRegisters();		<span class="comment">// set the initial register values</span></span><br><span class="line">    space-&gt;RestoreState();		<span class="comment">// load page table register</span></span><br><span class="line">    machine-&gt;Run();			<span class="comment">// jump to the user progam</span></span><br><span class="line">    ASSERT(FALSE);			<span class="comment">// machine-&gt;Run never returns;</span></span><br><span class="line">							<span class="comment">// the address space exits by doing the syscall "exit"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Firstly it opens an executable file, then gives it address space, make the current thread to execute it, initialize all registers, load page table, then run.</p>
+<p>For details, we should look into every function.</p>
+<h3 id="addrspace-cc"><a href="#addrspace-cc" class="headerlink" title="addrspace.cc"></a><code>addrspace.cc</code></h3><p>In <code>userprog</code> directory. See the constructor: </p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">AddrSpace::AddrSpace(OpenFile *executable) &#123;</span><br><span class="line">    NoffHeader noffH;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> i, <span class="built_in">size</span>;</span><br><span class="line">    executable-&gt;ReadAt((<span class="keyword">char</span> *)&amp;noffH, <span class="keyword">sizeof</span>(noffH), <span class="number">0</span>);</span><br><span class="line">    <span class="keyword">if</span> ((noffH.noffMagic != NOFFMAGIC) &amp;&amp; (WordToHost(noffH.noffMagic) == NOFFMAGIC))</span><br><span class="line">    	SwapHeader(&amp;noffH);</span><br><span class="line">    ASSERT(noffH.noffMagic == NOFFMAGIC);</span><br><span class="line">	<span class="comment">// how big is address space?</span></span><br><span class="line">    <span class="built_in">size</span> = noffH.code.<span class="built_in">size</span> + noffH.initData.<span class="built_in">size</span> + noffH.uninitData.<span class="built_in">size</span> + UserStackSize;</span><br><span class="line">    <span class="comment">// we need to increase the size to leave room for the stack</span></span><br><span class="line">    numPages = divRoundUp(<span class="built_in">size</span>, PageSize);</span><br><span class="line">    <span class="built_in">size</span> = numPages * PageSize;</span><br><span class="line">    ASSERT(numPages &lt;= NumPhysPages);		<span class="comment">// check we're not trying to run anything too big</span></span><br><span class="line">						<span class="comment">// at least until we have virtual memory</span></span><br><span class="line">    DEBUG(<span class="string">'a'</span>, <span class="string">"Initializing address space, num pages %d, size %d\n"</span>, numPages, <span class="built_in">size</span>);</span><br><span class="line">	<span class="comment">// first, set up the translation </span></span><br><span class="line">    pageTable = <span class="keyword">new</span> TranslationEntry[numPages];</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; numPages; i++) &#123;</span><br><span class="line">        pageTable[i].virtualPage = i;	<span class="comment">// for now, virtual page # = phys page #</span></span><br><span class="line">        pageTable[i].physicalPage = i;</span><br><span class="line">        pageTable[i].valid = TRUE;</span><br><span class="line">        pageTable[i].use = FALSE;</span><br><span class="line">        pageTable[i].dirty = FALSE;</span><br><span class="line">        pageTable[i].readOnly = FALSE;  <span class="comment">// if the code segment was entirely on a separate page,</span></span><br><span class="line">					<span class="comment">//  we could set its pages to be read-only</span></span><br><span class="line">    &#125;</span><br><span class="line"><span class="comment">// zero out the entire address space, to zero the unitialized data segment and the stack segment</span></span><br><span class="line">    bzero(machine-&gt;mainMemory, <span class="built_in">size</span>);</span><br><span class="line"><span class="comment">// then, copy in the code and data segments into memory</span></span><br><span class="line">    <span class="keyword">if</span> (noffH.code.<span class="built_in">size</span> &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        DEBUG(<span class="string">'a'</span>, <span class="string">"Initializing code segment, at 0x%x, size %d\n"</span>, </span><br><span class="line">			noffH.code.virtualAddr, noffH.code.<span class="built_in">size</span>);</span><br><span class="line">        executable-&gt;ReadAt(&amp;(machine-&gt;mainMemory[noffH.code.virtualAddr]),</span><br><span class="line">			noffH.code.<span class="built_in">size</span>, noffH.code.inFileAddr);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (noffH.initData.<span class="built_in">size</span> &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        DEBUG(<span class="string">'a'</span>, <span class="string">"Initializing data segment, at 0x%x, size %d\n"</span>, </span><br><span class="line">			noffH.initData.virtualAddr, noffH.initData.<span class="built_in">size</span>);</span><br><span class="line">        executable-&gt;ReadAt(&amp;(machine-&gt;mainMemory[noffH.initData.virtualAddr]),</span><br><span class="line">			noffH.initData.<span class="built_in">size</span>, noffH.initData.inFileAddr);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>First it reads the file header, and make sure it’s big endian and it’s a NOFF file by the NOFF magic number. Then it calculates the size of address space, including the stack, after which the page numbers can be decided. Then it creates the page tables, initializing all the values in each page table. Currently the virtual page is the same as the physical page. </p>
+<p>Then it clear all the address space. After that, copy the code and data into memory.</p>
+<h3 id="Page-table"><a href="#Page-table" class="headerlink" title="Page table"></a>Page table</h3><p>The last step we see the page table, the code of translation from virtual page to physical page is in <code>translate</code> in <code>machine</code> directory: </p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TranslationEntry</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">int</span> virtualPage;  	<span class="comment">// The page number in virtual memory.</span></span><br><span class="line">    <span class="keyword">int</span> physicalPage;  	<span class="comment">// The page number in real memory (relative to the start of "mainMemory"</span></span><br><span class="line">    <span class="keyword">bool</span> valid;     <span class="comment">// If this bit is set, the translation is ignored.</span></span><br><span class="line">					<span class="comment">// (In other words, the entry hasn't been initialized.)</span></span><br><span class="line">    <span class="keyword">bool</span> readOnly;	<span class="comment">// If this bit is set, the user program is not allowed</span></span><br><span class="line">					<span class="comment">// to modify the contents of the page.</span></span><br><span class="line">    <span class="keyword">bool</span> use;       <span class="comment">// This bit is set by the hardware every time the</span></span><br><span class="line">					<span class="comment">// page is referenced or modified.</span></span><br><span class="line">    <span class="keyword">bool</span> dirty;     <span class="comment">// This bit is set by the hardware every time the page is modified.</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function">ExceptionType <span class="title">Machine::Translate</span><span class="params">(<span class="keyword">int</span> virtAddr, <span class="keyword">int</span>* physAddr, <span class="keyword">int</span> <span class="built_in">size</span>, <span class="keyword">bool</span> writing)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> vpn, offset;</span><br><span class="line">    TranslationEntry *entry;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> pageFrame;</span><br><span class="line">    DEBUG(<span class="string">'a'</span>, <span class="string">"\tTranslate 0x%x, %s: "</span>, virtAddr, writing ? <span class="string">"write"</span> : <span class="string">"read"</span>);</span><br><span class="line">	<span class="comment">// check for alignment errors</span></span><br><span class="line">    <span class="keyword">if</span> (((<span class="built_in">size</span> == <span class="number">4</span>) &amp;&amp; (virtAddr &amp; <span class="number">0x3</span>)) || ((<span class="built_in">size</span> == <span class="number">2</span>) &amp;&amp; (virtAddr &amp; <span class="number">0x1</span>))) &#123;</span><br><span class="line">        DEBUG(<span class="string">'a'</span>, <span class="string">"alignment problem at %d, size %d!\n"</span>, virtAddr, <span class="built_in">size</span>);</span><br><span class="line">        <span class="keyword">return</span> AddressErrorException;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// we must have either a TLB or a page table, but not both!</span></span><br><span class="line">    ASSERT(tlb == <span class="literal">NULL</span> || pageTable == <span class="literal">NULL</span>);	</span><br><span class="line">    ASSERT(tlb != <span class="literal">NULL</span> || pageTable != <span class="literal">NULL</span>);	</span><br><span class="line">	<span class="comment">// calculate the virtual page number, and offset within the page, from the virtual address</span></span><br><span class="line">    vpn = (<span class="keyword">unsigned</span>) virtAddr / PageSize;</span><br><span class="line">    offset = (<span class="keyword">unsigned</span>) virtAddr % PageSize;</span><br><span class="line">    <span class="keyword">if</span> (tlb == <span class="literal">NULL</span>) &#123;		<span class="comment">// =&gt; page table =&gt; vpn is index into table</span></span><br><span class="line">        <span class="keyword">if</span> (vpn &gt;= pageTableSize) &#123;</span><br><span class="line">            DEBUG(<span class="string">'a'</span>, <span class="string">"virtual page # %d too large for page table size %d!\n"</span>, </span><br><span class="line">                virtAddr, pageTableSize);</span><br><span class="line">            <span class="keyword">return</span> AddressErrorException;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (!pageTable[vpn].valid) &#123;</span><br><span class="line">            DEBUG(<span class="string">'a'</span>, <span class="string">"virtual page # %d too large for page table size %d!\n"</span>, </span><br><span class="line">                virtAddr, pageTableSize);</span><br><span class="line">            <span class="keyword">return</span> PageFaultException;</span><br><span class="line">        &#125;</span><br><span class="line">        entry = &amp;pageTable[vpn];</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    	<span class="keyword">for</span> (entry = <span class="literal">NULL</span>, i = <span class="number">0</span>; i &lt; TLBSize; i++)</span><br><span class="line">        	<span class="keyword">if</span> (tlb[i].valid &amp;&amp; ((<span class="keyword">unsigned</span> <span class="keyword">int</span>)tlb[i].virtualPage == vpn)) &#123;</span><br><span class="line">            	entry = &amp;tlb[i];			<span class="comment">// FOUND!</span></span><br><span class="line">            	<span class="keyword">break</span>;</span><br><span class="line">       		&#125;</span><br><span class="line">		<span class="keyword">if</span> (entry == <span class="literal">NULL</span>) &#123;				<span class="comment">// not found</span></span><br><span class="line">    		DEBUG(<span class="string">'a'</span>, <span class="string">"*** no valid TLB entry found for this virtual page!\n"</span>);</span><br><span class="line">        	<span class="keyword">return</span> PageFaultException;		<span class="comment">// really, this is a TLB fault,</span></span><br><span class="line">                            <span class="comment">// the page may be in memory, but not in the TLB</span></span><br><span class="line">    	&#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (entry-&gt;readOnly &amp;&amp; writing) &#123;	<span class="comment">// trying to write to a read-only page</span></span><br><span class="line">		DEBUG(<span class="string">'a'</span>, <span class="string">"%d mapped read-only at %d in TLB!\n"</span>, virtAddr, i);</span><br><span class="line">		<span class="keyword">return</span> ReadOnlyException;</span><br><span class="line">    &#125;</span><br><span class="line">    pageFrame = entry-&gt;physicalPage;</span><br><span class="line">    <span class="comment">// if the pageFrame is too big, there is something really wrong! </span></span><br><span class="line">    <span class="comment">// An invalid translation was loaded into the page table or TLB. </span></span><br><span class="line">    <span class="keyword">if</span> (pageFrame &gt;= NumPhysPages) &#123; </span><br><span class="line">        DEBUG(<span class="string">'a'</span>, <span class="string">"*** frame %d &gt; %d!\n"</span>, pageFrame, NumPhysPages);</span><br><span class="line">        <span class="keyword">return</span> BusErrorException;</span><br><span class="line">    &#125;</span><br><span class="line">    entry-&gt;use = TRUE;		<span class="comment">// set the use, dirty bits</span></span><br><span class="line">    <span class="keyword">if</span> (writing)</span><br><span class="line">		entry-&gt;dirty = TRUE;</span><br><span class="line">    *physAddr = pageFrame * PageSize + offset;</span><br><span class="line">    ASSERT((*physAddr &gt;= <span class="number">0</span>) &amp;&amp; ((*physAddr + <span class="built_in">size</span>) &lt;= MemorySize));</span><br><span class="line">    DEBUG(<span class="string">'a'</span>, <span class="string">"phys addr = 0x%x\n"</span>, *physAddr);</span><br><span class="line">    <span class="keyword">return</span> NoException;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>It decides whether to use TLB or page table. Get page entry, then get physical page frame, make current page entry in use, if writing, make it dirty which means it’s modified, then get the physical address.</p>
+<h3 id="Registers"><a href="#Registers" class="headerlink" title="Registers"></a>Registers</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">AddrSpace::InitRegisters</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; NumTotalRegs; i++)</span><br><span class="line">		machine-&gt;WriteRegister(i, <span class="number">0</span>);</span><br><span class="line">    <span class="comment">// Initial program counter -- must be location of "Start"</span></span><br><span class="line">    machine-&gt;WriteRegister(PCReg, <span class="number">0</span>);	</span><br><span class="line">    <span class="comment">// Need to also tell MIPS where next instruction is, because of branch delay possibility</span></span><br><span class="line">    machine-&gt;WriteRegister(NextPCReg, <span class="number">4</span>);</span><br><span class="line">    <span class="comment">// Set the stack register to the end of the address space, where we allocated the stack;</span></span><br><span class="line">    <span class="comment">// but subtract off a bit, to make sure we don't accidentally reference off the end!</span></span><br><span class="line">    machine-&gt;WriteRegister(StackReg, numPages * PageSize - <span class="number">16</span>);</span><br><span class="line">    DEBUG(<span class="string">'a'</span>, <span class="string">"Initializing stack register to %d\n"</span>, numPages * PageSize - <span class="number">16</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">AddrSpace::RestoreState</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    machine-&gt;pageTable = pageTable;</span><br><span class="line">    machine-&gt;pageTableSize = numPages;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Run"><a href="#Run" class="headerlink" title="Run"></a>Run</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Machine::Run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Instruction *instr = <span class="keyword">new</span> Instruction;  <span class="comment">// storage for decoded instruction</span></span><br><span class="line">    <span class="keyword">if</span>(DebugIsEnabled(<span class="string">'m'</span>))</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"Starting thread \"%s\" at time %d\n"</span>, currentThread-&gt;getName(), stats-&gt;totalTicks);</span><br><span class="line">    interrupt-&gt;setStatus(UserMode);</span><br><span class="line">    <span class="keyword">for</span> (;;) &#123;</span><br><span class="line">        OneInstruction(instr);</span><br><span class="line">		interrupt-&gt;OneTick();</span><br><span class="line">		<span class="keyword">if</span> (singleStep &amp;&amp; (runUntilTime &lt;= stats-&gt;totalTicks))</span><br><span class="line">	  		Debugger();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>It runs the instructions one by one from registers. Below is how it’s fetched: </p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">Machine::ReadMem</span><span class="params">(<span class="keyword">int</span> addr, <span class="keyword">int</span> <span class="built_in">size</span>, <span class="keyword">int</span> *value)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> data;</span><br><span class="line">    ExceptionType exception;</span><br><span class="line">    <span class="keyword">int</span> physicalAddress;</span><br><span class="line">    DEBUG(<span class="string">'a'</span>, <span class="string">"Reading VA 0x%x, size %d\n"</span>, addr, <span class="built_in">size</span>);</span><br><span class="line">    exception = Translate(addr, &amp;physicalAddress, <span class="built_in">size</span>, FALSE);</span><br><span class="line">    <span class="keyword">if</span> (exception != NoException) &#123;</span><br><span class="line">        machine-&gt;RaiseException(exception, addr);</span><br><span class="line">        <span class="keyword">return</span> FALSE;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">switch</span> (<span class="built_in">size</span>) &#123;</span><br><span class="line">      <span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">            data = machine-&gt;mainMemory[physicalAddress];</span><br><span class="line">            *value = data;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">      <span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line">            data = *(<span class="keyword">unsigned</span> short *) &amp;machine-&gt;mainMemory[physicalAddress];</span><br><span class="line">            *value = ShortToHost(data);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">      <span class="keyword">case</span> <span class="number">4</span>:</span><br><span class="line">            data = *(<span class="keyword">unsigned</span> <span class="keyword">int</span> *) &amp;machine-&gt;mainMemory[physicalAddress];</span><br><span class="line">            *value = WordToHost(data);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">      <span class="keyword">default</span>: ASSERT(FALSE);</span><br><span class="line">    &#125;</span><br><span class="line">    DEBUG(<span class="string">'a'</span>, <span class="string">"\tvalue read = %8.8x\n"</span>, *value);</span><br><span class="line">    <span class="keyword">return</span> (TRUE);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>First it translate virtual address to physical address, then read in main memory.</p>
+<h2 id="To-do"><a href="#To-do" class="headerlink" title="To do"></a>To do</h2><h3 id="test"><a href="#test" class="headerlink" title="test"></a>test</h3><p>In <code>test</code> directory, do below to <code>halt.c</code> : </p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i, j, k;</span><br><span class="line">    k = <span class="number">3</span>;</span><br><span class="line">    i = <span class="number">2</span>;</span><br><span class="line">    j = i - <span class="number">1</span>;</span><br><span class="line">    k = i - j + k;</span><br><span class="line">    Halt();</span><br><span class="line">    <span class="comment">/* not reached*/</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Then <code>make</code> .</p>
+<p>To Generate <code>.s</code> file, do below: </p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">/usr/local/mips/bin/decstation-ultrix-gcc –I ../userprog –I ../threads –S halt.c</span><br></pre></td></tr></table></figure>
+<p>Then there is a <code>halt.s</code> :</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">	.file	<span class="number">1</span> <span class="string">"halt.c"</span></span><br><span class="line">gcc2_compiled.:</span><br><span class="line">__gnu_compiled_c:</span><br><span class="line">	.<span class="built_in">text</span></span><br><span class="line">	.align	<span class="number">2</span></span><br><span class="line">	.globl	main</span><br><span class="line">	.ent	main</span><br><span class="line">main:</span><br><span class="line">	.frame	$fp,<span class="number">40</span>,$<span class="number">31</span>		<span class="meta"># vars= 16, regs= 2/0, args= 16, extra= 0</span></span><br><span class="line">	.mask	<span class="number">0xc0000000</span>,<span class="number">-4</span></span><br><span class="line">	.fmask	<span class="number">0x00000000</span>,<span class="number">0</span></span><br><span class="line">	subu	$sp,$sp,<span class="number">40</span></span><br><span class="line">	sw	$<span class="number">31</span>,<span class="number">36</span>($sp)</span><br><span class="line">	sw	$fp,<span class="number">32</span>($sp)</span><br><span class="line">	<span class="built_in">move</span>	$fp,$sp</span><br><span class="line">	jal	__main</span><br><span class="line">	li	$<span class="number">2</span>,<span class="number">3</span>			# <span class="number">0x00000003</span></span><br><span class="line">	sw	$<span class="number">2</span>,<span class="number">24</span>($fp)</span><br><span class="line">	li	$<span class="number">2</span>,<span class="number">2</span>			# <span class="number">0x00000002</span></span><br><span class="line">	sw	$<span class="number">2</span>,<span class="number">16</span>($fp)</span><br><span class="line">	lw	$<span class="number">2</span>,<span class="number">16</span>($fp)</span><br><span class="line">	addu	$<span class="number">3</span>,$<span class="number">2</span>,<span class="number">-1</span></span><br><span class="line">	sw	$<span class="number">3</span>,<span class="number">20</span>($fp)</span><br><span class="line">	lw	$<span class="number">2</span>,<span class="number">16</span>($fp)</span><br><span class="line">	lw	$<span class="number">3</span>,<span class="number">20</span>($fp)</span><br><span class="line">	subu	$<span class="number">2</span>,$<span class="number">2</span>,$<span class="number">3</span></span><br><span class="line">	lw	$<span class="number">3</span>,<span class="number">24</span>($fp)</span><br><span class="line">	addu	$<span class="number">2</span>,$<span class="number">3</span>,$<span class="number">2</span></span><br><span class="line">	sw	$<span class="number">2</span>,<span class="number">24</span>($fp)</span><br><span class="line">	jal	Halt</span><br><span class="line">$L1:</span><br><span class="line">	<span class="built_in">move</span>	$sp,$fp</span><br><span class="line">	lw	$<span class="number">31</span>,<span class="number">36</span>($sp)</span><br><span class="line">	lw	$fp,<span class="number">32</span>($sp)</span><br><span class="line">	addu	$sp,$sp,<span class="number">40</span></span><br><span class="line">	j	$<span class="number">31</span></span><br><span class="line">	.<span class="built_in">end</span>	main</span><br><span class="line"></span><br><span class="line">	.lcomm	a,<span class="number">160</span></span><br></pre></td></tr></table></figure>
+<p>In <code>subu    $sp,$sp,40</code> , it creates stack pointer. In <code>addu    $sp,$sp,40</code> , it takes back stack pointer.</p>
+<h3 id="User-program"><a href="#User-program" class="headerlink" title="User program"></a>User program</h3><p>In <code>userprog</code> directory, first <code>make clean</code> , then <code>make</code> , then: </p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">./nachos –d m –x ../test/halt.noff</span><br></pre></td></tr></table></figure>
+<p>Add below to <code>addrspace</code> : </p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">AddrSpace::print</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"page table dump: %d pages in total\n"</span>, numPages); </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"============================================\n"</span>); <span class="built_in">printf</span>(<span class="string">"\tVirtPage, \tPhysPage\n"</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; numPages; i++) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"\t %d, \t\t%d\n"</span>, pageTable[i].virtualPage, pageTable[i].physicalPage);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"============================================\n\n"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>And in <code>progtest.cc</code> , add <code>space-&gt;print();</code> : </p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">StartProcess</span><span class="params">(<span class="keyword">char</span> *filename)</span> </span>&#123;</span><br><span class="line">    OpenFile *executable = fileSystem-&gt;Open(filename);</span><br><span class="line">    AddrSpace *space;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (executable == <span class="literal">NULL</span>) &#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"Unable to open file %s\n"</span>, filename);</span><br><span class="line">	<span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    space = <span class="keyword">new</span> AddrSpace(executable);    </span><br><span class="line">    currentThread-&gt;space = space;</span><br><span class="line">    <span class="comment">// here</span></span><br><span class="line">    space-&gt;<span class="built_in">print</span>();</span><br></pre></td></tr></table></figure>
+<p>Run <code>nachos –d m –x ../test/halt.noff</code> , we can see: </p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">============================================</span><br><span class="line">        VirtPage,       PhysPage</span><br><span class="line">         0,             0</span><br><span class="line">         1,             1</span><br><span class="line">         2,             2</span><br><span class="line">         3,             3</span><br><span class="line">         4,             4</span><br><span class="line">         5,             5</span><br><span class="line">         6,             6</span><br><span class="line">         7,             7</span><br><span class="line">         8,             8</span><br><span class="line">         9,             9</span><br><span class="line">         10,            10</span><br><span class="line">============================================</span><br></pre></td></tr></table></figure>
+<p>11 pages in total.</p>
+<p>Back to <code>halt.c</code>, add <code>static int a[40];</code> as global variable, then <code>make</code>. And in <code>userprog</code> run <code>nachos –d m –x ../test/halt.noff</code> , we can see: </p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">page table dump: 12 pages in total</span><br><span class="line">============================================</span><br><span class="line">        VirtPage,       PhysPage</span><br><span class="line">         0,             0</span><br><span class="line">         1,             1</span><br><span class="line">         2,             2</span><br><span class="line">         3,             3</span><br><span class="line">         4,             4</span><br><span class="line">         5,             5</span><br><span class="line">         6,             6</span><br><span class="line">         7,             7</span><br><span class="line">         8,             8</span><br><span class="line">         9,             9</span><br><span class="line">         10,            10</span><br><span class="line">         11,            11</span><br><span class="line">============================================</span><br></pre></td></tr></table></figure>
+<p>There are 12 pages.</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Linux/" rel="tag"><i class="fa fa-tag"></i> Linux</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/05/02/%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90%E5%99%A8/" rel="prev" title="语法分析器">
+      <i class="fa fa-chevron-left"></i> 语法分析器
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#How-Nachos-generates-a-user-program"><span class="nav-number">1.</span> <span class="nav-text">How Nachos generates a user program</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#NOFF-file"><span class="nav-number">1.1.</span> <span class="nav-text">NOFF file</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Start-Process"><span class="nav-number">1.2.</span> <span class="nav-text">Start Process</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#addrspace-cc"><span class="nav-number">1.3.</span> <span class="nav-text">addrspace.cc</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Page-table"><span class="nav-number">1.4.</span> <span class="nav-text">Page table</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Registers"><span class="nav-number">1.5.</span> <span class="nav-text">Registers</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Run"><span class="nav-number">1.6.</span> <span class="nav-text">Run</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#To-do"><span class="nav-number">2.</span> <span class="nav-text">To do</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#test"><span class="nav-number">2.1.</span> <span class="nav-text">test</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#User-program"><span class="nav-number">2.2.</span> <span class="nav-text">User program</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="K"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">K</p>
+  <div class="site-description" itemprop="description">You know Knowhere is nowhere, but KnowWhere.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">89</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">45</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:colivener@outlook.com" title="E-Mail → mailto:colivener@outlook.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+
+
+    <div class="links-of-blogroll motion-element links-of-blogroll-undefined">
+      <div class="links-of-blogroll-title">
+        <!-- modify icon to fire by szw -->
+        <i class="fa fa-history fa-" aria-hidden="true"></i>
+        
+      </div>
+      <ul class="links-of-blogroll-list">
+        
+        
+          <li>
+            <a href="/" title="" target="_blank"></a>
+          </li>
+        
+          <li>
+            <a href="/" title="" target="_blank"></a>
+          </li>
+        
+          <li>
+            <a href="/" title="" target="_blank"></a>
+          </li>
+        
+          <li>
+            <a href="/" title="" target="_blank"></a>
+          </li>
+        
+          <li>
+            <a href="/" title="" target="_blank"></a>
+          </li>
+        
+      </ul>
+    </div>
+
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">K</span>
+</div>
+  <div class="addthis_inline_share_toolbox">
+    <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5e9ea4a022889786" async="async"></script>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'nydWvj5q5w14PIVolKD4JOtS-MdYXbMMI',
+      appKey     : '7vFccLCEXIsFn1VxvpyQAibm',
+      placeholder: "knowhere to know here",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
