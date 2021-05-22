@@ -30,7 +30,7 @@
 <meta property="og:description" content="How Nachos generates a user programThe Nachos uses gcc MIPS to compile a .c file to a COFF file, then uses coff2noff to translate it to NOFF to make it recognizable by Nachos CPU.">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-05-05T08:40:28.000Z">
-<meta property="article:modified_time" content="2021-05-07T15:33:34.210Z">
+<meta property="article:modified_time" content="2021-05-11T14:48:44.060Z">
 <meta property="article:author" content="K">
 <meta property="article:tag" content="Linux">
 <meta name="twitter:card" content="summary">
@@ -135,7 +135,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">89</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">91</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -279,7 +279,7 @@
 <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i, j, k;</span><br><span class="line">    k = <span class="number">3</span>;</span><br><span class="line">    i = <span class="number">2</span>;</span><br><span class="line">    j = i - <span class="number">1</span>;</span><br><span class="line">    k = i - j + k;</span><br><span class="line">    Halt();</span><br><span class="line">    <span class="comment">/* not reached*/</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>Then <code>make</code> .</p>
 <p>To Generate <code>.s</code> file, do below: </p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">/usr/local/mips/bin/decstation-ultrix-gcc –I ../userprog –I ../threads –S halt.c</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">/usr/local/mips/bin/decstation-ultrix-gcc -I ../userprog -I ../threads -S halt.c</span><br></pre></td></tr></table></figure>
 <p>Then there is a <code>halt.s</code> :</p>
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line">	.file	<span class="number">1</span> <span class="string">"halt.c"</span></span><br><span class="line">gcc2_compiled.:</span><br><span class="line">__gnu_compiled_c:</span><br><span class="line">	.<span class="built_in">text</span></span><br><span class="line">	.align	<span class="number">2</span></span><br><span class="line">	.globl	main</span><br><span class="line">	.ent	main</span><br><span class="line">main:</span><br><span class="line">	.frame	$fp,<span class="number">40</span>,$<span class="number">31</span>		<span class="meta"># vars= 16, regs= 2/0, args= 16, extra= 0</span></span><br><span class="line">	.mask	<span class="number">0xc0000000</span>,<span class="number">-4</span></span><br><span class="line">	.fmask	<span class="number">0x00000000</span>,<span class="number">0</span></span><br><span class="line">	subu	$sp,$sp,<span class="number">40</span></span><br><span class="line">	sw	$<span class="number">31</span>,<span class="number">36</span>($sp)</span><br><span class="line">	sw	$fp,<span class="number">32</span>($sp)</span><br><span class="line">	<span class="built_in">move</span>	$fp,$sp</span><br><span class="line">	jal	__main</span><br><span class="line">	li	$<span class="number">2</span>,<span class="number">3</span>			# <span class="number">0x00000003</span></span><br><span class="line">	sw	$<span class="number">2</span>,<span class="number">24</span>($fp)</span><br><span class="line">	li	$<span class="number">2</span>,<span class="number">2</span>			# <span class="number">0x00000002</span></span><br><span class="line">	sw	$<span class="number">2</span>,<span class="number">16</span>($fp)</span><br><span class="line">	lw	$<span class="number">2</span>,<span class="number">16</span>($fp)</span><br><span class="line">	addu	$<span class="number">3</span>,$<span class="number">2</span>,<span class="number">-1</span></span><br><span class="line">	sw	$<span class="number">3</span>,<span class="number">20</span>($fp)</span><br><span class="line">	lw	$<span class="number">2</span>,<span class="number">16</span>($fp)</span><br><span class="line">	lw	$<span class="number">3</span>,<span class="number">20</span>($fp)</span><br><span class="line">	subu	$<span class="number">2</span>,$<span class="number">2</span>,$<span class="number">3</span></span><br><span class="line">	lw	$<span class="number">3</span>,<span class="number">24</span>($fp)</span><br><span class="line">	addu	$<span class="number">2</span>,$<span class="number">3</span>,$<span class="number">2</span></span><br><span class="line">	sw	$<span class="number">2</span>,<span class="number">24</span>($fp)</span><br><span class="line">	jal	Halt</span><br><span class="line">$L1:</span><br><span class="line">	<span class="built_in">move</span>	$sp,$fp</span><br><span class="line">	lw	$<span class="number">31</span>,<span class="number">36</span>($sp)</span><br><span class="line">	lw	$fp,<span class="number">32</span>($sp)</span><br><span class="line">	addu	$sp,$sp,<span class="number">40</span></span><br><span class="line">	j	$<span class="number">31</span></span><br><span class="line">	.<span class="built_in">end</span>	main</span><br><span class="line"></span><br><span class="line">	.lcomm	a,<span class="number">160</span></span><br></pre></td></tr></table></figure>
 <p>In <code>subu    $sp,$sp,40</code> , it creates stack pointer. In <code>addu    $sp,$sp,40</code> , it takes back stack pointer.</p>
@@ -317,7 +317,10 @@
     <a href="/2021/05/02/%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90%E5%99%A8/" rel="prev" title="语法分析器">
       <i class="fa fa-chevron-left"></i> 语法分析器
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2021/05/11/The-Expansion-of-Nachos-Address-Space/" rel="next" title="The Expansion of Nachos Address Space">
+      The Expansion of Nachos Address Space <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -393,7 +396,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">89</span>
+          <span class="site-state-item-count">91</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

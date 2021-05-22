@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"co10.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Multi-threadCurrently Nachos does not support multi-thread (or multi-process), so we need a pid to note the process.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="more system calls in Nachos">
+<meta property="og:url" content="co10.github.io/2021/05/21/more-system-calls-in-Nachos/index.html">
+<meta property="og:site_name" content="荒芜知地">
+<meta property="og:description" content="Multi-threadCurrently Nachos does not support multi-thread (or multi-process), so we need a pid to note the process.">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-05-21T02:42:30.000Z">
+<meta property="article:modified_time" content="2021-05-22T06:07:19.244Z">
+<meta property="article:author" content="K">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="co10.github.io/2021/05/21/more-system-calls-in-Nachos/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>more system calls in Nachos | 荒芜知地</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="荒芜知地" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">荒芜知地</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Knowhere</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">45</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">5</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">91</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="co10.github.io/2021/05/21/more-system-calls-in-Nachos/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="K">
+      <meta itemprop="description" content="You know Knowhere is nowhere, but KnowWhere.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="荒芜知地">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          more system calls in Nachos
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-05-21 10:42:30" itemprop="dateCreated datePublished" datetime="2021-05-21T10:42:30+08:00">2021-05-21</time>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/05/21/more-system-calls-in-Nachos/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/05/21/more-system-calls-in-Nachos/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="Multi-thread"><a href="#Multi-thread" class="headerlink" title="Multi-thread"></a>Multi-thread</h2><p>Currently Nachos does not support multi-thread (or multi-process), so we need a <code>pid</code> to note the process.</p>
+<a id="more"></a>
+<p>Modify <code>bar.c</code> : </p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    SpaceId pid = Exec(<span class="string">"../test/exec.noff"</span>);</span><br><span class="line">    Halt();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="SpaceId"><a href="#SpaceId" class="headerlink" title="SpaceId"></a><code>SpaceId</code></h3><p>In <code>exception.cc</code> , add :</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">StartProcess</span><span class="params">(<span class="keyword">int</span> spaceID)</span> </span>&#123;</span><br><span class="line">    currentThread-&gt;space-&gt;InitRegisters();</span><br><span class="line">    currentThread-&gt;space-&gt;RestoreState();</span><br><span class="line">    machine-&gt;Run();</span><br><span class="line">    ASSERT(FALSE);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>addrspace.h</code> :</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="keyword">int</span> spaceID;</span><br><span class="line">    <span class="keyword">static</span> BitMap* userMap, pidMap;</span><br></pre></td></tr></table></figure>
+<p><code>addrspace.cc</code> :</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> Max_UserProcess 256</span></span><br><span class="line"></span><br><span class="line">BitMap* AddrSpace::userMap = <span class="keyword">new</span> BitMap(NumPhysPages);</span><br><span class="line">BitMap* AddrSpace::pidMap = <span class="keyword">new</span> BitMap(Max_UserProcess);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">AddrSpace::getSpaceId</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> spaceID;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">AddrSpace::AddrSpace(OpenFile *executable) &#123;</span><br><span class="line">    spaceID = pidMap-&gt;Find()+<span class="number">100</span>; <span class="comment">// find a pid for the process</span></span><br><span class="line">    <span class="comment">// ...........</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">AddrSpace::~AddrSpace() &#123;</span><br><span class="line">    pidMap-&gt;Clear(spaceID<span class="number">-100</span>); <span class="comment">// remember to remove it</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; numPages; i++) &#123;</span><br><span class="line">        userMap-&gt;Clear(pageTable[i].physicalPage);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">delete</span> [] pageTable;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>To test whether the space id works, print the <code>pid</code> in <code>StartProcess</code> :</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">printf</span>(<span class="string">"PID: %d\n"</span>, space-&gt;getSpaceId());</span><br><span class="line">space-&gt;<span class="built_in">print</span>();</span><br></pre></td></tr></table></figure>
+<p>Then <code>make clean</code>, <code>make</code>, <code>./nachos -d -x ../test/bar.noff</code> :</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">PID: 100</span><br><span class="line">page table dump: 11 pages in total</span><br><span class="line">============================================</span><br><span class="line">        VirtPage,       PhysPage</span><br><span class="line">         0,             0</span><br><span class="line">         1,             1</span><br><span class="line">         2,             2</span><br><span class="line">         3,             3</span><br><span class="line">         4,             4</span><br><span class="line">         5,             5</span><br><span class="line">         6,             6</span><br><span class="line">         7,             7</span><br><span class="line">         8,             8</span><br><span class="line">         9,             9</span><br><span class="line">         10,            10</span><br><span class="line">============================================</span><br><span class="line"></span><br><span class="line">[1 2], SC_Exec</span><br><span class="line">../test/exec.noff</span><br><span class="line">Initializing code segment, at 0x580, size 256</span><br><span class="line">EXEC: PID: 101</span><br><span class="line">[1 0], SC_Halt</span><br><span class="line">Machine halting!</span><br></pre></td></tr></table></figure>
+<p>We see the main process with <code>pid</code> 100 and the exec process with <code>pid</code> 101.</p>
+<h2 id="Exit"><a href="#Exit" class="headerlink" title="Exit()"></a><code>Exit()</code></h2><figure class="highlight r"><table><tr><td class="code"><pre><span class="line">	.globl Exit</span><br><span class="line">	.ent	Exit</span><br><span class="line">Exit:</span><br><span class="line">	addiu $<span class="number">2</span>,$<span class="number">0</span>,SC_Exit</span><br><span class="line">	syscall</span><br><span class="line">	j	$<span class="number">31</span></span><br><span class="line">	.end Exit</span><br></pre></td></tr></table></figure>
+<p>Create a file named <code>exit.c</code> in <code>test</code> directory :</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"syscall.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Exit(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>In <code>Makefile</code>, add <code>exit</code> to target in line 53, then <code>make</code>.</p>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line">targets = exit exec bar halt shell matmult sort</span><br></pre></td></tr></table></figure>
+<p>To generate a <code>.s</code> file: </p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">/usr/local/mips/bin/decstation-ultrix-gcc -I ../userprog -I ../threads -S exit.c</span><br></pre></td></tr></table></figure>
+<figure class="highlight r"><table><tr><td class="code"><pre><span class="line">	.file	<span class="number">1</span> <span class="string">"exit.c"</span></span><br><span class="line">gcc2_compiled.:</span><br><span class="line">__gnu_compiled_c:</span><br><span class="line">	.text</span><br><span class="line">	.align	<span class="number">2</span></span><br><span class="line">	.globl	main</span><br><span class="line">	.ent	main</span><br><span class="line">main:</span><br><span class="line">	.frame	$fp,<span class="number">24</span>,$<span class="number">31</span>		<span class="comment"># vars= 0, regs= 2/0, args= 16, extra= 0</span></span><br><span class="line">	.mask	<span class="number">0xc0000000</span>,-<span class="number">4</span></span><br><span class="line">	.fmask	<span class="number">0x00000000</span>,<span class="number">0</span></span><br><span class="line">	subu	$sp,$sp,<span class="number">24</span></span><br><span class="line">	sw	$<span class="number">31</span>,<span class="number">20</span>($sp)</span><br><span class="line">	sw	$fp,<span class="number">16</span>($sp)</span><br><span class="line">	move	$fp,$sp</span><br><span class="line">	jal	__main</span><br><span class="line">	li	$<span class="number">4</span>,<span class="number">1</span>			<span class="comment"># 0x00000001</span></span><br><span class="line">	jal	Exit</span><br><span class="line">$L1:</span><br><span class="line">	move	$sp,$fp</span><br><span class="line">	lw	$<span class="number">31</span>,<span class="number">20</span>($sp)</span><br><span class="line">	lw	$fp,<span class="number">16</span>($sp)</span><br><span class="line">	addu	$sp,$sp,<span class="number">24</span></span><br><span class="line">	j	$<span class="number">31</span></span><br><span class="line">	.end	main</span><br></pre></td></tr></table></figure>
+<p>We see <code>li    $4,1</code> , which means it passes the argument to Register 4. And the argument is the exit code.</p>
+<p>We need to save the exit code, so modify <code>exception.cc</code> : </p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (type == SC_Exit) &#123;</span><br><span class="line">    <span class="keyword">int</span> exitCode = machine-&gt;ReadRegister(<span class="number">4</span>);</span><br><span class="line">    machine-&gt;WriteRegister(<span class="number">2</span>, exitCode);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"--------[SC_Exit] PID: %d exit_code: %d--------\n"</span>, (currentThread-&gt;space)-&gt;getSpaceId(), exitCode);</span><br><span class="line">    <span class="keyword">delete</span> currentThread-&gt;space;</span><br><span class="line">    currentThread-&gt;Finish();</span><br><span class="line">    advancePC();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>New file <code>test_exit.c</code> :</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"syscall.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    SpaceId pid1 = Exec(<span class="string">"../test/exit.noff"</span>);</span><br><span class="line">    SpaceId pid2 = Exec(<span class="string">"../test/halt.noff"</span>);</span><br><span class="line">    Exit(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>After <code>make</code> (Don’t forget to add it in <code>Makefile</code>), test it by <code>./nachos -d -x ../test/test_exit.noff</code></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">--------[SC_Exec] PID: 100 filename: ../test/exit.noff--------</span><br><span class="line">Initializing code segment, at 0x580, size 256</span><br><span class="line">--------[SC_Exec] PID: 100 filename: ../test/halt.noff--------</span><br><span class="line">Initializing code segment, at 0xa80, size 320</span><br><span class="line">--------[SC_Exit] PID: 100 exit_code: 0--------</span><br><span class="line">--------[SC_Exit] PID: 101 exit_code: 1--------</span><br><span class="line">--------[SC_Halt] PID: 102--------</span><br><span class="line">Machine halting!</span><br></pre></td></tr></table></figure>
+<p>The main process with <code>PID = 100</code>, executes <code>exit.noff</code> and <code>halt.noff</code>, then exits with code <code>0</code>; while the <code>exit.noff</code> gets it <code>PID = 101</code>, exits with code <code>1</code>, and the <code>halt.noff</code> with <code>PID = 102</code> halts. </p>
+<p>So there is a little problem: the father process won’t wait until its child process exits. That’s what <code>Join</code> does.</p>
+<h2 id="Join"><a href="#Join" class="headerlink" title="Join()"></a><code>Join()</code></h2><p>This is similar to <code>pthread_join(tid)</code> in Linux, waiting for a process then it continues.</p>
+<p>Here is how it works: </p>
+<ol>
+<li>The child process is in a waiting queue.</li>
+<li><code>Join()</code> sleeps the current process.</li>
+<li>Get a process from waiting queue, give it CPU.</li>
+<li>After it ends, <code>Finish</code> it, then wake up father process.</li>
+<li>The father process get the <code>Join</code> code, wake up.</li>
+</ol>
+<p>In <code>scheduler.h</code> in threads directory: </p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> USER_PROGRAM</span></span><br><span class="line">    <span class="function">List* <span class="title">getWaitingList</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> waitingList; &#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    List *readyList;  		<span class="comment">// queue of threads that are ready to run, but not running</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> USER_PROGRAM</span></span><br><span class="line">    List *waitingList;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+<p>In <code>scheduler.cc</code> : </p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Scheduler</span>::<span class="built_in">Scheduler</span>() &#123; </span><br><span class="line">    readyList = <span class="keyword">new</span> List;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> USER_PROGRAM</span></span><br><span class="line">    waitingList = <span class="keyword">new</span> List;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">&#125; </span><br><span class="line"><span class="built_in">Scheduler</span>::~<span class="built_in">Scheduler</span>() &#123; </span><br><span class="line">    <span class="keyword">delete</span> readyList;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> USER_PROGRAM</span></span><br><span class="line">    <span class="keyword">delete</span> waitingList;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>In <code>thread.h</code> in <code>threads</code> directory, add: </p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Join</span><span class="params">(SpaceId id)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>Forget it. Too complex and too hard.</p>
+<h2 id="Yield"><a href="#Yield" class="headerlink" title="Yield()"></a><code>Yield()</code></h2><p>Just use the original <code>Yield()</code> :</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (type == SC_Yield) &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"--------[SC_Yield] PID: %d--------\n"</span>, (currentThread-&gt;space)-&gt;getSpaceId());</span><br><span class="line">    currentThread-&gt;Yield();</span><br><span class="line">    advancePC();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>New a file named <code>yield.c</code> in <code>test</code> directory :</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"syscall.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    SpaceId pid = Exec(<span class="string">"../test/exit.noff"</span>);</span><br><span class="line">    Yield();</span><br><span class="line">    Exit(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>./nachos -d -x ../test/yield.noff</code> :</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">--------[SC_Exec] PID: 100 filename: ../test/exit.noff--------</span><br><span class="line">Initializing code segment, at 0x580, size 256</span><br><span class="line">--------[SC_Yield] PID: 100--------</span><br><span class="line">--------[SC_Exit] PID: 101 exit_code: 1--------</span><br><span class="line">--------[SC_Exit] PID: 100 exit_code: 0--------</span><br><span class="line">No threads ready or runnable, and no pending interrupts.</span><br><span class="line">Assuming the program completed.</span><br><span class="line">Machine halting!</span><br></pre></td></tr></table></figure>
+<p>First, exec, then yield, then the child exits. At last it exits.</p>
+<h2 id="File-Operation"><a href="#File-Operation" class="headerlink" title="File Operation"></a>File Operation</h2><h3 id="Create"><a href="#Create" class="headerlink" title="Create()"></a><code>Create()</code></h3><p>Obviously, create need to read a filename, then create an empty file:</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (type == SC_Create) &#123;</span><br><span class="line">    <span class="keyword">int</span> address = machine-&gt;ReadRegister(<span class="number">4</span>);</span><br><span class="line">    <span class="keyword">char</span> filename[<span class="number">128</span>];</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">128</span>; i++) &#123;</span><br><span class="line">        machine-&gt;ReadMem(address+i, <span class="number">1</span>, (<span class="keyword">int</span> *)&amp;filename[i]);</span><br><span class="line">        <span class="keyword">if</span> (filename[i] == <span class="string">'\0'</span>)</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"--------[SC_Create] PID: %d, filename: %s--------\n"</span>, (currentThread-&gt;space)-&gt;getSpaceId(), filename);</span><br><span class="line">    <span class="keyword">int</span> fileDescriptor = OpenForWrite(filename); </span><br><span class="line">    <span class="keyword">if</span> (fileDescriptor == <span class="number">-1</span>) </span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"create file %s failed!\n"</span>, filename);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"create file %s succeed!, the file id is %d\n"</span>, filename, fileDescriptor);</span><br><span class="line">    Close(fileDescriptor); </span><br><span class="line">    <span class="comment">//machine-&gt;WriteRegister(2,fileDescriptor);</span></span><br><span class="line">    advancePC();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Open"><a href="#Open" class="headerlink" title="Open()"></a><code>Open()</code></h3><p>It opens a file, then returns the file id(write to register 2 for future use):</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (type == SC_Open) &#123;</span><br><span class="line">          <span class="keyword">int</span> address = machine-&gt;ReadRegister(<span class="number">4</span>);</span><br><span class="line">          <span class="keyword">char</span> filename[<span class="number">128</span>];</span><br><span class="line">          <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">128</span>; i++) &#123;</span><br><span class="line">              machine-&gt;ReadMem(address+i, <span class="number">1</span>, (<span class="keyword">int</span> *)&amp;filename[i]);</span><br><span class="line">              <span class="keyword">if</span> (filename[i] == <span class="string">'\0'</span>)</span><br><span class="line">                  <span class="keyword">break</span>;</span><br><span class="line">          &#125;</span><br><span class="line">          <span class="built_in">printf</span>(<span class="string">"--------[SC_Open] PID: %d, filename: %s--------\n"</span>, (currentThread-&gt;space)-&gt;getSpaceId(), filename);</span><br><span class="line">          <span class="keyword">int</span> fileDescriptor = OpenForWrite(filename); </span><br><span class="line">          <span class="keyword">if</span> (fileDescriptor == <span class="number">-1</span>) </span><br><span class="line">              <span class="built_in">printf</span>(<span class="string">"open file %s failed!\n"</span>, filename);</span><br><span class="line">          <span class="keyword">else</span></span><br><span class="line">              <span class="built_in">printf</span>(<span class="string">"open file %s succeed!, the file id is %d\n"</span>, filename, fileDescriptor);</span><br><span class="line">          machine-&gt;WriteRegister(<span class="number">2</span>, fileDescriptor);</span><br><span class="line">          advancePC();</span><br><span class="line">      &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Write"><a href="#Write" class="headerlink" title="Write()"></a><code>Write()</code></h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* Write "size" bytes from "buffer" to the open file. */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Write</span><span class="params">(<span class="keyword">char</span> *<span class="built_in">buffer</span>, <span class="keyword">int</span> <span class="built_in">size</span>, OpenFileId id)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>3 arguments, obviously.</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (type == SC_Write) &#123;</span><br><span class="line">    <span class="keyword">int</span> address = machine-&gt;ReadRegister(<span class="number">4</span>);</span><br><span class="line">    <span class="keyword">int</span> bufsize = machine-&gt;ReadRegister(<span class="number">5</span>);</span><br><span class="line">    <span class="keyword">int</span> fileID = machine-&gt;ReadRegister(<span class="number">6</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"--------[SC_Write] PID: %d, fileid: %d, buffer address: %d with size=%d--------\n"</span>, (currentThread-&gt;space)-&gt;getSpaceId(), fileID, address, bufsize);</span><br><span class="line">    OpenFile* openfile = <span class="keyword">new</span> OpenFile(fileID);</span><br><span class="line">    ASSERT(openfile != <span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">char</span> <span class="built_in">buffer</span>[<span class="number">128</span>];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; bufsize; i++) &#123;</span><br><span class="line">        machine-&gt;ReadMem(address+i, <span class="number">1</span>, (<span class="keyword">int</span> *)&amp;<span class="built_in">buffer</span>[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">buffer</span>[bufsize] = <span class="string">'\0'</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"the buffer is %s\n"</span>, <span class="built_in">buffer</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> WritePosition;</span><br><span class="line">    <span class="keyword">if</span> (fileID == <span class="number">1</span>)</span><br><span class="line">        WritePosition = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">else</span> </span><br><span class="line">        WritePosition = openfile-&gt;Length();</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">int</span> writtenBytes = openfile-&gt;WriteAt(<span class="built_in">buffer</span>, bufsize, WritePosition);</span><br><span class="line">    <span class="keyword">if</span> ((writtenBytes) == <span class="number">0</span>)</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"Writing file failed!\n"</span>);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"\"%s\" has been written in file %d successfully!\n"</span>, <span class="built_in">buffer</span>, fileID);</span><br><span class="line">    advancePC();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Read"><a href="#Read" class="headerlink" title="Read()"></a><code>Read()</code></h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* Read "size" bytes from the open file into "buffer".  </span></span><br><span class="line"><span class="comment"> * Return the number of bytes actually read -- if the open file isn't long enough, or if it is an I/O device, and there aren't enough characters to read, return whatever is available (for I/O devices, you should always wait until you can return at least one character). */</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">Read</span><span class="params">(<span class="keyword">char</span> *<span class="built_in">buffer</span>, <span class="keyword">int</span> <span class="built_in">size</span>, OpenFileId id)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>Similar to <code>write()</code> :</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (type == SC_Read) &#123;</span><br><span class="line">    <span class="keyword">int</span> address = machine-&gt;ReadRegister(<span class="number">4</span>);</span><br><span class="line">    <span class="keyword">int</span> bufsize = machine-&gt;ReadRegister(<span class="number">5</span>);</span><br><span class="line">    <span class="keyword">int</span> fileID = machine-&gt;ReadRegister(<span class="number">6</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"--------[SC_Read] PID: %d, fileid: %d, buffer address: %d with size=%d--------\n"</span>, (currentThread-&gt;space)-&gt;getSpaceId(), fileID, address, bufsize);</span><br><span class="line">    </span><br><span class="line">    OpenFile* openfile = <span class="keyword">new</span> OpenFile(fileID);</span><br><span class="line">    ASSERT(openfile != <span class="literal">NULL</span>);</span><br><span class="line">    <span class="keyword">char</span> <span class="built_in">buffer</span>[<span class="number">128</span>];</span><br><span class="line">    <span class="keyword">int</span> readnum = openfile-&gt;Read(<span class="built_in">buffer</span>, bufsize);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; bufsize; i++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (!machine-&gt;WriteMem(address, <span class="number">1</span>, <span class="built_in">buffer</span>[i]))</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"There is something wrong.\n"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">buffer</span>[bufsize] = <span class="string">'\0'</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"Read successfully! The content is \"%s\" , length = %d\n"</span>, <span class="built_in">buffer</span>, bufsize);</span><br><span class="line">    machine-&gt;WriteRegister(<span class="number">2</span>, readnum);</span><br><span class="line">    advancePC();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Close"><a href="#Close" class="headerlink" title="Close()"></a><code>Close()</code></h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* Close the file, we're done reading and writing to it. */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Close</span><span class="params">(OpenFileId id)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>Quite simple: </p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (type == SC_Close) &#123;</span><br><span class="line">    <span class="keyword">int</span> fileID = machine-&gt;ReadRegister(<span class="number">4</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"--------[SC_Close] PID: %d, fileid: %d--------\n"</span>, (currentThread-&gt;space)-&gt;getSpaceId(), fileID);</span><br><span class="line">    Close(fileID);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"Close file[%d] successfully!\n"</span>, fileID);</span><br><span class="line">    advancePC();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Test"><a href="#Test" class="headerlink" title="Test"></a>Test</h3><p>New file named <code>filetest.c</code> in <code>test</code> directory :</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"syscall.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    OpenFileId file;</span><br><span class="line">    <span class="keyword">char</span> <span class="built_in">buffer</span>[<span class="number">50</span>];</span><br><span class="line">    <span class="keyword">int</span> readsz;</span><br><span class="line">    Create(<span class="string">"Test"</span>);</span><br><span class="line">    file = Open(<span class="string">"Test"</span>);</span><br><span class="line">    Write(<span class="string">"something to test."</span>, <span class="number">15</span>, file);</span><br><span class="line">    readsz = Read(<span class="built_in">buffer</span>, <span class="number">10</span>, file);</span><br><span class="line">    Close(file);</span><br><span class="line">    Exit(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>./nachos -d -x ../test/filetest.noff</code> : </p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">--------[SC_Create] PID: 100, filename: Test--------</span><br><span class="line">create file Test succeed!, the file id is 3</span><br><span class="line">--------[SC_Open] PID: 100, filename: Test--------</span><br><span class="line">open file Test succeed!, the file id is 3</span><br><span class="line">--------[SC_Write] PID: 100, fileid: 3, buffer address: 360 with size=15--------</span><br><span class="line">the buffer is something to te</span><br><span class="line">"something to te" has been written in file 3 successfully!</span><br><span class="line">--------[SC_Read] PID: 100, fileid: 3, buffer address: 1320 with size=10--------</span><br><span class="line">Read successfully! The content is "something " , length = 10</span><br><span class="line">--------[SC_Close] PID: 100, fileid: 3--------</span><br><span class="line">Close file[3] successfully!</span><br><span class="line">--------[SC_Exit] PID: 100 exit_code: 0--------</span><br><span class="line">No threads ready or runnable, and no pending interrupts.</span><br><span class="line">Assuming the program completed.</span><br><span class="line">Machine halting!</span><br></pre></td></tr></table></figure>
+<p>Nothing wrong.</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Linux/" rel="tag"><i class="fa fa-tag"></i> Linux</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/05/11/The-Expansion-of-Nachos-Address-Space/" rel="prev" title="The Expansion of Nachos Address Space">
+      <i class="fa fa-chevron-left"></i> The Expansion of Nachos Address Space
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Multi-thread"><span class="nav-number">1.</span> <span class="nav-text">Multi-thread</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SpaceId"><span class="nav-number">1.1.</span> <span class="nav-text">SpaceId</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Exit"><span class="nav-number">2.</span> <span class="nav-text">Exit()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Join"><span class="nav-number">3.</span> <span class="nav-text">Join()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Yield"><span class="nav-number">4.</span> <span class="nav-text">Yield()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#File-Operation"><span class="nav-number">5.</span> <span class="nav-text">File Operation</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Create"><span class="nav-number">5.1.</span> <span class="nav-text">Create()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Open"><span class="nav-number">5.2.</span> <span class="nav-text">Open()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Write"><span class="nav-number">5.3.</span> <span class="nav-text">Write()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Read"><span class="nav-number">5.4.</span> <span class="nav-text">Read()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Close"><span class="nav-number">5.5.</span> <span class="nav-text">Close()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Test"><span class="nav-number">5.6.</span> <span class="nav-text">Test</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="K"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">K</p>
+  <div class="site-description" itemprop="description">You know Knowhere is nowhere, but KnowWhere.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">91</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">45</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:colivener@outlook.com" title="E-Mail → mailto:colivener@outlook.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+
+
+    <div class="links-of-blogroll motion-element links-of-blogroll-undefined">
+      <div class="links-of-blogroll-title">
+        <!-- modify icon to fire by szw -->
+        <i class="fa fa-history fa-" aria-hidden="true"></i>
+        
+      </div>
+      <ul class="links-of-blogroll-list">
+        
+        
+          <li>
+            <a href="/" title="" target="_blank"></a>
+          </li>
+        
+          <li>
+            <a href="/" title="" target="_blank"></a>
+          </li>
+        
+          <li>
+            <a href="/" title="" target="_blank"></a>
+          </li>
+        
+          <li>
+            <a href="/" title="" target="_blank"></a>
+          </li>
+        
+          <li>
+            <a href="/" title="" target="_blank"></a>
+          </li>
+        
+      </ul>
+    </div>
+
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">K</span>
+</div>
+  <div class="addthis_inline_share_toolbox">
+    <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5e9ea4a022889786" async="async"></script>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'nydWvj5q5w14PIVolKD4JOtS-MdYXbMMI',
+      appKey     : '7vFccLCEXIsFn1VxvpyQAibm',
+      placeholder: "knowhere to know here",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

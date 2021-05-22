@@ -2,9 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>co10.github.io/2021/05/21/more-system-calls-in-Nachos/</loc>
+    
+    <lastmod>2021-05-22T06:07:19.244Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>co10.github.io/2021/05/11/The-Expansion-of-Nachos-Address-Space/</loc>
+    
+    <lastmod>2021-05-21T12:55:29.618Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>co10.github.io/2021/05/05/User-Programs-and-System-Call-in-Nachos/</loc>
     
-    <lastmod>2021-05-07T15:33:34.210Z</lastmod>
+    <lastmod>2021-05-11T14:48:44.060Z</lastmod>
     
   </url>
   
